@@ -1,6 +1,15 @@
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 
-import React from "react";
+import Dashboard from "./Dashboard";
+import Login from "./Login";
+import ProtectedRoute from "./ProtectedRoute";
+import useAuthStore from "./store/useAuthStore";
 
 // Global style to hide overflow on the body for mobile screens
 const GlobalStyle = createGlobalStyle`
@@ -27,7 +36,7 @@ const Scrollable = styled.div`
   flex: 1;
   width: 100%;
   overflow-y: auto;
-  background-color: #f5f5f5;
+  /* background-color: #f5f5f5; */
   padding: 10px;
   box-sizing: border-box;
   margin-top: 70px; /* Height of Header */
@@ -39,8 +48,8 @@ const MobileSidebar = styled.div`
   bottom: 0;
   width: 100%;
   height: 70px;
-  background-color: #f2f2f2;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+  /* background-color: #f2f2f2; */
+  /* box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3); */
 
   // Hide on desktop
   @media (min-width: 769px) {
@@ -53,8 +62,8 @@ const Header = styled.div`
   top: 0;
   width: 100%;
   height: 70px;
-  background-color: #f2f2f2;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  /* background-color: #f2f2f2; */
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); */
 `;
 
 const DeskTop = styled.div`
@@ -70,9 +79,31 @@ const DeskTop = styled.div`
 `;
 
 const App = () => {
+  const { isAuthenticated } = useAuthStore();
+
   return (
     <>
       <GlobalStyle />
+      <div>
+        <Router>
+          <Routes>
+            <Route
+              path="/login"
+              element={
+                !isAuthenticated ? <Login /> : <Navigate to="/dashboard" />
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </Router>
+      </div>
       <Container>
         <Header />
         <Scrollable>
@@ -80,7 +111,6 @@ const App = () => {
           eligendi, iure quaerat, voluptates magnam excepturi natus quod, sed
           saepe consequuntur neque deserunt explicabo ullam reprehenderit. ...
         </Scrollable>
-        <MobileSidebar>Mobile Sidebar</MobileSidebar>
       </Container>
       <DeskTop>
         <div>Desktop Content</div>

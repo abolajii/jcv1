@@ -16,7 +16,7 @@ const Bottom = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05); */
 
   @media (min-width: 768px) {
     display: none;
