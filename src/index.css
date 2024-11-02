@@ -8,11 +8,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  height: 100vsh;
-  overflow: hidden;
-}
-
 * {
   margin: 0;
   padding: 0;
