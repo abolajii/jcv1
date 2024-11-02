@@ -94,6 +94,12 @@ const App = () => {
               }
             />
             <Route
+              path="/"
+              element={
+                !isAuthenticated ? <Login /> : <Navigate to="/dashboard" />
+              }
+            />
+            <Route
               path="/dashboard"
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
@@ -104,17 +110,6 @@ const App = () => {
           </Routes>
         </Router>
       </div>
-      <Container>
-        <Header />
-        <Scrollable>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit sit
-          eligendi, iure quaerat, voluptates magnam excepturi natus quod, sed
-          saepe consequuntur neque deserunt explicabo ullam reprehenderit. ...
-        </Scrollable>
-      </Container>
-      <DeskTop>
-        <div>Desktop Content</div>
-      </DeskTop>
     </>
   );
 };
