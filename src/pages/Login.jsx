@@ -20,8 +20,8 @@ const Container = styled.div`
 `;
 
 const Login = () => {
-  const [email, setEmail] = useState("abolajiking@example.com");
-  const [password, setPassword] = useState("password123");
+  const [email, setEmail] = useState("admin@god.com");
+  const [password, setPassword] = useState("admin");
   const [loading, setLoading] = useState(false);
   const { setUser } = useAuthStore(); // Access setUser function from auth store
   const navigate = useNavigate(); // Hook for navigation
