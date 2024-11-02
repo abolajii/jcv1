@@ -6,9 +6,14 @@ import {
 } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 
+import Bookmark from "./Bookmark";
+import Conversation from "./Conversation";
 import Dashboard from "./Dashboard";
-import Login from "./Login";
+import Login from "./pages/Login";
+import Notification from "./Notification";
+import Profile from "./Profile";
 import ProtectedRoute from "./ProtectedRoute";
+import Settings from "./Settings";
 import useAuthStore from "./store/useAuthStore";
 
 // Global style to hide overflow on the body for mobile screens
@@ -105,6 +110,52 @@ const App = () => {
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <Dashboard />
                 </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/conversation"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <Conversation />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/notification"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <Notification />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/bookmark"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <Bookmark />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <Settings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="*"
+              element={
+                <Navigate to={isAuthenticated ? "/dashboard" : "/login"} />
               }
             />
           </Routes>
