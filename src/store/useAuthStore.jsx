@@ -4,14 +4,17 @@ import { create } from "zustand";
 const initialUser = JSON.parse(localStorage.getItem("user"));
 const initialToken = localStorage.getItem("token");
 
+// Update the useAuthStore setUser method to include setting token
 const useAuthStore = create((set) => ({
   isAuthenticated: !!initialToken && !!initialUser,
   user: initialUser || null,
 
   // Login action
-  setUser: (user) => {
+  setUser: (user, token) => {
+    // Ensure token is passed in
     set({ isAuthenticated: true, user });
-    localStorage.setItem("user", JSON.stringify(user)); // Ensure user data is in localStorage
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("token", token); // Store the token
   },
 
   // Logout action
