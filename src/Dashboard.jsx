@@ -98,7 +98,11 @@ const Header = styled.div`
 `;
 
 const Dashboard = () => {
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
+
+  useEffect(() => {
+    logout();
+  }, []);
 
   const contentRef = useRef();
   const [content, setContent] = useState("");
