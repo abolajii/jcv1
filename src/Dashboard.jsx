@@ -21,7 +21,7 @@ const Scrollable = styled.div`
   margin-bottom: 60px; /* Height of MobileSidebar */
 
   .width {
-    border: 1px solid #caf7e9;
+    border: 1px solid #c8e2da;
     border-radius: 3px;
   }
 `;
@@ -85,6 +85,9 @@ const Header = styled.div`
   gap: 30px;
   padding: 10px;
   background-color: white; /* Optional background */
+  background-color: rgba(232, 239, 239, 1);
+  border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+
   z-index: 10;
 
   img {

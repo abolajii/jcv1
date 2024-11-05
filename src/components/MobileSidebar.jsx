@@ -8,7 +8,8 @@ const Bottom = styled.div`
   position: fixed;
   height: 60px;
   z-index: 999;
-  background-color: #f8f8f8;
+  background-color: #f0eded;
+  border-top: 1px solid rgba(204, 204, 204, 0.5);
 
   bottom: 0;
   left: 0;

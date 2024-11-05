@@ -42,9 +42,8 @@ const ShareButton = styled.button`
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 4px 9px;
-  /* width: 70px; */
-  font-size: 12px;
+  padding: 9px;
+  font-size: 13px;
   cursor: pointer;
 
   &:hover {

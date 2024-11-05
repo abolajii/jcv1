@@ -7,6 +7,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: rgba(232, 239, 239, 0.95);
 
   .scrollbar {
     margin-top: 90px;

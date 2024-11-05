@@ -6,7 +6,7 @@ import styled from "styled-components";
 import usePostStore from "./store/usePostStore";
 
 const Container = styled.div`
-  margin-top: 20px;
+  margin-top: 40px;
   overflow: hidden;
 
   .negate {
@@ -14,7 +14,7 @@ const Container = styled.div`
   }
 
   .loading {
-    height: 200px;
+    height: 300px;
     width: 100%;
     /* background: red; */
     border-radius: 5px;

@@ -5,7 +5,12 @@ export const SkeletonPulse = styled.div`
   display: inline-block;
   width: ${(props) => `${props.width}`};
   height: ${(props) => `${props.height}`};
-  background: linear-gradient(-90deg, #f0f0f0 0%, #f8f8f8 50%, #f0f0f0 100%);
+  background: linear-gradient(
+    -90deg,
+    rgba(185, 194, 194, 0.4) 0%,
+    rgba(232, 239, 239, 0.5) 50%,
+    rgba(185, 194, 194, 0.4) 100%
+  );
   background-size: 400% 400%;
   animation: pulse 1.2s ease-in infinite;
   overflow: hidden;
