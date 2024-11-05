@@ -103,7 +103,9 @@ const Discover = () => {
         </TextOverlay>
       </ImageBackground>
       {users.length === 0 && !isLoading && (
-        <p className="text-sm">Sadly no more connects. Share with friends🫰</p>
+        <p className="text-sm pt-2 pl-1">
+          Sadly no more connects. Share with friends🫰
+        </p>
       )}
       {users.map((user) => (
         <People
