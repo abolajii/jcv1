@@ -104,7 +104,7 @@ const Dashboard = () => {
 
   const [file, setFile] = useState(null);
   const [mentionedUsers, setMentionedUsers] = useState([]);
-  const { setPosts, setPostSent } = usePostStore();
+  const { setPosts, setPostSent, posts } = usePostStore();
   const [loading, setLoading] = useState(false);
 
   const submitPost = async () => {
@@ -127,7 +127,8 @@ const Dashboard = () => {
 
       try {
         const response = await createPost(formData);
-        setPosts((prevPosts) => [response, ...prevPosts]);
+        const allPosts = [response, ...posts];
+        setPosts(allPosts);
         setLoading(false);
         setContent("");
         setFile(null);
