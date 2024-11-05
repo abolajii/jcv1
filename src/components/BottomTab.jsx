@@ -140,12 +140,12 @@ const BottomTab = ({ onSubmit, setFile, loading }) => {
               />
             </div>
 
-            <FaSmile title="Add Emoji" className="relative" />
+            {/* <FaSmile title="Add Emoji" className="relative" /> */}
             {/* <AiOutlineGif title="GIF" /> */}
-            <RiCalendarScheduleFill
+            {/* <RiCalendarScheduleFill
               title="Schedule Post"
               onClick={() => setIsModalOpen(true)}
-            />
+            /> */}
           </IconBox>
         </div>
         <div>

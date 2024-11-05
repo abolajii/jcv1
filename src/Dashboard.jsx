@@ -1,10 +1,11 @@
+import { createPost, getFeeds } from "./api/requests";
 import { useEffect, useRef, useState } from "react";
 
 import { AiOutlinePlus } from "react-icons/ai";
 import BottomTab from "./components/BottomTab";
+import Feeds from "./Feeds";
 import MainContainer from "./MainContainer";
 import Textarea from "./components/Textarea";
-import { createPost } from "./api/requests";
 import { createUniqueUsers } from "./utils";
 import styled from "styled-components";
 import useAuthStore from "./store/useAuthStore";
@@ -13,11 +14,11 @@ import usePostStore from "./store/usePostStore";
 const Scrollable = styled.div`
   flex: 1;
   width: 100%;
-  overflow-y: auto;
+  overflow-y: ${(props) => (props.isLoading ? "hidden" : "auto")};
   padding: 10px;
   box-sizing: border-box;
   margin-top: 70px; /* Height of Header */
-  margin-bottom: 70px; /* Height of MobileSidebar */
+  margin-bottom: 60px; /* Height of MobileSidebar */
 
   .width {
     border: 1px solid #caf7e9;
@@ -99,6 +100,7 @@ const Dashboard = () => {
   const contentRef = useRef();
   const [content, setContent] = useState("");
   const [width, setWidth] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [file, setFile] = useState(null);
   const [mentionedUsers, setMentionedUsers] = useState([]);
@@ -150,6 +152,20 @@ const Dashboard = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const data = await getFeeds();
+        setIsLoading(false);
+        setPosts(data);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    fetchPosts();
+  }, [setPosts]);
+
   return (
     <MainContainer>
       <Header>
@@ -161,7 +177,7 @@ const Dashboard = () => {
           <OtherStory>{/* Additional elements here */}</OtherStory>
         </div>
       </Header>
-      <Scrollable>
+      <Scrollable isLoading={isLoading}>
         <div className="width pl-2 pr-2 pt-2 pb-2">
           <div className="text" ref={contentRef}>
             <Textarea
@@ -178,6 +194,7 @@ const Dashboard = () => {
             />
           </div>
         </div>
+        <Feeds isLoading={isLoading} />
       </Scrollable>
     </MainContainer>
   );
