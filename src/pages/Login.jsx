@@ -26,16 +26,22 @@ const Login = () => {
   const { setUser } = useAuthStore(); // Access setUser function from auth store
   const navigate = useNavigate(); // Hook for navigation
 
+  const [errors, setErrors] = useState({}); // State for validation errors
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!email) newErrors.email = "This field is required";
+    if (!password) newErrors.password = "Password is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check for empty email or password and show a toast
-    if (!email) {
-      return;
-    }
-    if (!password) {
-      return;
-    }
+    if (!validateForm()) return; // Validate form and stop submission if errors exist
 
     setLoading(true);
 
@@ -63,25 +69,33 @@ const Login = () => {
         <Title>Login</Title>
         <p className="text-sm mb-3">Welcome back. Kindly log in.</p>
 
-        <InputContainer>
+        <InputContainer hasError={errors.email}>
           <AiOutlineMail size={20} />
           <Input
             type="text"
             placeholder="Email or username"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setErrors((prevErrors) => ({ ...prevErrors, email: null }));
+            }}
           />
         </InputContainer>
+        {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
 
-        <InputContainer>
+        <InputContainer hasError={errors.password}>
           <AiOutlineLock size={20} />
           <Input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrors((prevErrors) => ({ ...prevErrors, password: null }));
+            }}
           />
         </InputContainer>
+        {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
 
         <LoginButton type="submit" className="center mb-2">
           {loading ? <Spinner /> : "Log in"}
@@ -123,6 +137,9 @@ const InputContainer = styled.div`
   border-radius: 8px;
   padding: 0.5rem;
   margin-bottom: 1rem;
+
+  border: ${({ hasError }) =>
+    hasError ? "1px solid red" : "1px solid transparent"};
 `;
 
 const Input = styled.input`
@@ -156,5 +173,7 @@ const LoginButton = styled.button`
 const ErrorMessage = styled.p`
   color: #e74c3c;
   font-size: 0.9rem;
-  margin-bottom: 1rem;
+  /* margin-top: -0.8rem; */
+  margin-top: -0.8rem;
+  margin-bottom: 9px;
 `;
