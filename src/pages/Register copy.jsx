@@ -4,12 +4,12 @@ import {
   AiOutlineMail,
   AiOutlineUser,
 } from "react-icons/ai";
-import { Link, useNavigate } from "react-router-dom"; // For redirecting
+import { Link, useNavigate } from "react-router-dom";
 
 import Spinner from "../components/Spinner";
 import { register } from "../api/requests";
 import styled from "styled-components";
-import useAuthStore from "../store/useAuthStore"; // Assuming you have a store for auth state
+import useAuthStore from "../store/useAuthStore";
 import { useState } from "react";
 
 const Register = () => {
@@ -20,11 +20,11 @@ const Register = () => {
   const [profilePic, setProfilePic] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { setUser } = useAuthStore(); // Access setUser function from auth store
-  const navigate = useNavigate(); // Hook for navigation
   const [isDragging, setIsDragging] = useState(false);
-
   const [errors, setErrors] = useState({}); // State for validation errors
+
+  const { setUser } = useAuthStore();
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -168,31 +168,26 @@ const Register = () => {
         </InputContainer>
         {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
 
-        <div className="flex gap-md align-center mb-3 justify-center">
-          <FileInputContainer
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onClick={() => document.getElementById("fileInput").click()}
-            isDragging={isDragging}
-            hasError={errors.profilePic}
-          >
-            <AiOutlineCloudUpload size={24} color="#4a90e2" />
-            <p>Drag & drop or click to upload</p>
-            <ProfilePicInput
-              type="file"
-              id="fileInput"
-              onChange={handleFileChange}
-            />
-          </FileInputContainer>
-          {errors.profilePic && (
-            <ErrorMessage>{errors.profilePic}</ErrorMessage>
-          )}
+        <FileInputContainer
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onClick={() => document.getElementById("fileInput").click()}
+          isDragging={isDragging}
+          hasError={errors.profilePic}
+        >
+          <AiOutlineCloudUpload size={24} color="#4a90e2" />
+          <p>Drag & drop or click to upload</p>
+          <ProfilePicInput
+            type="file"
+            id="fileInput"
+            onChange={handleFileChange}
+          />
+        </FileInputContainer>
+        {errors.profilePic && <ErrorMessage>{errors.profilePic}</ErrorMessage>}
+        {preview && <ProfilePicPreview src={preview} alt="Profile Preview" />}
 
-          {preview && <ProfilePicPreview src={preview} alt="Profile Preview" />}
-        </div>
-
-        <RegisterButton type="submit" className="center">
+        <RegisterButton type="submit">
           {loading ? <Spinner /> : "Register"}
         </RegisterButton>
 
@@ -229,7 +224,6 @@ const RegisterForm = styled.form`
 const Title = styled.h2`
   display: flex;
   align-items: center;
-  gap: 8px;
   font-size: 1.5rem;
   color: #333;
   margin-bottom: 1rem;
@@ -257,63 +251,48 @@ const Input = styled.input`
 
 const ErrorMessage = styled.p`
   color: red;
-  font-size: 12px;
-  margin-top: -0.45rem;
-  margin-bottom: 5px;
+  font-size: 0.875rem;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
 `;
 
 const FileInputContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  border: 2px dotted #4a90e2;
-  border-radius: 8px;
-  cursor: pointer;
-  text-align: center;
-  padding: 7px;
-  color: #4a90e2;
-  width: fit-content;
-  transition: background-color 0.2s ease;
-  background-color: ${({ isDragging }) =>
-    isDragging ? "#e3f7ff" : "transparent"};
   border: ${({ hasError }) =>
     hasError ? "2px dotted red" : "2px dotted #4a90e2"};
-
-  p {
-    font-size: 10px;
-  }
-  &:hover {
-    background-color: #f0f2f5;
-  }
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 7px;
+  color: #4a90e2;
+  background-color: ${({ isDragging }) =>
+    isDragging ? "#e3f7ff" : "transparent"};
 `;
 
 const ProfilePicInput = styled.input`
-  display: none; // Hide default input
+  display: none;
 `;
 
 const ProfilePicPreview = styled.img`
-  width: 70px;
-  height: 70px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  border: 3px solid #4a90e2;
   object-fit: cover;
+  margin-top: 1rem;
 `;
 
 const RegisterButton = styled.button`
+  padding: 0.75rem;
+  font-size: 1rem;
+  color: #fff;
   background-color: #4a90e2;
-  color: #ffffff;
   border: none;
   border-radius: 8px;
-  font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem;
-  width: 100%;
 
   &:hover {
-    background-color: #357abd;
+    background-color: #357ab8;
   }
 `;

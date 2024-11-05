@@ -5,11 +5,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   height: 100svh;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between; */
-  // Hide on desktop
+
   @media (min-width: 769px) {
     display: none;
   }
