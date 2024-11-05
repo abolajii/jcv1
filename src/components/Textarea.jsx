@@ -20,6 +20,14 @@ const Container = styled.div`
     color: #aaa;
     font-size: 13px;
   }
+
+  @media screen and (max-width: 768px) {
+    input,
+    select,
+    textarea {
+      font-size: 14px !important;
+    }
+  }
 `;
 
 const SuggestionBox = styled.div`
