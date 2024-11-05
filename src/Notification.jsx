@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
 import MainContainer from "./MainContainer";
+import MentionDashboard from "./Mention";
+import Trends from "./tabs/Trends";
 import styled from "styled-components";
 
 const Tabs = styled.div`
@@ -15,10 +17,11 @@ const Tab = styled.div`
   cursor: pointer;
   padding: 8px;
   color: ${(props) =>
-    props.active ? "#28a69e" : "#979797"}; /* Dynamic color */
+    props.active ? "#28a69e" : "#9b9b9b"}; /* Dynamic color */
   transition: color 0.3s ease;
   text-align: center;
   flex: 1;
+  border-bottom: 1px solid rgba(204, 204, 204, 0.5);
 
   &:hover {
     color: #28a69e; /* Color on hover */
@@ -29,7 +32,6 @@ const Header = styled.div`
   position: fixed;
   top: 0;
   width: 100%;
-  height: 60px; /* Adjust as needed */
   display: flex;
   align-items: center;
   gap: 30px;
@@ -50,6 +52,10 @@ const Slider = styled.div`
   height: 2px;
   background-color: #28a69e;
   transition: left 0.3s ease, width 0.3s ease;
+`;
+
+const Content = styled.div`
+  margin-top: 60px;
 `;
 
 const tabs = ["All", "Mentions", "Interactions"];
@@ -86,6 +92,11 @@ const Notification = () => {
           <Slider style={sliderStyle} />
         </Tabs>
       </Header>
+      <Content>
+        {activeTab === "All" && <MentionDashboard />}
+        {activeTab === "Mentions" && <Trends />}
+        {activeTab === "Interactions" && <Trends />}
+      </Content>
     </MainContainer>
   );
 };
