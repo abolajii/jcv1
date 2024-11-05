@@ -20,8 +20,8 @@ const Container = styled.div`
 `;
 
 const Login = () => {
-  const [email, setEmail] = useState("admin@god.com");
-  const [password, setPassword] = useState("admin");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { setUser } = useAuthStore(); // Access setUser function from auth store
   const navigate = useNavigate(); // Hook for navigation
@@ -66,8 +66,8 @@ const Login = () => {
         <InputContainer>
           <AiOutlineMail size={20} />
           <Input
-            type="email"
-            placeholder="Email"
+            type="text"
+            placeholder="Email or username"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />

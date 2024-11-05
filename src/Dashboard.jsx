@@ -4,8 +4,11 @@ import { AiOutlinePlus } from "react-icons/ai";
 import BottomTab from "./components/BottomTab";
 import MainContainer from "./MainContainer";
 import Textarea from "./components/Textarea";
+import { createPost } from "./api/requests";
+import { createUniqueUsers } from "./utils";
 import styled from "styled-components";
 import useAuthStore from "./store/useAuthStore";
+import usePostStore from "./store/usePostStore";
 
 const Scrollable = styled.div`
   flex: 1;
@@ -97,6 +100,43 @@ const Dashboard = () => {
   const [content, setContent] = useState("");
   const [width, setWidth] = useState(0);
 
+  const [file, setFile] = useState(null);
+  const [mentionedUsers, setMentionedUsers] = useState([]);
+  const { setPosts, setPostSent } = usePostStore();
+  const [loading, setLoading] = useState(false);
+
+  const submitPost = async () => {
+    if (content.trim() || file) {
+      const results = createUniqueUsers(mentionedUsers);
+
+      setLoading(true);
+
+      const formData = new FormData();
+
+      results.forEach((user) => {
+        formData.append("mention", user.username);
+      });
+
+      formData.append("content", content.trim());
+
+      if (file) {
+        formData.append("imagePost", file);
+      }
+
+      try {
+        const response = await createPost(formData);
+        setPosts((prevPosts) => [response, ...prevPosts]);
+        setLoading(false);
+        setContent("");
+        setFile(null);
+        setPostSent(true);
+      } catch (error) {
+        setLoading(false);
+        console.error("Error sending post:", error);
+      }
+    }
+  };
+
   useEffect(() => {
     if (contentRef.current) {
       setWidth(contentRef.current.offsetWidth);
@@ -124,8 +164,18 @@ const Dashboard = () => {
       <Scrollable>
         <div className="width pl-2 pr-2 pt-2 pb-2">
           <div className="text" ref={contentRef}>
-            <Textarea width={width} setText={setContent} text={content} />
-            <BottomTab />
+            <Textarea
+              width={width}
+              setText={setContent}
+              text={content}
+              setMentionedUsers={setMentionedUsers}
+            />
+            <BottomTab
+              file={file}
+              setFile={setFile}
+              onSubmit={submitPost}
+              loading={loading}
+            />
           </div>
         </div>
       </Scrollable>

@@ -1,16 +1,19 @@
+/* eslint-disable react/prop-types */
 import { FaImage, FaSmile, FaTimes } from "react-icons/fa";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { AiOutlineGif } from "react-icons/ai";
+// import { AiOutlineGif } from "react-icons/ai";
 import { RiCalendarScheduleFill } from "react-icons/ri";
 import ScheduleModal from "./Schedule";
 import Spinner from "./Spinner";
-import { createPost } from "../api/requests";
 import styled from "styled-components";
 import usePostStore from "../store/usePostStore";
 
 const Container = styled.div`
   margin-top: 2px;
+
+  .imageSelect {
+  }
 `;
 
 const IconBox = styled.div`
@@ -26,6 +29,11 @@ const IconBox = styled.div`
     &:hover {
       color: #28a69e; /* Change color on hover */
     }
+  }
+
+  input {
+    position: absolute;
+    inset: 0;
   }
 `;
 
@@ -48,12 +56,13 @@ const ImagePreview = styled.div`
   position: relative;
   display: inline-block;
   margin-top: 3px;
+  margin-bottom: 3px;
 `;
 
 const Image = styled.img`
   width: 100%;
   height: auto;
-  max-height: 540px;
+  max-height: 500px;
   object-fit: cover;
   border-radius: 4px;
 
@@ -73,62 +82,19 @@ const CloseButton = styled(FaTimes)`
   cursor: pointer;
 `;
 
-const BottomTab = ({ quote, reply, onSubmit, closeModal }) => {
-  const [loading, setLoading] = useState(false); // To handle loading state
+const BottomTab = ({ onSubmit, setFile, loading }) => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [file, setFile] = useState(null);
-  const { content, setPostSent, setPosts, posts } = usePostStore();
-  const [mentionedUsers, setMentionedUsers] = useState([]);
+  const { postSent } = usePostStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const submitPost = async () => {
-    if (loading) {
-      return;
+  useEffect(() => {
+    if (postSent) {
+      setSelectedImage(null);
     }
-    setLoading(true);
-    try {
-      if (content.trim() || selectedImage) {
-        const formData = new FormData();
-
-        mentionedUsers.forEach((user) => {
-          formData.append("mention", user);
-        });
-        //
-        formData.append("content", content.trim());
-        //   // If there is a selected image, append it to the form data
-        if (selectedImage) {
-          formData.append("imagePost", file);
-        }
-
-        const response = await createPost(formData);
-        const newPosts = [response, ...posts];
-        setPosts(newPosts);
-        setPostSent(true);
-        setLoading(false);
-        setFile(null);
-        setSelectedImage(null);
-      }
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
+  }, [postSent]);
 
   const handleSubmit = async () => {
-    if (quote || reply) {
-      setLoading(true);
-      try {
-        await onSubmit();
-        setLoading(false);
-        closeModal();
-      } catch (error) {
-        setLoading(false);
-        console.log(error);
-      }
-    } else {
-      console.log("clicked", quote);
-      await submitPost();
-    }
+    await onSubmit();
   };
 
   const handleImageChange = (event) => {
@@ -163,17 +129,17 @@ const BottomTab = ({ quote, reply, onSubmit, closeModal }) => {
       <div className="flex justify-between align-center">
         <div>
           <IconBox>
-            <FaImage
-              title="Add Image"
-              onClick={() => document.getElementById("imageUpload").click()}
-            />
-            <input
-              type="file"
-              id="imageUpload"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={handleImageChange}
-            />
+            <div className="imageSelect relative">
+              <FaImage title="Add Image" />
+              <input
+                type="file"
+                id="imageUpload"
+                accept="image/*"
+                style={{ opacity: 0 }}
+                onChange={handleImageChange}
+              />
+            </div>
+
             <FaSmile title="Add Emoji" className="relative" />
             {/* <AiOutlineGif title="GIF" /> */}
             <RiCalendarScheduleFill

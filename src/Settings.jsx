@@ -20,6 +20,7 @@ const Settings = () => {
         )}
         <UserInfo>
           <UserName>{user.name}</UserName>
+          <p>{user.username}</p>
           <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
         </UserInfo>
       </UserDetailsContainer>
