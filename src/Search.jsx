@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
+import Connects from "./tabs/Connect";
 import Discover from "./tabs/Discover";
 import Entertainment from "./tabs/Entertainment";
 import { FaSearch } from "react-icons/fa";
@@ -137,7 +138,7 @@ const Search = () => {
         {activeTab === "Discover" && <Discover />}
         {activeTab === "Trends" && <Trends />}
         {activeTab === "Sports" && <Sports />}
-        {activeTab === "Entertainment" && <Entertainment />}
+        {activeTab === "Connects" && <Connects />}
       </Container>
     </MainContainer>
   );
