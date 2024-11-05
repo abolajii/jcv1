@@ -2,7 +2,7 @@ import NormalPost from "./NormalPost";
 import QuotePost from "./QuotePost";
 /* eslint-disable react/prop-types */
 // import React from "react";
-import SharePost from "./SharePost";
+import SharePost from "./Sharepost";
 
 const Post = ({ post }) => {
   if (post.postType === "shared") {
