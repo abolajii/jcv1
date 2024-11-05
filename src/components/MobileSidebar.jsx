@@ -8,7 +8,7 @@ const Bottom = styled.div`
   position: fixed;
   height: 60px;
   z-index: 999;
-  background-color: #f3f3f3;
+  background-color: #f8f8f8;
 
   bottom: 0;
   left: 0;

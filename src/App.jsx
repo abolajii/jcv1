@@ -13,6 +13,7 @@ import Notification from "./Notification";
 import Profile from "./Profile";
 import ProtectedRoute from "./ProtectedRoute";
 import Register from "./pages/Register";
+import Search from "./Search";
 import Settings from "./Settings";
 import { createGlobalStyle } from "styled-components";
 import useAuthStore from "./store/useAuthStore";
@@ -76,6 +77,14 @@ const App = () => {
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <Search />
                 </ProtectedRoute>
               }
             />

@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom"; // For navigation a
 
 import { AiOutlineBell } from "react-icons/ai"; // Mention icon
 import { BsChatDots } from "react-icons/bs"; // Conversation icon
+import { IoIosHome } from "react-icons/io";
+import { IoSearchOutline } from "react-icons/io5";
 import styled from "styled-components";
 import useAuthStore from "../store/useAuthStore";
 
@@ -54,24 +56,38 @@ const NotificationCount = styled.div`
 export const sidebarItems = [
   {
     path: "/dashboard",
-    label: "Dashboard",
-    icon: <FaRegEnvelopeOpen />,
+    // label: "Home",
+    icon: <IoIosHome />,
     // notifications: 3,
   },
   {
+    path: "/search",
+    // label: "Search",
+    icon: <IoSearchOutline />,
+    // notifications: 5,
+  },
+  {
     path: "/notification",
-    label: "Notification",
+    // label: "Notification",
     icon: <AiOutlineBell />,
     // notifications: 5,
   },
   {
     path: "/conversation",
-    label: "Conversation",
+    // label: "Conversation",
     icon: <BsChatDots />,
     // notifications: 2,
   },
-  { path: "/bookmark", label: "Bookmark", icon: <FaRegBookmark /> },
-  { path: "/settings", label: "Settings", icon: <FiSettings /> },
+  {
+    path: "/bookmark",
+    //  label: "Bookmark",
+    icon: <FaRegBookmark />,
+  },
+  {
+    path: "/settings",
+    //  label: "Settings",
+    icon: <FiSettings />,
+  },
 ];
 
 const Sidebar = () => {
