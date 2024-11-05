@@ -233,7 +233,6 @@ const MentionDashboard = () => {
                     <Name>@{sender.username}</Name>
                     <div className="faint">connected with you</div>
                   </div>
-                  <div>{!isRead && <div className="alert"></div>}</div>
                 </div>
                 <div className="time">{formatDate(createdAt)}</div>
               </div>
@@ -378,7 +377,7 @@ const MentionDashboard = () => {
                     <div className="faint">mention you on a post</div>
                   </div>
                   <div>
-                    <div className="alert"></div>
+                    <div>{!isRead && <div className="alert"></div>}</div>
                   </div>
                 </div>
                 <div className="time">{formatDate(createdAt)}</div>
