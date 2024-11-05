@@ -84,7 +84,6 @@ const Header = styled.div`
   align-items: center;
   gap: 30px;
   padding: 10px;
-  background-color: white; /* Optional background */
   background-color: rgba(232, 239, 239, 1);
   border-bottom: 1px solid rgba(204, 204, 204, 0.5);
 

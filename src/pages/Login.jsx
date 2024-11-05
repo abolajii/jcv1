@@ -173,7 +173,6 @@ const LoginButton = styled.button`
 const ErrorMessage = styled.p`
   color: #e74c3c;
   font-size: 0.9rem;
-  /* margin-top: -0.8rem; */
   margin-top: -0.8rem;
   margin-bottom: 9px;
 `;

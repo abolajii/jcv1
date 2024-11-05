@@ -27,13 +27,14 @@ const Tab = styled.div`
   font-size: 14px;
   cursor: pointer;
   padding: 8px;
-  color: #28a69e;
+  color: ${(props) =>
+    props.active ? "#28a69e" : "#979797"}; /* Dynamic color */
   transition: color 0.3s ease;
   text-align: center;
   flex: 1;
 
   &:hover {
-    color: #28a69e;
+    color: #28a69e; /* Color on hover */
   }
 `;
 
@@ -126,6 +127,7 @@ const Search = () => {
         <Tabs>
           {tabs.map((tab, index) => (
             <Tab
+              active={activeTab === tab} // Pass active state to Tab
               key={tab}
               ref={(el) => (tabsRef.current[index] = el)}
               onClick={() => handleTabClick(tab)}
