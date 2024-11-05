@@ -1,20 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { AiOutlinePlus } from "react-icons/ai";
 import BottomTab from "./components/BottomTab";
-/* eslint-disable react/prop-types */
-import MobileSidebar from "./components/MobileSidebar";
+import MainContainer from "./MainContainer";
 import Textarea from "./components/Textarea";
 import styled from "styled-components";
 import useAuthStore from "./store/useAuthStore";
-
-const Container = styled.div`
-  height: 100svh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-`;
 
 const Scrollable = styled.div`
   flex: 1;
@@ -26,38 +17,10 @@ const Scrollable = styled.div`
   margin-bottom: 70px; /* Height of MobileSidebar */
 
   .width {
-    border: 1px solid #b6eae7;
-    margin-top: 20px;
+    border: 1px solid #caf7e9;
+    border-radius: 3px;
   }
 `;
-
-const Header = styled.div`
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 60px; /* Adjust as needed */
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  padding: 10px;
-  background-color: white; /* Optional background */
-  z-index: 10;
-
-  img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-  }
-`;
-
-const MainContainer = ({ children }) => {
-  return (
-    <Container>
-      {children}
-      <MobileSidebar />
-    </Container>
-  );
-};
 
 const UserAvi = styled.div`
   height: 45px;
@@ -108,11 +71,31 @@ const AddIcon = styled(AiOutlinePlus)`
   }
 `;
 
+const Header = styled.div`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px; /* Adjust as needed */
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 10px;
+  background-color: white; /* Optional background */
+  z-index: 10;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+`;
+
 const Dashboard = () => {
   const { user } = useAuthStore();
-  const contentRef = useRef(null);
-  const [width, setWidth] = useState(0);
+
+  const contentRef = useRef();
   const [content, setContent] = useState("");
+  const [width, setWidth] = useState(0);
 
   useEffect(() => {
     if (contentRef.current) {
@@ -129,27 +112,25 @@ const Dashboard = () => {
 
   return (
     <MainContainer>
-      <Container>
-        <Header>
-          <div className="flex gap-md align-center">
-            <UserAvi>
-              <img src={user?.profilePic} alt="User avatar" />
-              <AddIcon size={13} color="#fff" />
-            </UserAvi>
-            <OtherStory>{/* Additional elements here */}</OtherStory>
+      <Header>
+        <div className="flex gap-md align-center">
+          <UserAvi>
+            <img src={user?.profilePic} alt="User avatar" />
+            <AddIcon size={13} color="#fff" />
+          </UserAvi>
+          <OtherStory>{/* Additional elements here */}</OtherStory>
+        </div>
+      </Header>
+      <Scrollable>
+        <div className="width pl-2 pr-2 pt-2 pb-2">
+          <div className="text" ref={contentRef}>
+            <Textarea width={width} setText={setContent} text={content} />
+            <BottomTab />
           </div>
-        </Header>
-        <Scrollable>
-          <div className="width pl-1 pr-1 pt-2 pb-2">
-            <div className="text" ref={contentRef}>
-              <Textarea width={width} setText={setContent} text={content} />
-              <BottomTab />
-            </div>
-          </div>
-        </Scrollable>
-        <MobileSidebar />
-      </Container>
+        </div>
+      </Scrollable>
     </MainContainer>
   );
 };
+
 export default Dashboard;
