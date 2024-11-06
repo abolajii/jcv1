@@ -14,7 +14,6 @@ import styled from "styled-components";
 const Container = styled.div`
   border-radius: 5px;
   background-color: #f3f3f3;
-  margin-bottom: 30px;
 `;
 
 const Top = styled.div`
