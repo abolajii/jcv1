@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Connects from "./tabs/Connect";
 import Discover from "./tabs/Discover";
-import Entertainment from "./tabs/Entertainment";
 import { FaSearch } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import MainContainer from "./MainContainer";

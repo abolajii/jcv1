@@ -209,6 +209,9 @@ const MentionDashboard = () => {
 
   return (
     <Container>
+      {notifications.length === 0 && (
+        <p className="text-sm pl-2 pt-2">No notifications yet 📣</p>
+      )}
       {notifications.map((n) => {
         const { type, sender, createdAt, data, isRead } = n;
 
