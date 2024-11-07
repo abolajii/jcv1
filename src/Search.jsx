@@ -13,6 +13,7 @@ import styled from "styled-components";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100svh;
 `;
 
 const Tabs = styled.div`
@@ -91,6 +92,19 @@ const Input = styled.input`
   }
 `;
 
+const Scrollable = styled.div`
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+  margin-bottom: 60px; /* Height of MobileSidebar */
+
+  .width {
+    border: 1px solid #c8e2da;
+    border-radius: 3px;
+  }
+`;
+
 const tabs = ["Discover", "Trends", "Connects", "Sports"];
 
 const Search = () => {
@@ -137,10 +151,12 @@ const Search = () => {
           ))}
           <Slider style={sliderStyle} />
         </Tabs>
-        {activeTab === "Discover" && <Discover />}
-        {activeTab === "Trends" && <Trends />}
-        {activeTab === "Sports" && <Sports />}
-        {activeTab === "Connects" && <Connects />}
+        <Scrollable>
+          {activeTab === "Discover" && <Discover />}
+          {activeTab === "Trends" && <Trends />}
+          {activeTab === "Sports" && <Sports />}
+          {activeTab === "Connects" && <Connects />}
+        </Scrollable>
       </Container>
     </MainContainer>
   );
