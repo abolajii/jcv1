@@ -56,36 +56,36 @@ const NotificationCount = styled.div`
 export const sidebarItems = [
   {
     path: "/dashboard",
-    // label: "Home",
+    label: "Home",
     icon: <IoIosHome />,
     // notifications: 3,
   },
   {
     path: "/search",
-    // label: "Search",
+    label: "Search",
     icon: <IoSearchOutline />,
     // notifications: 5,
   },
   {
     path: "/notification",
-    // label: "Notification",
+    label: "Notification",
     icon: <AiOutlineBell />,
     // notifications: 5,
   },
   {
     path: "/conversation",
-    // label: "Conversation",
+    label: "Conversation",
     icon: <BsChatDots />,
     // notifications: 2,
   },
   {
     path: "/bookmark",
-    //  label: "Bookmark",
+    label: "Bookmark",
     icon: <FaRegBookmark />,
   },
   {
     path: "/settings",
-    //  label: "Settings",
+    label: "Settings",
     icon: <FiSettings />,
   },
 ];

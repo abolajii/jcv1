@@ -5,7 +5,6 @@ import { MdMoreHoriz } from "react-icons/md";
 import ReplySection from "./ReplySection";
 // import React from "react";
 // import ReplySection from "./ReplySection";
-import { baseURLImg } from "./api";
 // import bg from "../assets/images.jpeg";
 import styled from "styled-components";
 
@@ -65,7 +64,6 @@ const Avi = styled.div`
 `;
 
 const NormalPost = ({ post }) => {
-  console.log(post);
   return (
     <Container>
       <Top>

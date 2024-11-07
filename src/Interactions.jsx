@@ -1,12 +1,12 @@
 import { FaHeart, FaReply } from "react-icons/fa";
-import React, { useEffect, useState } from "react";
+import { formatDate, formattedContent } from "./utils";
 import { getUseNotifications, readNotification } from "./api/requests";
+import { useEffect, useState } from "react";
 
 import { GiRapidshareArrow } from "react-icons/gi";
 import { RiUserFollowFill } from "react-icons/ri";
 import Spinner from "./components/Spinner";
 import { VscMention } from "react-icons/vsc";
-import { formatDate } from "./utils";
 import styled from "styled-components";
 import useAuthStore from "./store/useAuthStore";
 import { useNavigate } from "react-router-dom";
@@ -137,6 +137,11 @@ const Mention = styled.span`
 const MentionDashboard = () => {
   const { notifications, setNotifications } = useAuthStore();
 
+  const filtered = notifications.filter(
+    (notification) =>
+      notification.type === "like" || notification.type === "share"
+  );
+
   // const [showEmojiPicker, setShowEmojiPicker] = useState(null);
   // const [posts, setPosts] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
@@ -157,33 +162,12 @@ const MentionDashboard = () => {
     fetchPosts();
   }, []);
 
-  const mentionRegex = /@\w+/g;
-
-  const formattedContent = (post) =>
-    post.split(mentionRegex).flatMap((part, index) => {
-      const mentions = post.match(mentionRegex);
-
-      // If there is a mention that corresponds to this part, render it
-      const mention = mentions?.[index];
-
-      return [
-        <span key={`part-${index}`}>{part}</span>,
-        mention ? <Mention key={`mention-${index}`}>{mention}</Mention> : null,
-      ];
-    });
-
   const getActionIcon = (action) => {
     switch (action) {
       case "liked":
         return <FaHeart color="#fe5050" />;
       case "shared":
         return <GiRapidshareArrow size={10} color="#57aa7a" />;
-      case "replied":
-        return <FaReply />;
-      case "connect":
-        return <RiUserFollowFill color="#337689" />;
-      case "mentioned":
-        return <VscMention size={20} color="#18639d" />;
       default:
         return null;
     }
@@ -209,37 +193,11 @@ const MentionDashboard = () => {
 
   return (
     <Container>
-      {notifications.map((n) => {
-        const { type, sender, createdAt, data, isRead } = n;
-
-        if (type === "follow") {
-          return (
-            <Item
-              className="flex gap-sm pt-4 pb-4 pointer"
-              key={n._id}
-              onClick={() => {
-                navigate(`/post/${data.post._id}`);
-                handleRead(n?._id);
-              }}
-            >
-              <Avi>
-                {sender?.profilePic && (
-                  <img src={sender.profilePic} alt="User avatar" />
-                )}
-                <ActionIcon>{getActionIcon("connect")}</ActionIcon>
-              </Avi>
-              <div className="flex flex-1 flex-col">
-                <div className="flex justify-between">
-                  <div className="flex">
-                    <Name>@{sender.username}</Name>
-                    <div className="faint">connected with you</div>
-                  </div>
-                </div>
-                <div className="time">{formatDate(createdAt)}</div>
-              </div>
-            </Item>
-          );
-        }
+      {filtered.length === 0 && (
+        <p className="text-sm pl-2 pt-2">No notifications yet 📣</p>
+      )}
+      {filtered.map((n) => {
+        const { type, sender, createdAt, data } = n;
 
         if (type === "like") {
           const { post } = data;
@@ -275,54 +233,7 @@ const MentionDashboard = () => {
           );
         }
 
-        if (n.type === "reply") {
-          const { post, comment } = data;
-
-          return (
-            <Item
-              className="flex gap-sm pt-4 pb-4 pointer"
-              key={n._id}
-              onClick={() => {
-                navigate(`/post/${data.post._id}`);
-                handleRead(n?._id);
-              }}
-            >
-              <Avi>
-                {sender?.profilePic && (
-                  <img src={sender.profilePic} alt="User avatar" />
-                )}
-                <ActionIcon>{getActionIcon("replied")}</ActionIcon>
-              </Avi>
-              <div className="flex flex-1 flex-col">
-                <div className="flex justify-between">
-                  <div className="flex">
-                    <Name>{sender.name}</Name>
-                    <div className="faint">replied your post</div>
-                  </div>
-                  <div>
-                    <div>{!n.isRead && <div className="alert"></div>}</div>
-                  </div>
-                </div>
-                <div className="time">{formatDate(createdAt)}</div>
-                <PostInfo>
-                  <div>
-                    <div className="top">{formattedContent(post.content)}</div>
-                  </div>
-                  <div className="bottom flex justify-between">
-                    <div>{formattedContent(comment.content)}</div>
-                    <div>
-                      <button style={{ color: "rgb(27, 157, 135)" }}>
-                        Reply
-                      </button>
-                    </div>
-                  </div>
-                </PostInfo>
-              </div>
-            </Item>
-          );
-        }
-
-        if (n.type === "share") {
+        if (type === "share") {
           const { post, comment } = data;
 
           return (
@@ -354,53 +265,6 @@ const MentionDashboard = () => {
             </Item>
           );
         }
-
-        if (n.type === "mention") {
-          const { post, comment } = data;
-
-          return (
-            <Item
-              className="flex gap-sm pt-4 pb-4 pointer"
-              key={n._id}
-              onClick={() => handleRead(n?._id)}
-            >
-              <Avi>
-                {sender?.profilePic && (
-                  <img src={sender.profilePic} alt="User avatar" />
-                )}
-                <ActionIcon>{getActionIcon("mentioned")}</ActionIcon>
-              </Avi>
-              <div className="flex flex-1 flex-col">
-                <div className="flex justify-between">
-                  <div className="flex">
-                    <Name>{sender.name}</Name>
-
-                    <div className="faint">mention you on a post</div>
-                  </div>
-                  <div>
-                    <div>{!isRead && <div className="alert"></div>}</div>
-                  </div>
-                </div>
-                <div className="time">{formatDate(createdAt)}</div>
-                <PostInfo>{formattedContent(post.content)}</PostInfo>
-
-                {/* <PostInfo>
-                  <div>
-                    <div className="top">
-                      <PostInfo>{formattedContent(post.content)}</PostInfo>
-                    </div>
-                  </div>
-                  {comment && (
-                    <div className="bottom">
-                      {formattedContent("@abolajiking come and see o 🤣")}
-                    </div>
-                  )}
-                </PostInfo> */}
-              </div>
-            </Item>
-          );
-        }
-        return <div key={n._id}>n</div>;
       })}
     </Container>
   );

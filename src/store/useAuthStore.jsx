@@ -16,7 +16,8 @@ const useAuthStore = create((set) => ({
     localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("token", token); // Store the token
   },
-
+  notifications: [],
+  setNotifications: (notifications) => set({ notifications }),
   // Logout action
   logout: () => {
     set({ isAuthenticated: false, user: null });

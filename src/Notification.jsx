@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
+import AllMentions from "./AllMentions";
+import Interactions from "./Interactions";
 import MainContainer from "./MainContainer";
 import MentionDashboard from "./Mention";
 import Trends from "./tabs/Trends";
@@ -94,8 +96,8 @@ const Notification = () => {
       </Header>
       <Content>
         {activeTab === "All" && <MentionDashboard />}
-        {activeTab === "Mentions" && <Trends />}
-        {activeTab === "Interactions" && <Trends />}
+        {activeTab === "Mentions" && <AllMentions />}
+        {activeTab === "Interactions" && <Interactions />}
       </Content>
     </MainContainer>
   );
