@@ -193,11 +193,11 @@ const UserProfile = () => {
   const { uid } = useParams();
   const { selectedUser } = usePostStore();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (selectedUser === null) {
-      setLoading(true);
+    if (selectedUser !== null) {
+      setLoading(false);
     }
   }, [selectedUser]);
 
