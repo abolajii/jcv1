@@ -101,7 +101,7 @@ const NormalPost = ({ post }) => {
 
       {/* <AnimatedNumber /> */}
 
-      <ReplySection noReply />
+      <ReplySection noReply post={post} />
 
       {/* REPLY */}
       {/* <ReplySection noReply post={post} single /> */}
