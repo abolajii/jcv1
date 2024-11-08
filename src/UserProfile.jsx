@@ -1,20 +1,20 @@
 import { IoArrowBackOutline, IoEllipsisHorizontal } from "react-icons/io5";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { AiOutlineLink } from "react-icons/ai";
 import { BiEnvelope } from "react-icons/bi";
-import { FaRegMessage } from "react-icons/fa6";
+import { IoLocationSharp } from "react-icons/io5"; // Location icon
 import MainContainer from "./MainContainer";
-import React from "react";
+import ProfileTab from "./ProfileTab";
+import { getUserById } from "./api/requests";
 import header from "./header.jpg";
 import styled from "styled-components";
-import useAuthStore from "./store/useAuthStore";
-
-// Import follow icon
 
 const Header = styled.div`
   position: relative;
   width: 100%;
-  height: 170px;
+  height: 110px;
   background-image: url(${header});
   background-size: cover;
   background-position: center;
@@ -138,13 +138,68 @@ const Bio = styled.div`
   color: #0a0909;
 `;
 
-const UserProfile = () => {
-  const { user } = useAuthStore();
+const StatsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
 
+  div {
+    display: flex;
+    align-items: center; /* Align number and label horizontally */
+    font-size: 0.8rem;
+    color: #0a0909;
+  }
+
+  span {
+    font-weight: bold;
+    color: #28a69e;
+    margin-right: 3px; /* Small space between number and label */
+  }
+`;
+
+const LinkContainer = styled.div`
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: #0a0909;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  a {
+    color: #28a69e;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .location {
+    color: #2f2f2f;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+`;
+
+const UserProfile = () => {
+  const [user, setUser] = useState(null);
+  const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
+  const { uid } = useParams();
+
+  useEffect(() => {
+    // Assuming user ID is available somehow, e.g., from a route parameter
+    getUserById(uid).then((data) => {
+      setUser(data.user);
+      setPosts(data.posts);
+    });
+  }, [uid]);
 
   return (
-    <MainContainer>
+    <MainContainer noSidebar>
       <Inner>
         <Header>
           <IconWrapper
@@ -172,18 +227,49 @@ const UserProfile = () => {
             </div>
             <ActionContainer>
               <div className="icon center">
-                <BiEnvelope size={19} color="#28a69e" /> {/* Follow icon */}
+                <BiEnvelope size={19} color="#28a69e" />
               </div>
-              <FollowButton>Follow</FollowButton> {/* Follow button */}
+              <FollowButton>Connect</FollowButton>
             </ActionContainer>
           </div>
-          <Bio>
-            Experienced full-stack developer with a passion for creating
-            interactive, user-centric applications. Skilled in React, Node.js,
-            and TypeScript, dedicated to delivering high-quality digital
-            experiences.
-          </Bio>
+          <Bio>{user?.bio}</Bio>
+
+          {/* Profile Link & Location */}
+          <LinkContainer>
+            {user?.link && (
+              <div className="flex align-center">
+                <AiOutlineLink size={18} color="#28a69e" />
+                <a
+                  href="https://adeajayiabolaji.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {user?.link}
+                </a>
+              </div>
+            )}
+            {user?.location && (
+              <div className="flex align-center test-sm">
+                <IoLocationSharp size={18} color="#28a69e" />
+                {user?.location}
+              </div>
+            )}
+          </LinkContainer>
+
+          {/* <BorderBottom /> */}
+
+          <StatsContainer>
+            <div>
+              <span>{user?.followers.length || "0"}</span>
+              Followers
+            </div>
+            <div>
+              <span>{user?.following.length || "0"}</span>
+              Following
+            </div>
+          </StatsContainer>
         </div>
+        <ProfileTab posts={posts} />
       </Inner>
     </MainContainer>
   );

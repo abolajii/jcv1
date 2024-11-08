@@ -112,3 +112,8 @@ export const readNotification = async (id) => {
   const response = await chatAppAuth.get(`/notification/${id}/read`);
   return response.data; // Return created reply data
 };
+
+export const getUserById = async (id) => {
+  const response = await chatAppAuth.get(`/u/${id}`);
+  return response.data; // Return created reply data
+};

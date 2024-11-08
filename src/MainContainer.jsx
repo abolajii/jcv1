@@ -14,11 +14,11 @@ const Container = styled.div`
   }
 `;
 
-const MainContainer = ({ children }) => {
+const MainContainer = ({ children, noSidebar }) => {
   return (
     <Container>
       {children}
-      <MobileSidebar />
+      {!noSidebar && <MobileSidebar />}
     </Container>
   );
 };
