@@ -1,12 +1,12 @@
 import { FaHeart, FaReply } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
+import { formatDate, formattedContent } from "./utils";
 import { getUseNotifications, readNotification } from "./api/requests";
 
 import { GiRapidshareArrow } from "react-icons/gi";
 import { RiUserFollowFill } from "react-icons/ri";
 import Spinner from "./components/Spinner";
 import { VscMention } from "react-icons/vsc";
-import { formatDate } from "./utils";
 import styled from "styled-components";
 import useAuthStore from "./store/useAuthStore";
 import { useNavigate } from "react-router-dom";
@@ -156,21 +156,6 @@ const MentionDashboard = () => {
 
     fetchPosts();
   }, []);
-
-  const mentionRegex = /@\w+/g;
-
-  const formattedContent = (post) =>
-    post.split(mentionRegex).flatMap((part, index) => {
-      const mentions = post.match(mentionRegex);
-
-      // If there is a mention that corresponds to this part, render it
-      const mention = mentions?.[index];
-
-      return [
-        <span key={`part-${index}`}>{part}</span>,
-        mention ? <Mention key={`mention-${index}`}>{mention}</Mention> : null,
-      ];
-    });
 
   const getActionIcon = (action) => {
     switch (action) {
@@ -385,7 +370,7 @@ const MentionDashboard = () => {
                   </div>
                 </div>
                 <div className="time">{formatDate(createdAt)}</div>
-                <PostInfo>{formattedContent(post.content)}</PostInfo>
+                <PostInfo>{formattedContent(post?.content)}</PostInfo>
 
                 {/* <PostInfo>
                   <div>
