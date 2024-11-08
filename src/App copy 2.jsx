@@ -15,7 +15,6 @@ import ProtectedRoute from "./ProtectedRoute";
 import Register from "./pages/Register";
 import Search from "./Search";
 import Settings from "./Settings";
-import UserProfile from "./UserProfile";
 import { createGlobalStyle } from "styled-components";
 import useAuthStore from "./store/useAuthStore";
 
@@ -94,14 +93,6 @@ const App = () => {
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <Bookmark />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/profile/:uid"
-              element={
-                <ProtectedRoute isAuthenticated={isAuthenticated}>
-                  <UserProfile />
                 </ProtectedRoute>
               }
             />

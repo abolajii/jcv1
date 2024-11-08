@@ -1,14 +1,15 @@
 /* eslint-disable react/prop-types */
 import { formatDate, formattedContent } from "./utils";
 
+// import useAuthStore from "../store/useAuthStore";
+import AnimatedNumber from "./AnimatedNumber";
 import { MdMoreHoriz } from "react-icons/md";
 import ReplySection from "./ReplySection";
 // import React from "react";
 // import ReplySection from "./ReplySection";
 // import bg from "../assets/images.jpeg";
 import styled from "styled-components";
-
-// import useAuthStore from "../store/useAuthStore";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   border-radius: 5px;
@@ -64,12 +65,17 @@ const Avi = styled.div`
 `;
 
 const NormalPost = ({ post }) => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Top>
         <div className="flex gap-sm">
           <div>
-            <Avi>
+            <Avi
+              onClick={() => {
+                navigate(`/profile/${post.user._id}`);
+              }}
+            >
               <img src={post?.user?.profilePic} alt="User avatar" />
             </Avi>
           </div>
@@ -89,6 +95,8 @@ const NormalPost = ({ post }) => {
           <img src={post?.imageUrl} alt="Project Update" />
         </Image>
       )}
+
+      {/* <AnimatedNumber /> */}
 
       <ReplySection noReply />
 
