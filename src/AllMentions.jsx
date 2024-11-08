@@ -219,10 +219,10 @@ const AllMentions = () => {
                 <div className="time">{formatDate(createdAt)}</div>
                 <PostInfo>
                   <div>
-                    <div className="top">{formattedContent(post.content)}</div>
+                    <div className="top">{formattedContent(post?.content)}</div>
                   </div>
                   <div className="bottom flex justify-between">
-                    <div>{formattedContent(comment.content)}</div>
+                    <div>{formattedContent(comment?.content)}</div>
                     <div>
                       <button style={{ color: "rgb(27, 157, 135)" }}>
                         Reply
@@ -262,7 +262,7 @@ const AllMentions = () => {
                   </div>
                 </div>
                 <div className="time">{formatDate(createdAt)}</div>
-                <PostInfo>{formattedContent(post.content)}</PostInfo>
+                <PostInfo>{formattedContent(post?.content)}</PostInfo>
 
                 {/* <PostInfo>
                   <div>
