@@ -80,7 +80,7 @@ const Image = styled.div`
 `;
 
 const SinglePost = () => {
-  const { selectedPost } = usePostStore();
+  const { selectedPost, setSelectedUser } = usePostStore();
   const [singlePost, setSinglePost] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -134,7 +134,15 @@ const SinglePost = () => {
         <Body>
           <Inner>
             <div className="flex top">
-              <div>
+              <div
+                onClick={(event) => {
+                  event.stopPropagation();
+                  navigate(
+                    `/profile/${selectedPost.user._id || singlePost.user._id}`
+                  );
+                  setSelectedUser(selectedPost.user || singlePost.user);
+                }}
+              >
                 <Avi>
                   <img
                     src={

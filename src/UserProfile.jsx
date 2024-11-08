@@ -1,6 +1,6 @@
 import { IoArrowBackOutline, IoEllipsisHorizontal } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { AiOutlineLink } from "react-icons/ai";
 import { BiEnvelope } from "react-icons/bi";
@@ -197,6 +197,7 @@ const UserProfile = () => {
   const { uid } = useParams();
   const { selectedUser } = usePostStore();
   const { user } = useAuthStore();
+  const location = useLocation();
 
   const [loading, setLoading] = useState(true);
 
@@ -235,9 +236,7 @@ const UserProfile = () => {
         <Header>
           <IconWrapper
             style={{ left: "15px" }}
-            onClick={() => {
-              navigate("/dashboard");
-            }}
+            onClick={() => navigate(location.state?.from || -1)}
           >
             <BackIcon />
           </IconWrapper>
