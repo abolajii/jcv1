@@ -36,7 +36,7 @@ const Top = styled.div`
 
 const Middle = styled.div`
   padding: 0 10px;
-  font-size: 14.5px;
+  font-size: 14px;
   line-height: 1.4;
   word-wrap: break-word;
 `;
@@ -67,14 +67,20 @@ const Avi = styled.div`
 
 const NormalPost = ({ post }) => {
   const navigate = useNavigate();
-  const { setSelectedUser } = usePostStore();
+  const { setSelectedUser, setSelectedPost } = usePostStore();
   return (
-    <Container>
+    <Container
+      onClick={() => {
+        navigate(`/post/${post._id}`);
+        setSelectedPost(post);
+      }}
+    >
       <Top>
         <div className="flex gap-sm">
           <div>
             <Avi
-              onClick={() => {
+              onClick={(event) => {
+                event.stopPropagation();
                 navigate(`/profile/${post.user._id}`);
                 setSelectedUser(post.user);
               }}

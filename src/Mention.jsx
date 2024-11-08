@@ -10,6 +10,7 @@ import { VscMention } from "react-icons/vsc";
 import styled from "styled-components";
 import useAuthStore from "./store/useAuthStore";
 import { useNavigate } from "react-router-dom";
+import usePostStore from "./store/usePostStore";
 
 const Container = styled.div`
   flex: 2;
@@ -140,6 +141,7 @@ const MentionDashboard = () => {
   // const [showEmojiPicker, setShowEmojiPicker] = useState(null);
   // const [posts, setPosts] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
+  const { setSelectedPost } = usePostStore();
 
   const navigate = useNavigate();
 
@@ -231,6 +233,7 @@ const MentionDashboard = () => {
 
         if (type === "like") {
           const { post } = data;
+          console.log(post);
 
           // console.log(n);
           return (
@@ -239,6 +242,7 @@ const MentionDashboard = () => {
               key={n._id}
               onClick={() => {
                 navigate(`/post/${data.post._id}`);
+                setSelectedPost(data.post);
                 handleRead(n?._id);
               }}
             >
@@ -350,7 +354,13 @@ const MentionDashboard = () => {
             <Item
               className="flex gap-sm pt-4 pb-4 pointer"
               key={n._id}
-              onClick={() => handleRead(n?._id)}
+              // onClick={() => handleRead(n?._id)}
+
+              onClick={() => {
+                navigate(`/post/${data.post._id}`);
+                setSelectedPost(data.post);
+                handleRead(n?._id);
+              }}
             >
               <Avi>
                 {sender?.profilePic && (

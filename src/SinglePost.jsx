@@ -1,8 +1,11 @@
 import { FaArrowLeft, FaReply } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
+import { formatDate, formattedContent } from "./utils";
 import { useNavigate, useParams } from "react-router-dom";
 
 import MainContainer from "./MainContainer";
+import { MdMoreHoriz } from "react-icons/md";
+import ReplySection from "./ReplySection";
 import { Spinner } from "./components";
 import { getPostById } from "./api/requests";
 import styled from "styled-components";
@@ -10,15 +13,70 @@ import useAuthStore from "./store/useAuthStore";
 import usePostStore from "./store/usePostStore";
 
 const Top = styled.div`
-  height: 60px;
+  height: 40px;
   background-color: rgba(232, 239, 239, 0.95);
-
+  padding: 0 10px;
   position: sticky;
   top: 0px;
+  border-bottom: 1px solid #e1e1e1;
 
   svg {
     color: #36bbba;
     margin-right: 5px;
+  }
+`;
+
+const Body = styled.div`
+  background-color: rgba(232, 239, 239, 0.95);
+`;
+
+const Inner = styled.div`
+  background-color: rgba(254, 254, 254, 0.55);
+  margin: 0 10px;
+  margin-top: 20px;
+
+  border-radius: 4px;
+
+  .name {
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .top {
+    padding: 10px;
+  }
+  .time {
+    font-size: 12px;
+  }
+`;
+
+const Avi = styled.div`
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background-color: #313838;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+`;
+
+const Middle = styled.div`
+  padding: 0 10px;
+  font-size: 14.5px;
+  line-height: 1.4;
+  word-wrap: break-word;
+`;
+
+const Image = styled.div`
+  margin-top: 10px;
+  height: 600px;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
   }
 `;
 
@@ -41,10 +99,12 @@ const SinglePost = () => {
   }, [id]);
 
   useEffect(() => {
-    if (selectedPost !== null) {
+    if (selectedPost?.user !== undefined) {
       setLoading(false);
     }
   }, [selectedPost]);
+
+  console.log(selectedPost);
 
   if (loading) {
     return (
@@ -57,22 +117,74 @@ const SinglePost = () => {
   }
   return (
     <MainContainer>
-      <Top className="flex justify-between align-center">
-        <button
-          onClick={() => navigate("/dashboard")}
-          className="flex align-center cursor"
-        >
-          <FaArrowLeft /> Back
-        </button>
-        <button
-          onClick={() => {
-            // setIsOpen(true);
-          }}
-          className="flex align-center"
-        >
-          <FaReply /> Reply
-        </button>
-      </Top>
+      <div>
+        <Top className="flex justify-between align-center">
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="flex align-center cursor"
+          >
+            <FaArrowLeft /> Back
+          </button>
+          <button
+            onClick={() => {
+              // setIsOpen(true);
+            }}
+            className="flex align-center"
+          >
+            <FaReply /> Reply
+          </button>
+        </Top>
+        <Body>
+          <Inner>
+            <div className="flex top">
+              <div>
+                <Avi>
+                  <img
+                    src={
+                      selectedPost?.user?.profilePic ||
+                      singlePost?.user?.profilePic
+                    }
+                    alt="User avatar"
+                  />
+                </Avi>
+              </div>
+              <div className="ml-3 flex-1 flex justify-between">
+                <div>
+                  <div className="flex flex-col">
+                    <div className="name">
+                      {selectedPost?.user.name || singlePost?.user.name}
+                    </div>
+                    <div className="time">
+                      {formatDate(
+                        selectedPost?.createdAt || singlePost?.createdAt
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="pointer">
+                  <MdMoreHoriz color="#36bbba" />
+                </div>
+              </div>
+            </div>
+
+            <Middle className="">
+              {formattedContent(selectedPost?.content || singlePost?.content)}
+            </Middle>
+
+            {singlePost?.imageUrl && (
+              <Image className="mb-1">
+                <img
+                  src={selectedPost?.imageUrl || singlePost?.imageUrl}
+                  alt="Project Update"
+                />
+              </Image>
+            )}
+
+            <div className="pt-2">{/* <BottomIcons /> */}</div>
+            <ReplySection noReply post={selectedPost || singlePost} />
+          </Inner>
+        </Body>
+      </div>
     </MainContainer>
   );
 };
