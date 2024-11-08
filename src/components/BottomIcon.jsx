@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import {
+  FaBookmark,
   FaHeart,
   FaRegBookmark,
   FaRegComment,
@@ -9,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 
 import { GiRapidshareArrow } from "react-icons/gi";
+import { bookMarkPost } from "../api/requests";
 import useAuthStore from "../store/useAuthStore";
 
 const Container = styled.div`
@@ -59,6 +61,7 @@ const BottomIcon = ({
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
   const [isAnimating, setIsAnimating] = useState(false);
   const { user } = useAuthStore();
+  const [hasBookmark, setHasBookmark] = useState(post?.isBookmarked); // Track if post is liked by the current user
 
   useEffect(() => {
     if (post?.likes.includes(user?.id)) {
@@ -78,6 +81,15 @@ const BottomIcon = ({
   };
 
   const handleReplyClick = () => {};
+
+  const handleBookmarkClick = async () => {
+    setHasBookmark(!hasBookmark);
+    try {
+      await bookMarkPost(post._id);
+    } catch (error) {
+      console.log("Error bookmarking post:", error);
+    }
+  };
 
   return (
     <Container className="flex align-center justify-between">
@@ -101,8 +113,17 @@ const BottomIcon = ({
           <span>{shareCount > 0 ? shareCount : ""}</span>
         </div>
       </div>
-      <div>
-        <FaRegBookmark color="rgb(222, 163, 38)" />
+      <div
+        onClick={(event) => {
+          event.stopPropagation();
+          handleBookmarkClick();
+        }}
+      >
+        {hasBookmark ? (
+          <FaBookmark color="rgb(222, 163, 38)" />
+        ) : (
+          <FaRegBookmark color="rgb(222, 163, 38)" />
+        )}
       </div>
     </Container>
   );
