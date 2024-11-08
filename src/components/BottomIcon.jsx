@@ -5,10 +5,11 @@ import {
   FaRegComment,
   FaRegHeart,
 } from "react-icons/fa";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 
 import { GiRapidshareArrow } from "react-icons/gi";
+import useAuthStore from "../store/useAuthStore";
 
 const Container = styled.div`
   padding: 3px 10px 10px;
@@ -47,10 +48,25 @@ const HeartIcon = styled.div`
     `}
 `;
 
-const BottomIcon = ({ likeCount, replyCount, shareCount, toggleLike }) => {
+const BottomIcon = ({
+  likeCount,
+  replyCount,
+  shareCount,
+  toggleLike,
+  post,
+}) => {
   const [liked, setLiked] = useState(false);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
   const [isAnimating, setIsAnimating] = useState(false);
+  const { user } = useAuthStore();
+
+  useEffect(() => {
+    if (post?.likes.includes(user?.id)) {
+      setLiked(true);
+    } else {
+      setLiked(false);
+    }
+  }, [post?.likes, user?.id]);
 
   const handleHeartClick = () => {
     setLiked(!liked);

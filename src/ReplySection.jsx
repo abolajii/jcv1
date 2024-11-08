@@ -8,6 +8,7 @@ const ReplySection = ({ noReply, post, share }) => {
     return (
       <div>
         <BottomIcon
+          post={post}
           likeCount={post.likes.length}
           shareCount={post.shares.length}
           replyCount={post.comments.length}
