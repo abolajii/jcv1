@@ -13,7 +13,7 @@ const TabContainer = styled.div`
 `;
 
 const Tab = styled.div`
-  font-size: 1rem;
+  font-size: 15px;
   font-weight: 500;
   color: ${({ active }) => (active ? "#28a69e" : "#2f2f2f")};
   cursor: pointer;

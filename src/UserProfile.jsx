@@ -116,12 +116,13 @@ const ActionContainer = styled.div`
     height: 30px;
     width: 30px;
     border-radius: 50%;
-    border: 1px solid #28a69e;
+    border: 1px solid #36bbba;
   }
 `;
 
 const FollowButton = styled.button`
-  background-color: #28a69e;
+  background-color: #36bbba;
+
   color: white;
   border: none;
   border-radius: 4px;
@@ -130,7 +131,8 @@ const FollowButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #2f2f2f;
+    /* background-color: #2f2f2f; */
+    background-color: #28a69e;
   }
 `;
 
