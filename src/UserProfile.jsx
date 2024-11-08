@@ -7,10 +7,12 @@ import { BiEnvelope } from "react-icons/bi";
 import { IoLocationSharp } from "react-icons/io5"; // Location icon
 import MainContainer from "./MainContainer";
 import ProfileTab from "./ProfileTab";
+import { RiArrowDropDownLine } from "react-icons/ri";
 import Spinner from "./components/Spinner";
 import { getUserById } from "./api/requests";
 import header from "./header.jpg";
 import styled from "styled-components";
+import useAuthStore from "./store/useAuthStore";
 import usePostStore from "./store/usePostStore";
 
 const Header = styled.div`
@@ -187,11 +189,12 @@ const LinkContainer = styled.div`
 `;
 
 const UserProfile = () => {
-  const [user, setUser] = useState(null);
+  const [singleUser, setSingleUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const { uid } = useParams();
   const { selectedUser } = usePostStore();
+  const { user } = useAuthStore();
 
   const [loading, setLoading] = useState(true);
 
@@ -201,11 +204,15 @@ const UserProfile = () => {
     }
   }, [selectedUser]);
 
+  const finalUser = selectedUser || singleUser;
+
+  const connected = finalUser?.following.includes(user?.id);
+
   useEffect(() => {
     // Assuming user ID is available somehow, e.g., from a route parameter
     getUserById(uid).then((data) => {
       setLoading(false);
-      setUser(data.user);
+      setSingleUser(data.user);
       setPosts(data.posts);
     });
   }, [uid]);
@@ -238,36 +245,44 @@ const UserProfile = () => {
 
           {/* Profile Avatar */}
           <ProfileAvi>
-            <img
-              src={
-                selectedUser?.profilePic ||
-                user?.profilePic ||
-                "default-avatar.jpg"
-              }
-              alt="Avatar"
-            />
+            <img src={finalUser?.profilePic} alt="Avatar" />
           </ProfileAvi>
         </Header>
         <div className="other">
           <div className="flex align-center justify-between">
             <div>
-              <Name>{selectedUser?.name || user?.name || "User Name"}</Name>
-              <UserName>
-                @{selectedUser?.username || user?.username || "username"}
-              </UserName>
+              <Name>{finalUser?.name}</Name>
+              <UserName>@{finalUser?.username}</UserName>
             </div>
             <ActionContainer>
-              <div className="icon center">
-                <BiEnvelope size={19} color="#28a69e" />
-              </div>
-              <FollowButton>Connect</FollowButton>
+              {user.id !== uid && (
+                <div className="icon center">
+                  <BiEnvelope size={19} color="#28a69e" />
+                </div>
+              )}
+              {user.id !== uid && (
+                <FollowButton>
+                  {connected ? (
+                    <span className="center">
+                      Following
+                      <RiArrowDropDownLine size={20} />
+                    </span>
+                  ) : (
+                    "Follow"
+                  )}
+
+                  <></>
+                  {/* <div></div>
+                <div></div> */}
+                </FollowButton>
+              )}
             </ActionContainer>
           </div>
-          <Bio>{selectedUser?.bio || user?.bio}</Bio>
+          <Bio>{finalUser?.bio}</Bio>
 
           {/* Profile Link & Location */}
           <LinkContainer>
-            {user?.link && (
+            {singleUser?.link && (
               <div className="flex align-center">
                 <AiOutlineLink size={18} color="#28a69e" />
                 <a
@@ -275,14 +290,14 @@ const UserProfile = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {user?.link}
+                  {finalUser?.link}
                 </a>
               </div>
             )}
-            {user?.location && (
+            {finalUser?.location && (
               <div className="flex align-center test-sm">
                 <IoLocationSharp size={18} color="#28a69e" />
-                {user?.location}
+                {finalUser?.location}
               </div>
             )}
           </LinkContainer>
@@ -291,11 +306,11 @@ const UserProfile = () => {
 
           <StatsContainer>
             <div>
-              <span>{user?.followers.length || "0"}</span>
+              <span>{finalUser?.followers.length || "0"}</span>
               Followers
             </div>
             <div>
-              <span>{user?.following.length || "0"}</span>
+              <span>{finalUser?.following.length || "0"}</span>
               Following
             </div>
           </StatsContainer>
