@@ -7,9 +7,11 @@ import { BiEnvelope } from "react-icons/bi";
 import { IoLocationSharp } from "react-icons/io5"; // Location icon
 import MainContainer from "./MainContainer";
 import ProfileTab from "./ProfileTab";
+import Spinner from "./components/Spinner";
 import { getUserById } from "./api/requests";
 import header from "./header.jpg";
 import styled from "styled-components";
+import usePostStore from "./store/usePostStore";
 
 const Header = styled.div`
   position: relative;
@@ -189,14 +191,34 @@ const UserProfile = () => {
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
   const { uid } = useParams();
+  const { selectedUser } = usePostStore();
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (selectedUser === null) {
+      setLoading(true);
+    }
+  }, [selectedUser]);
 
   useEffect(() => {
     // Assuming user ID is available somehow, e.g., from a route parameter
     getUserById(uid).then((data) => {
+      setLoading(false);
       setUser(data.user);
       setPosts(data.posts);
     });
   }, [uid]);
+
+  if (loading) {
+    return (
+      <MainContainer noSidebar>
+        <div className="mt-4 ml-4">
+          <Spinner />
+        </div>
+      </MainContainer>
+    );
+  }
 
   return (
     <MainContainer noSidebar>
@@ -216,14 +238,23 @@ const UserProfile = () => {
 
           {/* Profile Avatar */}
           <ProfileAvi>
-            <img src={user?.profilePic || "default-avatar.jpg"} alt="Avatar" />
+            <img
+              src={
+                selectedUser?.profilePic ||
+                user?.profilePic ||
+                "default-avatar.jpg"
+              }
+              alt="Avatar"
+            />
           </ProfileAvi>
         </Header>
         <div className="other">
           <div className="flex align-center justify-between">
             <div>
-              <Name>{user?.name || "User Name"}</Name>
-              <UserName>@{user?.username || "username"}</UserName>
+              <Name>{selectedUser?.name || user?.name || "User Name"}</Name>
+              <UserName>
+                @{selectedUser?.username || user?.username || "username"}
+              </UserName>
             </div>
             <ActionContainer>
               <div className="icon center">
@@ -232,7 +263,7 @@ const UserProfile = () => {
               <FollowButton>Connect</FollowButton>
             </ActionContainer>
           </div>
-          <Bio>{user?.bio}</Bio>
+          <Bio>{selectedUser?.bio || user?.bio}</Bio>
 
           {/* Profile Link & Location */}
           <LinkContainer>

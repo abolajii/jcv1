@@ -10,6 +10,7 @@ import ReplySection from "./ReplySection";
 // import bg from "../assets/images.jpeg";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import usePostStore from "./store/usePostStore";
 
 const Container = styled.div`
   border-radius: 5px;
@@ -66,6 +67,7 @@ const Avi = styled.div`
 
 const NormalPost = ({ post }) => {
   const navigate = useNavigate();
+  const { setSelectedUser } = usePostStore();
   return (
     <Container>
       <Top>
@@ -74,6 +76,7 @@ const NormalPost = ({ post }) => {
             <Avi
               onClick={() => {
                 navigate(`/profile/${post.user._id}`);
+                setSelectedUser(post.user);
               }}
             >
               <img src={post?.user?.profilePic} alt="User avatar" />

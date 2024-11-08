@@ -1,30 +1,16 @@
-/* eslint-disable react/prop-types */
-import React, { useState } from "react";
-
 import UserPost from "./UserPost";
 import styled from "styled-components";
+/* eslint-disable react/prop-types */
+import { useState } from "react";
 
 // Tab container and styles
 const TabContainer = styled.div`
   display: flex;
   justify-content: space-around;
-  /* background-color: #f8f8f8; */
   border-top: 1px solid #e1e1e1;
   border-bottom: 1px solid #e1e1e1;
   margin-top: 15px;
 `;
-
-// const TabContainer = styled.div`
-//   display: flex;
-//   justify-content: space-around;
-//   border-top: 1px solid #e1e1e1;
-//   border-bottom: 1px solid #e1e1e1;
-//   margin-top: 15px;
-//   position: sticky;
-//   top: 0; /* Keep it at the top when scrolling */
-//   background-color: #fff; /* Add background to ensure it's visible when scrolling */
-//   z-index: 10; /* Ensures it's above other content */
-// `;
 
 const Tab = styled.div`
   font-size: 1rem;

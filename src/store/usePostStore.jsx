@@ -9,6 +9,9 @@ const usePostStore = create((set) => ({
   hasComment: false,
   setHasComment: (hasComment) => set({ hasComment }),
   setContent: (content) => set({ content }),
+  selectedUser: null,
+  setSelectedUser: (selectedUser) => set({ selectedUser }),
+
   selectedPost: null,
   // Set loading state
   setPostSent: (postSent) => set({ postSent }),
