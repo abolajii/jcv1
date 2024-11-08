@@ -9,12 +9,12 @@ const ReplySection = ({ noReply, post, share }) => {
       <div>
         <BottomIcon
           post={post}
-          likeCount={post.likes.length}
-          shareCount={post.shares.length}
-          replyCount={post.comments.length}
+          likeCount={post?.likes?.length}
+          shareCount={post?.shares?.length}
+          replyCount={post?.comments?.length}
           toggleLike={async () => {
             try {
-              await likePost(share ? post.originalPost._id : post._id);
+              await likePost(share ? post?.originalPost._id : post?._id);
               // console.log(response);
             } catch (e) {
               console.log(e);

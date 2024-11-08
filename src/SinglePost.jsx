@@ -1,7 +1,7 @@
 import { FaArrowLeft, FaReply } from "react-icons/fa";
-import React, { useEffect, useState } from "react";
 import { formatDate, formattedContent } from "./utils";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import MainContainer from "./MainContainer";
 import { MdMoreHoriz } from "react-icons/md";
@@ -9,7 +9,6 @@ import ReplySection from "./ReplySection";
 import { Spinner } from "./components";
 import { getPostById } from "./api/requests";
 import styled from "styled-components";
-import useAuthStore from "./store/useAuthStore";
 import usePostStore from "./store/usePostStore";
 
 const Top = styled.div`
@@ -84,8 +83,8 @@ const SinglePost = () => {
   const { selectedPost } = usePostStore();
   const [singlePost, setSinglePost] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const { user } = useAuthStore();
   const { id } = useParams();
 
   const [loading, setLoading] = useState(true);
@@ -104,8 +103,6 @@ const SinglePost = () => {
     }
   }, [selectedPost]);
 
-  console.log(selectedPost);
-
   if (loading) {
     return (
       <MainContainer noSidebar>
@@ -120,7 +117,7 @@ const SinglePost = () => {
       <div>
         <Top className="flex justify-between align-center">
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate(location.state?.from || -1)}
             className="flex align-center cursor"
           >
             <FaArrowLeft /> Back
@@ -152,7 +149,7 @@ const SinglePost = () => {
                 <div>
                   <div className="flex flex-col">
                     <div className="name">
-                      {selectedPost?.user.name || singlePost?.user.name}
+                      {selectedPost?.user?.name || singlePost?.user.name}
                     </div>
                     <div className="time">
                       {formatDate(

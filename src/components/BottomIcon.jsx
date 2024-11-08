@@ -64,7 +64,7 @@ const BottomIcon = ({
   const [hasBookmark, setHasBookmark] = useState(post?.isBookmarked); // Track if post is liked by the current user
 
   useEffect(() => {
-    if (post?.likes.includes(user?.id)) {
+    if (post?.likes?.includes(user?.id)) {
       setLiked(true);
     } else {
       setLiked(false);

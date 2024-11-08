@@ -233,7 +233,6 @@ const MentionDashboard = () => {
 
         if (type === "like") {
           const { post } = data;
-          console.log(post);
 
           // console.log(n);
           return (
@@ -243,7 +242,7 @@ const MentionDashboard = () => {
               onClick={() => {
                 navigate(`/post/${data.post._id}`);
                 setSelectedPost(data.post);
-                handleRead(n?._id);
+                !n.isRead && handleRead(n?._id);
               }}
             >
               <Avi>
