@@ -1,4 +1,5 @@
 import { IoArrowBackOutline, IoEllipsisHorizontal } from "react-icons/io5";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { BiEnvelope } from "react-icons/bi";
 import { FaRegMessage } from "react-icons/fa6";
@@ -7,7 +8,6 @@ import React from "react";
 import header from "./header.jpg";
 import styled from "styled-components";
 import useAuthStore from "./store/useAuthStore";
-import { useParams } from "react-router-dom";
 
 // Import follow icon
 
@@ -131,20 +131,27 @@ const FollowButton = styled.button`
 
 const Bio = styled.div`
   margin-top: 10px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #404040; /* Gray color for a subtle look */
-  line-height: 1.4;
+  line-height: 1.35;
   color: #0a0909;
 `;
 
 const UserProfile = () => {
   const { user } = useAuthStore();
 
+  const navigate = useNavigate();
+
   return (
     <MainContainer>
       <Inner>
         <Header>
-          <IconWrapper style={{ left: "15px" }}>
+          <IconWrapper
+            style={{ left: "15px" }}
+            onClick={() => {
+              navigate("/dashboard");
+            }}
+          >
             <BackIcon />
           </IconWrapper>
           <IconWrapper style={{ right: "15px" }}>
