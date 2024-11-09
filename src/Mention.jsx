@@ -45,7 +45,7 @@ const Item = styled.div`
     height: 8px;
     width: 8px;
     border-radius: 50%;
-    background-color: rgb(27, 157, 135);
+    background-color: #1b9d87;
   }
 
   .info {
@@ -110,7 +110,7 @@ const PostInfo = styled.div`
   margin-top: 8px;
   font-size: 13px;
 
-  .top {
+  .top_notify {
     padding: 9px 4px;
     border-left: 3px solid rgb(27, 157, 135);
     background-color: rgba(215, 212, 212, 0.5);
@@ -297,7 +297,9 @@ const MentionDashboard = () => {
                 <div className="time">{formatDate(createdAt)}</div>
                 <PostInfo>
                   <div>
-                    <div className="top">{formattedContent(post.content)}</div>
+                    <div className="top_notify">
+                      {formattedContent(post.content)}
+                    </div>
                   </div>
                   <div className="bottom flex justify-between">
                     <div>{formattedContent(comment.content)}</div>
