@@ -29,7 +29,7 @@ const Comments = ({ comments, loading }) => {
 
   return (
     <Container>
-      {comments?.length === 0 && (
+      {comments?.length > 0 && (
         <div className="title">Comments ({comments?.length})</div>
       )}
     </Container>
