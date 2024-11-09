@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
+import SingleComment from "./SingleComment";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -16,7 +17,7 @@ const Container = styled.div`
   }
 `;
 
-const Comments = ({ comments, loading }) => {
+const Comments = ({ comments, loading, authorId }) => {
   if (comments?.length === 0 && !loading) {
     return (
       comments?.length === 0 && (
@@ -32,6 +33,10 @@ const Comments = ({ comments, loading }) => {
       {comments?.length > 0 && (
         <div className="title">Comments ({comments?.length})</div>
       )}
+
+      {comments?.map((c) => {
+        return <SingleComment key={c._id} c={c} authorId={authorId} />;
+      })}
     </Container>
   );
 };

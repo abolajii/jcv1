@@ -14,8 +14,7 @@ import { bookMarkPost } from "../api/requests";
 import useAuthStore from "../store/useAuthStore";
 
 const Container = styled.div`
-  padding: 3px 10px 10px;
-
+  padding: ${(props) => !props.noPadding && "3px 10px 10px"};
   .icons {
     display: flex;
     gap: 10px;
@@ -57,6 +56,7 @@ const BottomIcon = ({
   toggleLike,
   post,
   onReplyClick,
+  noPadding,
 }) => {
   const [liked, setLiked] = useState(false);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
@@ -93,7 +93,10 @@ const BottomIcon = ({
   };
 
   return (
-    <Container className="flex align-center justify-between">
+    <Container
+      className="flex align-center justify-between"
+      noPadding={noPadding}
+    >
       <div className="icons">
         <div className="icon-item">
           <FaRegComment

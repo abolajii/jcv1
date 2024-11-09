@@ -3,11 +3,12 @@ import { formatDate, formattedContent } from "./utils";
 
 // import useAuthStore from "../store/useAuthStore";
 import AnimatedNumber from "./AnimatedNumber";
-import { MdMoreHoriz } from "react-icons/md";
-import ReplySection from "./ReplySection";
 // import React from "react";
 // import ReplySection from "./ReplySection";
 // import bg from "../assets/images.jpeg";
+import { HiCheckBadge } from "react-icons/hi2";
+import { MdMoreHoriz } from "react-icons/md";
+import ReplySection from "./ReplySection";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import usePostStore from "./store/usePostStore";
@@ -15,6 +16,10 @@ import usePostStore from "./store/usePostStore";
 const Container = styled.div`
   border-radius: 5px;
   background-color: #f3f3f3;
+
+  .gap {
+    gap: 3px;
+  }
 `;
 
 const Top = styled.div`
@@ -89,7 +94,10 @@ const NormalPost = ({ post }) => {
             </Avi>
           </div>
           <div className="flex flex-col">
-            <div className="name">{post?.user.name}</div>
+            <div className="name center gap">
+              {post?.user.name}
+              {post?.user.name === "admin" && <HiCheckBadge color="#1b9d87" />}
+            </div>
             <div className="time">{formatDate(post?.createdAt)}</div>
           </div>
         </div>
