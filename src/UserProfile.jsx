@@ -4,6 +4,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { AiOutlineLink } from "react-icons/ai";
 import { BiEnvelope } from "react-icons/bi";
+import { HiCheckBadge } from "react-icons/hi2";
 import { IoLocationSharp } from "react-icons/io5"; // Location icon
 import MainContainer from "./MainContainer";
 import ProfileTab from "./ProfileTab";
@@ -252,7 +253,14 @@ const UserProfile = () => {
         <div className="other">
           <div className="flex align-center justify-between">
             <div>
-              <Name>{finalUser?.name}</Name>
+              <Name className="flex align-center">
+                {finalUser?.name}
+                {finalUser.name === "admin" && (
+                  <div className="center">
+                    <HiCheckBadge color="#1b9d87" />
+                  </div>
+                )}
+              </Name>
               <UserName>@{finalUser?.username}</UserName>
             </div>
             <ActionContainer>
