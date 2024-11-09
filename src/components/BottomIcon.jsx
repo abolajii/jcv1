@@ -98,7 +98,13 @@ const BottomIcon = ({
           <FaRegComment color="#58a485" onClick={handleReplyClick} />
           <span>{replyCount > 0 ? replyCount : ""}</span>
         </div>
-        <HeartIcon isAnimating={isAnimating} onClick={handleHeartClick}>
+        <HeartIcon
+          isAnimating={isAnimating}
+          onClick={(event) => {
+            event.stopPropagation();
+            handleHeartClick();
+          }}
+        >
           <div className="icon-item">
             {liked ? (
               <FaHeart color="rgba(213, 89, 89, 0.9)" />
