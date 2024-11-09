@@ -399,7 +399,6 @@ const MentionDashboard = () => {
             </Item>
           );
         }
-        return <div key={n._id}>n</div>;
       })}
     </Container>
   );

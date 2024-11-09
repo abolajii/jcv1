@@ -37,7 +37,6 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   gap: 30px;
-  padding: 10px;
   background-color: rgba(232, 239, 239, 1);
   z-index: 10;
 
@@ -60,6 +59,18 @@ const Content = styled.div`
   margin-top: 60px;
 `;
 
+const Scrollable = styled.div`
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+  margin-bottom: 60px; /* Height of MobileSidebar */
+
+  .width {
+    border: 1px solid #c8e2da;
+    border-radius: 3px;
+  }
+`;
 const tabs = ["All", "Mentions", "Interactions"];
 
 const Notification = () => {
@@ -94,11 +105,13 @@ const Notification = () => {
           <Slider style={sliderStyle} />
         </Tabs>
       </Header>
-      <Content>
-        {activeTab === "All" && <MentionDashboard />}
-        {activeTab === "Mentions" && <AllMentions />}
-        {activeTab === "Interactions" && <Interactions />}
-      </Content>
+      <Scrollable>
+        <Content>
+          {activeTab === "All" && <MentionDashboard />}
+          {activeTab === "Mentions" && <AllMentions />}
+          {activeTab === "Interactions" && <Interactions />}
+        </Content>
+      </Scrollable>
     </MainContainer>
   );
 };
