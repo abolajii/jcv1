@@ -5,6 +5,7 @@ import styled, { keyframes } from "styled-components";
 import { useEffect, useRef, useState } from "react";
 
 import BottomTab from "./BottomTab";
+import { HiCheckBadge } from "react-icons/hi2";
 import { MdClose } from "react-icons/md";
 import Textarea from "./Textarea";
 import useAuthStore from "../store/useAuthStore";
@@ -93,6 +94,7 @@ const UserDetails = styled.div`
 
   .time {
     font-size: 12px;
+    color: #525252;
   }
 `;
 
@@ -111,7 +113,7 @@ const Height = styled.div`
 `;
 
 const PostContainer = styled.div`
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.31;
   margin-bottom: 2px;
   /* color: #525252; Set the default text color */
@@ -125,7 +127,7 @@ const Inner = styled.div`
 `;
 
 const Middle = styled.div`
-  font-size: 14.5px;
+  /* font-size: 14.5px; */
   line-height: 1.4;
   margin-top: 2px;
   word-wrap: break-word;
@@ -151,7 +153,16 @@ const MaxHeight = styled.div`
   height: calc(100% - 30px);
 `;
 
-const Modal = ({ isOpen, quote, children, closeModal, data, share }) => {
+const Modal = ({
+  isOpen,
+  quote,
+  children,
+  closeModal,
+  data,
+  share,
+  handleSubmit,
+  reply,
+}) => {
   const modalContentRef = useRef(null);
   const [modalWidth, setModalWidth] = useState(0);
   const { user } = useAuthStore();
@@ -308,8 +319,17 @@ const Modal = ({ isOpen, quote, children, closeModal, data, share }) => {
                 <UserDetails className="flex-1">
                   <div>
                     <div>
-                      <div className="name">
+                      {/* <div className="name">
                         {share ? data.originalPost.user.name : data?.user.name}
+                      </div> */}
+                      <div className="name flex">
+                        {share ? data.originalPost.user.name : data?.user.name}
+                        {(data?.originalPost?.user.name === "admin" ||
+                          data?.user?.name === "admin") && (
+                          <div className="center">
+                            <HiCheckBadge color="#1b9d87" />
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="time">{formatDate(data?.createdAt)}</div>
@@ -333,7 +353,7 @@ const Modal = ({ isOpen, quote, children, closeModal, data, share }) => {
                   </PostContainer>
 
                   <div className="reply mb-2 mt-1">
-                    <p className="text-xs">
+                    <p className="text-xs time">
                       Replying to
                       <span
                         style={{
@@ -368,24 +388,34 @@ const Modal = ({ isOpen, quote, children, closeModal, data, share }) => {
           <div className="">
             <BottomTab
               loading={loading}
-              onSubmit={async () => {
-                setLoading(true);
-                const formData = new FormData();
-                formData.append("content", content);
+              onSubmit={
+                reply
+                  ? async () => {
+                      setLoading(true);
+                      await handleSubmit();
+                      setLoading(false);
+                      closeModal();
+                      setHasComment(true);
+                    }
+                  : async () => {
+                      setLoading(true);
+                      const formData = new FormData();
+                      formData.append("content", content);
 
-                try {
-                  await replyToPost(
-                    share ? data.originalPost._id : data._id,
-                    formData
-                  );
-                  closeModal();
-                  setHasComment(true);
-                  setLoading(false);
-                } catch (e) {
-                  console.log(e);
-                  setLoading(false);
-                }
-              }}
+                      try {
+                        await replyToPost(
+                          share ? data.originalPost._id : data._id,
+                          formData
+                        );
+                        closeModal();
+                        setHasComment(true);
+                        setLoading(false);
+                      } catch (e) {
+                        console.log(e);
+                        setLoading(false);
+                      }
+                    }
+              }
             />
           </div>
         </div>
