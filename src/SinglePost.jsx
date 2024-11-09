@@ -88,6 +88,7 @@ const SinglePost = () => {
   const { id } = useParams();
 
   const [loading, setLoading] = useState(true);
+  console.log(singlePost?.user);
 
   useEffect(() => {
     // Assuming user ID is available somehow, e.g., from a route parameter
@@ -138,9 +139,11 @@ const SinglePost = () => {
                 onClick={(event) => {
                   event.stopPropagation();
                   navigate(
-                    `/profile/${selectedPost.user._id || singlePost.user._id}`
+                    `/profile/${
+                      selectedPost?.user?._id || singlePost?.user?._id
+                    }`
                   );
-                  setSelectedUser(selectedPost.user || singlePost.user);
+                  setSelectedUser(selectedPost?.user || singlePost?.user);
                 }}
               >
                 <Avi>

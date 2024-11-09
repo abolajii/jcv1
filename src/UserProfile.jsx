@@ -209,7 +209,7 @@ const UserProfile = () => {
 
   const finalUser = selectedUser || singleUser;
 
-  const connected = finalUser?.following.includes(user?.id);
+  const connected = finalUser?.following?.includes(user?.id);
 
   useEffect(() => {
     // Assuming user ID is available somehow, e.g., from a route parameter
@@ -307,11 +307,11 @@ const UserProfile = () => {
 
           <StatsContainer>
             <div>
-              <span>{finalUser?.followers.length || "0"}</span>
+              <span>{finalUser?.followers?.length || "0"}</span>
               Followers
             </div>
             <div>
-              <span>{finalUser?.following.length || "0"}</span>
+              <span>{finalUser?.following?.length || "0"}</span>
               Following
             </div>
           </StatsContainer>
