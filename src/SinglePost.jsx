@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import Comments from "./Comment";
+import { HiCheckBadge } from "react-icons/hi2";
 import MainContainer from "./MainContainer";
 import { MdMoreHoriz } from "react-icons/md";
 import ReplySection from "./ReplySection";
@@ -159,8 +160,18 @@ const SinglePost = () => {
               <div className="ml-3 flex-1 flex justify-between">
                 <div>
                   <div className="flex flex-col">
-                    <div className="name">
+                    {/* <div className="name">
                       {selectedPost?.user?.name || singlePost?.user.name}
+                    </div> */}
+
+                    <div className="name flex">
+                      {selectedPost?.user?.name || singlePost?.user.name}
+                      {(selectedPost?.user.name === "admin" ||
+                        singlePost?.user.name === "admin") && (
+                        <div className="center">
+                          <HiCheckBadge color="#1b9d87" />
+                        </div>
+                      )}
                     </div>
                     <div className="time">
                       {formatDate(

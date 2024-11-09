@@ -1,4 +1,5 @@
 import BottomIcon from "./components/BottomIcon";
+import { HiCheckBadge } from "react-icons/hi2";
 import { MdMoreHoriz } from "react-icons/md";
 import Modal from "./components/Modal";
 import { formatDate } from "./utils";
@@ -219,7 +220,14 @@ const SingleComment = ({ c, authorId }) => {
           <div className="flex-1 flex justify-between mb-2">
             <div className="mt-1">
               <div>
-                <div className="name">{c.user.name}</div>
+                <div className="name flex">
+                  {c?.user.name}
+                  {c?.user.name === "admin" && (
+                    <div className="center">
+                      <HiCheckBadge color="#1b9d87" />
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="time">{formatDate(c?.createdAt)}</div>
             </div>
