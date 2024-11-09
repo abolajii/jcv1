@@ -394,3 +394,7 @@ button {
 .text-2xl {
   font-size: 24px;
 }
+
+.border-b-1 {
+  border-bottom: 1px solid #ddd;
+}

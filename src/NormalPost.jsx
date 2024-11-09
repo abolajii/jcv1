@@ -15,7 +15,8 @@ import usePostStore from "./store/usePostStore";
 
 const Container = styled.div`
   border-radius: 5px;
-  background-color: #f3f3f3;
+  /* background-color: #f3f3f3; */
+  background-color: ${(props) => !props.noBg && "#f3f3f3"};
 
   .gap {
     gap: 3px;
@@ -25,7 +26,7 @@ const Container = styled.div`
 const Top = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  padding: 8px;
   margin-top: 9px;
   /* margin-bottom: 10px; */
 
@@ -70,11 +71,12 @@ const Avi = styled.div`
   }
 `;
 
-const NormalPost = ({ post }) => {
+const NormalPost = ({ post, noBg }) => {
   const navigate = useNavigate();
   const { setSelectedUser, setSelectedPost } = usePostStore();
   return (
     <Container
+      noBg={noBg}
       onClick={() => {
         navigate(`/post/${post._id}`);
         setSelectedPost(post);

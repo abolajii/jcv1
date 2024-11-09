@@ -5,8 +5,10 @@ import Discover from "./tabs/Discover";
 import { FaSearch } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import MainContainer from "./MainContainer";
+import SearchResults from "./SearchResults";
 import Sports from "./tabs/Sports";
 import Trends from "./tabs/Trends";
+import { globalSearch } from "./api/requests";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -111,6 +113,7 @@ const Search = () => {
   const [activeTab, setActiveTab] = useState("Discover");
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
   const tabsRef = useRef([]);
+  const [results, setResults] = useState(null);
 
   useEffect(() => {
     const activeTabIndex = tabs.indexOf(activeTab);
@@ -123,6 +126,16 @@ const Search = () => {
   const handleClear = () => setSearchText("");
   const handleTabClick = (tab) => setActiveTab(tab);
 
+  const handleSearch = async (e) => {
+    try {
+      const response = await globalSearch(e);
+      console.log(response);
+      setResults(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <MainContainer>
       <Container>
@@ -131,31 +144,42 @@ const Search = () => {
             <SearchIcon />
             <Input
               value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              onChange={(e) => {
+                setSearchText(e.target.value);
+                e.target.value !== "" && handleSearch(e.target.value);
+              }}
               placeholder="Search for connect, trends, anything"
             />
             <ClearIcon show={searchText} onClick={handleClear} />
           </InputContainer>
         </div>
-        <Tabs>
-          {tabs.map((tab, index) => (
-            <Tab
-              active={activeTab === tab} // Pass active state to Tab
-              key={tab}
-              ref={(el) => (tabsRef.current[index] = el)}
-              onClick={() => handleTabClick(tab)}
-            >
-              {tab}
-            </Tab>
-          ))}
-          <Slider style={sliderStyle} />
-        </Tabs>
-        <Scrollable>
-          {activeTab === "Discover" && <Discover />}
-          {activeTab === "Trends" && <Trends />}
-          {activeTab === "Sports" && <Sports />}
-          {activeTab === "Connects" && <Connects />}
-        </Scrollable>
+        {searchText !== "" ? (
+          <Scrollable>
+            <SearchResults results={results} searchTerm={searchText} />
+          </Scrollable>
+        ) : (
+          <>
+            <Tabs>
+              {tabs.map((tab, index) => (
+                <Tab
+                  active={activeTab === tab} // Pass active state to Tab
+                  key={tab}
+                  ref={(el) => (tabsRef.current[index] = el)}
+                  onClick={() => handleTabClick(tab)}
+                >
+                  {tab}
+                </Tab>
+              ))}
+              <Slider style={sliderStyle} />
+            </Tabs>
+            <Scrollable>
+              {activeTab === "Discover" && <Discover />}
+              {activeTab === "Trends" && <Trends />}
+              {activeTab === "Sports" && <Sports />}
+              {activeTab === "Connects" && <Connects />}
+            </Scrollable>
+          </>
+        )}
       </Container>
     </MainContainer>
   );
