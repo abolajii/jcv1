@@ -56,6 +56,7 @@ const BottomIcon = ({
   shareCount,
   toggleLike,
   post,
+  onReplyClick,
 }) => {
   const [liked, setLiked] = useState(false);
   const [currentLikeCount, setCurrentLikeCount] = useState(likeCount);
@@ -95,7 +96,14 @@ const BottomIcon = ({
     <Container className="flex align-center justify-between">
       <div className="icons">
         <div className="icon-item">
-          <FaRegComment color="#58a485" onClick={handleReplyClick} />
+          <FaRegComment
+            color="#58a485"
+            isAnimating={isAnimating}
+            onClick={(event) => {
+              event.stopPropagation();
+              onReplyClick();
+            }}
+          />
           <span>{replyCount > 0 ? replyCount : ""}</span>
         </div>
         <HeartIcon

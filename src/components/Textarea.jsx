@@ -86,19 +86,19 @@ const Image = styled.div`
 const Textarea = ({ width, setMentionedUsers, setText }) => {
   const containerRef = useRef(null);
   const [isMentioning, setIsMentioning] = useState(false);
-  const { setContent, content, postSent } = usePostStore();
+  const { setContent, content, postSent, hasComment } = usePostStore();
   const [suggestions, setSuggestions] = useState([]);
   const [mentionPosition, setMentionPosition] = useState({ top: 0, left: 0 });
   const [mentionText, setMentionText] = useState("");
   const mentionedUsers = useRef([]); // Keep track of mentioned users
 
   useEffect(() => {
-    if (postSent) {
+    if (postSent || hasComment) {
       if (containerRef.current) {
         containerRef.current.innerText = "";
       }
     }
-  }, [postSent]);
+  }, [postSent, hasComment]);
 
   const formatTextWithMentions = (text) => {
     return text?.replace(/@(\w+)/g, (_, name) => {

@@ -3,6 +3,7 @@ import { formatDate, formattedContent } from "./utils";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
+import Comments from "./Comment";
 import MainContainer from "./MainContainer";
 import { MdMoreHoriz } from "react-icons/md";
 import ReplySection from "./ReplySection";
@@ -88,7 +89,6 @@ const SinglePost = () => {
   const { id } = useParams();
 
   const [loading, setLoading] = useState(true);
-  console.log(singlePost?.user);
 
   useEffect(() => {
     // Assuming user ID is available somehow, e.g., from a route parameter
@@ -188,9 +188,17 @@ const SinglePost = () => {
               </Image>
             )}
 
-            <div className="pt-2">{/* <BottomIcons /> */}</div>
             <ReplySection noReply post={selectedPost || singlePost} />
           </Inner>
+          <Comments
+            loading={loading}
+            comments={singlePost?.comments}
+            authorId={
+              singlePost?.postType === "shared"
+                ? singlePost?.originalPost.user._id
+                : singlePost?.user?._id
+            }
+          />
         </Body>
       </div>
     </MainContainer>
