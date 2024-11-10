@@ -190,6 +190,13 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
     }
   };
 
+  const handleFocusClick = () => {
+    // Focus the container only when clicked
+    if (containerRef.current) {
+      containerRef.current.focus();
+    }
+  };
+
   return (
     <>
       <Container
@@ -197,6 +204,7 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
         placeholder="Share your thought"
         ref={containerRef}
         onInput={handleInput}
+        onClick={handleFocusClick} // Focus only when clicked
         dangerouslySetInnerHTML={{ __html: formatTextWithMentions(content) }}
         suppressContentEditableWarning
         width={width}
