@@ -100,6 +100,31 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
     }
   }, [postSent, hasComment]);
 
+  useEffect(() => {
+    // Prevent automatic focus on page mount
+    if (containerRef.current) {
+      containerRef.current.blur(); // Ensure it does not get focused automatically
+    }
+  }, []);
+
+  useEffect(() => {
+    if (mentionText) {
+      const fetchUsers = async () => {
+        try {
+          const response = await getUserSuggestions(mentionText);
+          setSuggestions(response);
+        } catch (error) {
+          console.error("Error fetching users:", error);
+        }
+      };
+
+      const debounceFetch = setTimeout(fetchUsers, 100); // Debounce API call
+      return () => clearTimeout(debounceFetch);
+    } else {
+      setSuggestions([]);
+    }
+  }, [mentionText]);
+
   const formatTextWithMentions = (text) => {
     return text?.replace(/@(\w+)/g, (_, name) => {
       return `<span style='color: #28a69e; font-weight: normal;'>@${name}</span>`;
@@ -147,34 +172,12 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
     }
   };
 
-  useEffect(() => {
-    if (mentionText) {
-      const fetchUsers = async () => {
-        try {
-          const response = await getUserSuggestions(mentionText);
-          setSuggestions(response);
-        } catch (error) {
-          console.error("Error fetching users:", error);
-        }
-      };
-
-      const debounceFetch = setTimeout(fetchUsers, 100); // Debounce API call
-      return () => clearTimeout(debounceFetch);
-    } else {
-      setSuggestions([]);
-    }
-  }, [mentionText]);
-
-  useEffect(() => {
+  const handleFocusClick = () => {
+    // Focus the container only when clicked
     if (containerRef.current) {
-      const range = document.createRange();
-      const selection = window.getSelection();
-      range.selectNodeContents(containerRef.current);
-      range.collapse(false);
-      selection.removeAllRanges();
-      selection.addRange(range);
+      containerRef.current.focus();
     }
-  }, [content]);
+  };
 
   const handleSuggestionClick = (user) => {
     const newContent = content.replace(/@(\w*)$/, `@${user.username}`);
@@ -187,13 +190,6 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
     if (!mentionedUsers.current.some((u) => u._id === user._id)) {
       mentionedUsers.current.push({ id: user._id, username: user.username });
       setMentionedUsers([...mentionedUsers.current]); // Update state with the new list
-    }
-  };
-
-  const handleFocusClick = () => {
-    // Focus the container only when clicked
-    if (containerRef.current) {
-      containerRef.current.focus();
     }
   };
 
