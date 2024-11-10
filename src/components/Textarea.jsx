@@ -84,6 +84,13 @@ const Image = styled.div`
   }
 `;
 
+const Opacity = styled.div`
+  opacity: 1;
+  &.transparent {
+    opacity: 0;
+  }
+`;
+
 const Textarea = ({ width, setMentionedUsers, setText }) => {
   const containerRef = useRef(null);
   const [isMentioning, setIsMentioning] = useState(false);
@@ -205,20 +212,40 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
     setContentEditable(true);
   };
 
-  console.log(contentEditable);
-
   return (
     <>
-      <Container
-        contentEditable={contentEditable}
-        placeholder="Share your thought"
-        ref={containerRef}
+      <Opacity
+        className={contentEditable ? "" : "transparent"}
         onClick={handleClick}
-        onInput={handleInput}
-        dangerouslySetInnerHTML={{ __html: formatTextWithMentions(content) }}
-        suppressContentEditableWarning
-        width={width}
-      />
+      >
+        <Container
+          contentEditable
+          placeholder="Share your thought"
+          ref={containerRef}
+          onInput={handleInput}
+          dangerouslySetInnerHTML={{ __html: formatTextWithMentions(content) }}
+          suppressContentEditableWarning
+          width={width}
+        />
+      </Opacity>
+
+      {/* {contentEditable ? (
+        <Container
+          contentEditable
+          placeholder="Share your thought"
+          ref={containerRef}
+          onInput={handleInput}
+          dangerouslySetInnerHTML={{ __html: formatTextWithMentions(content) }}
+          suppressContentEditableWarning
+          width={width}
+        />
+      ) : (
+        <Container
+          onClick={handleClick}
+          placeholder="Share your thought"
+          width={width}
+        />
+      )} */}
       <SuggestionBox
         top={mentionPosition.top}
         left={mentionPosition.left}
