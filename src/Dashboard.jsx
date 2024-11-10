@@ -3,7 +3,9 @@ import { useEffect, useRef, useState } from "react";
 
 import { AiOutlinePlus } from "react-icons/ai";
 import BottomTab from "./components/BottomTab";
+import { FaHamburger } from "react-icons/fa";
 import Feeds from "./Feeds";
+import { GiHamburgerMenu } from "react-icons/gi";
 import MainContainer from "./MainContainer";
 import Textarea from "./components/Textarea";
 import { createUniqueUsers } from "./utils";
@@ -86,6 +88,13 @@ const Header = styled.div`
   padding: 10px;
   background-color: rgba(232, 239, 239, 1);
   border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+
+  .box {
+    border: 1px solid #28a69e;
+    height: 20px;
+    width: 20px;
+    border-radius: 3px;
+  }
 
   z-index: 10;
 
@@ -172,12 +181,22 @@ const Dashboard = () => {
   return (
     <MainContainer>
       <Header>
-        <div className="flex gap-md align-center">
+        <div className="flex gap-md justify-between w-100">
+          <div className="box center">
+            <GiHamburgerMenu size={14} color="#36bbba" />
+          </div>
+
+          {/* <UserAvi>
+            <img src={user?.profilePic} alt="User avatar" />
+            <AddIcon size={13} color="#fff" />
+          </UserAvi> */}
+          <OtherStory className="flex-1 flex">
+            {/* Additional elements here */}
+          </OtherStory>
           <UserAvi>
             <img src={user?.profilePic} alt="User avatar" />
             <AddIcon size={13} color="#fff" />
           </UserAvi>
-          <OtherStory>{/* Additional elements here */}</OtherStory>
         </div>
       </Header>
       <Scrollable isLoading={isLoading}>
