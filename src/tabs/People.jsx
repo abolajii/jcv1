@@ -79,7 +79,7 @@ const People = ({ user, setUsers }) => {
     <Container>
       <UserContainer
         onClick={() => {
-          navigate(`/profile/${user._id}`);
+          navigate(`/profile/${user.username}`);
           setSelectedUser(user);
         }}
       >
