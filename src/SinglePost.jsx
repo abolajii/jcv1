@@ -141,7 +141,7 @@ const SinglePost = () => {
                   event.stopPropagation();
                   navigate(
                     `/profile/${
-                      selectedPost?.user?._id || singlePost?.user?._id
+                      selectedPost?.user?.username || singlePost?.user?.username
                     }`
                   );
                   setSelectedUser(selectedPost?.user || singlePost?.user);

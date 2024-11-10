@@ -13,13 +13,15 @@ export const createUniqueUsers = (mentionedUsers) => {
   return Array.from(uniqueUsersMap.values());
 };
 
+import { Link } from "react-router-dom";
 import React from "react";
 import styled from "styled-components";
 
 // Styled component for the mention
-const Mention = styled.a`
+const Mention = styled(Link)`
   color: rgba(54, 187, 186, 1);
   display: inline-block;
+  text-decoration: none;
 
   &:hover {
     cursor: pointer;
@@ -60,19 +62,47 @@ export const truncateWords = (text, maxWords) => {
   return wordsArray.slice(0, maxWords).join(" ") + "..."; // Join back the first maxWords and add ellipsis
 };
 
+// export const formattedContent = (post) => {
+//   const mentionRegex = /@\w+/g;
+
+//   return post?.split(mentionRegex).flatMap((part, index) => {
+//     const mentions = post.match(mentionRegex);
+
+//     const mention = mentions?.[index];
+
+//     return [
+//       React.createElement("span", { key: `part-${index}` }, part),
+//       mention
+//         ? React.createElement(Mention, { key: `mention-${index}` }, mention)
+//         : null,
+//     ];
+//   });
+// };
+
 export const formattedContent = (post) => {
   const mentionRegex = /@\w+/g;
 
   return post?.split(mentionRegex).flatMap((part, index) => {
     const mentions = post.match(mentionRegex);
-
     const mention = mentions?.[index];
 
     return [
       React.createElement("span", { key: `part-${index}` }, part),
       mention
-        ? React.createElement(Mention, { key: `mention-${index}` }, mention)
+        ? React.createElement(
+            Mention,
+            {
+              key: `mention-${index}`,
+              to: `/profile/${mention.slice(1)}`,
+              onClick: (event) => {
+                event.stopPropagation(); // Prevents the container click event
+              },
+            },
+            mention
+          )
         : null,
     ];
   });
 };
+
+// Modify the formattedContent to handle dynamic links:

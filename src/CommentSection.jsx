@@ -72,7 +72,7 @@ const CommentSection = ({ comment, searchTerm }) => {
       <div>
         <Avi
           onClick={() => {
-            navigate(`/profile/${comment?.user?._id}`);
+            navigate(`/profile/${comment?.user?.username}`);
             // setSelectedUser(user);
           }}
         >

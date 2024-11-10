@@ -153,7 +153,7 @@ const People = ({ user, searchTerm }) => {
       <div>
         <Avi
           onClick={() => {
-            navigate(`/profile/${user._id}`);
+            navigate(`/profile/${user.username}`);
             setSelectedUser(user);
           }}
         >

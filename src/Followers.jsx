@@ -110,7 +110,7 @@ const Followers = ({ user, setUsers, loggedInUser }) => {
     <Container>
       <UserContainer
         onClick={() => {
-          navigate(`/profile/${user.id}`);
+          navigate(`/profile/${user.username}`);
           setSelectedUser(user);
         }}
       >

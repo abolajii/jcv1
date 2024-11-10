@@ -88,7 +88,7 @@ const NormalPost = ({ post, noBg }) => {
             <Avi
               onClick={(event) => {
                 event.stopPropagation();
-                navigate(`/profile/${post.user._id}`);
+                navigate(`/profile/${post.user.username}`);
                 setSelectedUser(post.user);
               }}
             >
