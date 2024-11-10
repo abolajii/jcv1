@@ -75,8 +75,8 @@ const tabs = ["All", "Mentions", "Interactions"];
 
 const Notification = () => {
   const tabsRef = useRef([]);
-  const [activeTab, setActiveTab] = useState("All");
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
+  const [activeTab, setActiveTab] = useState("All");
 
   useEffect(() => {
     const activeTabIndex = tabs.indexOf(activeTab);

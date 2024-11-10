@@ -118,105 +118,6 @@ const SingleComment = ({ c, authorId }) => {
 
   if (checkIfAuthorReplied()) {
     const reply = checkIfAuthorReplied();
-
-    // console.log(reply);
-    // return (
-    //   <div className="flex gap-sm mb-4 border-b-1 pb-3">
-    //     <Modal
-    //       isOpen={isOpen}
-    //       closeModal={() => {
-    //         setIsOpen(false);
-    //         setSelectedComment("");
-    //       }}
-    //       data={selectedComment || c}
-    //       handleSubmit={replyComment}
-    //     />
-    //     <div className="flex flex-col flex-1">
-    //       <div className="flex gap-sm">
-    //         <One>
-    //           <Avi>
-    //             <img src={c?.user?.profilePic} alt="User avatar" />
-    //           </Avi>
-    //         </One>
-    //         <div className="flex flex-col flex-1">
-    //           <div>
-    //             <div className="flex-1 flex justify-between mt-1">
-    //               <div className="mt-1">
-    //                 <div>
-    //                   <div className="name">{c.user.name}</div>
-    //                 </div>
-    //                 <div className="time">{formatDate(c?.createdAt)}</div>
-    //               </div>
-    //               <div className="pointer">
-    //                 <MdMoreHoriz color="#36bbba" />
-    //               </div>
-    //             </div>
-    //           </div>
-    //         </div>
-    //       </div>
-    //       <div className="flex gap-sm">
-    //         <One>
-    //           <Line />
-    //         </One>
-    //         <div className="flex flex-col flex-1">
-    //           <CommentMessage>{c?.content}</CommentMessage>
-    //           <div className="pb-1">
-    //             <BottomIcon
-    //               toggleLike={handleLikeClick}
-    //               onBookmarkClick={handleBookmarkClick}
-    //               onReplyClick={handleCommentClick}
-    //               sharePost={sharePost}
-    //               hasComment={hasComment}
-    //               hasBookmark={hasBookmark}
-    //               replyCount={reply ? c.replies?.length - 1 : c.replies?.length}
-    //             />
-    //           </div>
-    //         </div>
-    //       </div>
-
-    //       {/* OVER HERE I WANT TO SHOW THE AUTHOR RESPONSE PICTURE AND ALL ABOUT */}
-    //       <div className="flex gap-sm">
-    //         <One className="up">
-    //           <Avi>
-    //             <img src={reply?.user?.profilePic} alt="User avatar" />
-    //           </Avi>
-    //         </One>
-    //         <div className="flex flex-col flex-1">
-    //           <div>
-    //             <div className="flex-1 flex justify-between mb-2">
-    //               <div className="mt-2">
-    //                 <div>
-    //                   <div className="name">{c.user.name}</div>
-    //                 </div>
-    //                 <div className="time">{formatDate(c?.createdAt)}</div>
-    //               </div>
-    //               <div className="pointer">
-    //                 <MdMoreHoriz color="#36bbba" />
-    //               </div>
-    //             </div>
-    //           </div>
-    //           <CommentMessage>{reply?.content}</CommentMessage>
-    //           <div className="pb-1">
-    //             <BottomIcon
-    //               // hasLiked={like}
-    //               onLikeClick={handleLikeClick}
-    //               onBookmarkClick={handleBookmarkClick}
-    //               onCommentClick={() => {
-    //                 setIsOpen(true);
-    //                 setSelectedComment(reply);
-    //               }}
-    //               sharePost={sharePost}
-    //               hasComment={hasComment}
-    //               hasBookmark={hasBookmark}
-    //               commentCount={reply?.replies?.length}
-    //               // likeCount={c.likes.length === 0 ? "" : c.likes.length}
-    //             />
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // );
     return (
       <Container className="flex gap-sm mb-4 border-b-1 pb-3">
         {/* Yes */}
@@ -240,7 +141,7 @@ const SingleComment = ({ c, authorId }) => {
                   <div>
                     <div className="name flex">
                       {c?.user.name}
-                      {c?.user.name === "admin" && (
+                      {c?.user.isVerified && (
                         <div className="center">
                           <HiCheckBadge color="#1b9d87" />
                         </div>
@@ -292,7 +193,7 @@ const SingleComment = ({ c, authorId }) => {
                     <div>
                       <div className="name flex">
                         {c?.user.name}
-                        {c?.user.name === "admin" && (
+                        {c?.user.isVerified && (
                           <div className="center">
                             <HiCheckBadge color="#1b9d87" />
                           </div>
@@ -353,7 +254,7 @@ const SingleComment = ({ c, authorId }) => {
               <div>
                 <div className="name flex">
                   {c?.user.name}
-                  {c?.user.name === "admin" && (
+                  {c?.user.isVerified && (
                     <div className="center">
                       <HiCheckBadge color="#1b9d87" />
                     </div>

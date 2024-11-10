@@ -118,7 +118,6 @@ const Avi = styled.div`
 const Name = styled.div`
   font-size: 1rem;
   color: #0a0909;
-  margin-top: 5px;
   font-weight: 500;
 `;
 

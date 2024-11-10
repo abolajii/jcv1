@@ -46,7 +46,7 @@ const ConnectButton = styled.button`
   background-color: #28a69e;
   color: #fff;
   border: none;
-  border-radius: 20px;
+  border-radius: 5px;
   padding: 6px 12px;
   font-size: 13px;
   cursor: pointer;

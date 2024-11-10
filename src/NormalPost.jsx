@@ -96,9 +96,9 @@ const NormalPost = ({ post, noBg }) => {
             </Avi>
           </div>
           <div className="flex flex-col">
-            <div className="name center gap">
+            <div className="name flex align-center">
               {post?.user.name}
-              {post?.user.name === "admin" && <HiCheckBadge color="#1b9d87" />}
+              {post?.user.isVerified && <HiCheckBadge color="#1b9d87" />}
             </div>
             <div className="time">{formatDate(post?.createdAt)}</div>
           </div>

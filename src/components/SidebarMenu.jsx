@@ -78,11 +78,11 @@ export const sidebarItems = [
     icon: <BsChatDots />,
     // notifications: 2,
   },
-  {
-    path: "/bookmark",
-    label: "Bookmark",
-    icon: <FaRegBookmark />,
-  },
+  // {
+  // path: "/bookmark",
+  // label: "Bookmark",
+  // icon: <FaRegBookmark />,
+  // },
   {
     path: "/settings",
     label: "Settings",

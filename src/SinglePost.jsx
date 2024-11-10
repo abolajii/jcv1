@@ -166,11 +166,9 @@ const SinglePost = () => {
 
                     <div className="name flex">
                       {selectedPost?.user?.name || singlePost?.user.name}
-                      {(selectedPost?.user.name === "admin" ||
-                        singlePost?.user.name === "admin") && (
-                        <div className="center">
-                          <HiCheckBadge color="#1b9d87" />
-                        </div>
+                      {(selectedPost?.user?.isVerified ||
+                        singlePost?.user.isVerified) && (
+                        <HiCheckBadge color="#1b9d87" />
                       )}
                     </div>
                     <div className="time">

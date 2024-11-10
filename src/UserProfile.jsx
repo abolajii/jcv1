@@ -206,19 +206,22 @@ const UserProfile = () => {
   const { user } = useAuthStore();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
-  console.log(selectedUser);
+
+  const [followerCount, setFollowerCount] = useState(0);
+
   useEffect(() => {
     if (selectedUser !== null) {
       setLoading(false);
+      setIsConnected(selectedUser.followers?.includes(user?.id));
     }
-  }, [selectedUser]);
+  }, [selectedUser, user.id]);
 
   useEffect(() => {
     getUserById(uid).then((data) => {
       setLoading(false);
       setSingleUser(data.user);
       setPosts(data.posts);
-      setIsConnected(data.user.followers.includes(user.id));
+      setIsConnected(data.user.followers?.includes(user?.id));
     });
   }, [uid, user.id]);
 
@@ -226,10 +229,22 @@ const UserProfile = () => {
     setFollowLoading(true);
     await userFollow(uid);
     setIsConnected(!isConnected);
+
+    // Update follower count based on the follow/unfollow action
+    setFollowerCount((prevCount) =>
+      isConnected ? prevCount - 1 : prevCount + 1
+    );
+
     setFollowLoading(false);
   };
 
   const finalUser = selectedUser || singleUser;
+
+  useEffect(() => {
+    if (finalUser) {
+      setFollowerCount(finalUser.followers?.length || 0);
+    }
+  }, [finalUser]);
 
   if (loading) {
     return (
@@ -263,7 +278,7 @@ const UserProfile = () => {
             <div>
               <Name className="flex align-center">
                 {finalUser?.name}
-                {finalUser?.name === "admin" && (
+                {finalUser?.isVerified && (
                   <div className="center">
                     <HiCheckBadge color="#1b9d87" />
                   </div>
@@ -317,11 +332,19 @@ const UserProfile = () => {
           </LinkContainer>
 
           <StatsContainer>
-            <div>
+            <div
+              onClick={() => {
+                navigate(`/c/${finalUser.username}/fwn`);
+              }}
+            >
               <span>{finalUser?.following?.length}</span> Following
             </div>
-            <div>
-              <span>{finalUser?.followers?.length}</span> Followers
+            <div
+              onClick={() => {
+                navigate(`/c/${finalUser.username}/flr`);
+              }}
+            >
+              <span>{followerCount}</span> Followers
             </div>
           </StatsContainer>
         </div>

@@ -1,6 +1,7 @@
 import { formatDate, formattedContent } from "./utils";
 
 import BottomIcon from "./components/BottomIcon";
+import { HiCheckBadge } from "react-icons/hi2";
 import { LuDot } from "react-icons/lu";
 import { MdMoreHoriz } from "react-icons/md";
 /* eslint-disable react/prop-types */
@@ -82,6 +83,7 @@ const CommentSection = ({ comment, searchTerm }) => {
         <div className="flex align-center justify-between ">
           <div className="name">
             {highlightText(comment?.user?.name, searchTerm)}
+            {comment?.user.isVerified && <HiCheckBadge color="#1b9d87" />}
           </div>
           <div className="pointer">
             <MdMoreHoriz size={18} />

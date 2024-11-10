@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 
 import Bookmark from "./Bookmark";
+import Connections from "./Connections";
 import Conversation from "./Conversation";
 import Dashboard from "./Dashboard";
 import Login from "./pages/Login";
@@ -119,6 +120,15 @@ const App = () => {
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <Settings />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/c/:uid/:tag"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <Connections />
                 </ProtectedRoute>
               }
             />

@@ -17,7 +17,7 @@ import React from "react";
 import styled from "styled-components";
 
 // Styled component for the mention
-const Mention = styled.span`
+const Mention = styled.a`
   color: rgba(54, 187, 186, 1);
   display: inline-block;
 
