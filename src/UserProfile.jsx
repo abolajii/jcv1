@@ -1,16 +1,16 @@
 import { IoArrowBackOutline, IoEllipsisHorizontal } from "react-icons/io5";
+import { getUserById, userFollow } from "./api/requests";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { AiOutlineLink } from "react-icons/ai";
 import { BiEnvelope } from "react-icons/bi";
 import { HiCheckBadge } from "react-icons/hi2";
-import { IoLocationSharp } from "react-icons/io5"; // Location icon
+import { IoLocationSharp } from "react-icons/io5";
 import MainContainer from "./MainContainer";
 import ProfileTab from "./ProfileTab";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import Spinner from "./components/Spinner";
-import { getUserById } from "./api/requests";
 import header from "./header.jpg";
 import styled from "styled-components";
 import useAuthStore from "./store/useAuthStore";
@@ -23,7 +23,6 @@ const Header = styled.div`
   background-image: url(${header});
   background-size: cover;
   background-position: center;
-
   &::after {
     content: "";
     position: absolute;
@@ -31,7 +30,7 @@ const Header = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.3); /* Dark overlay with 30% opacity */
+    background-color: rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -123,24 +122,29 @@ const ActionContainer = styled.div`
 
 const FollowButton = styled.button`
   background-color: #36bbba;
-
   color: white;
   border: none;
   border-radius: 4px;
   padding: 5px 10px;
   font-size: 0.8rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 
   &:hover {
-    /* background-color: #2f2f2f; */
     background-color: #28a69e;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 `;
 
 const Bio = styled.div`
   margin-top: 10px;
   font-size: 0.8rem;
-  color: #404040; /* Gray color for a subtle look */
+  color: #404040;
   line-height: 1.35;
   color: #0a0909;
 `;
@@ -153,7 +157,7 @@ const StatsContainer = styled.div`
 
   div {
     display: flex;
-    align-items: center; /* Align number and label horizontally */
+    align-items: center;
     font-size: 0.8rem;
     color: #0a0909;
   }
@@ -161,7 +165,7 @@ const StatsContainer = styled.div`
   span {
     font-weight: bold;
     color: #28a69e;
-    margin-right: 3px; /* Small space between number and label */
+    margin-right: 3px;
   }
 `;
 
@@ -194,32 +198,38 @@ const LinkContainer = styled.div`
 const UserProfile = () => {
   const [singleUser, setSingleUser] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [followLoading, setFollowLoading] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
   const navigate = useNavigate();
   const { uid } = useParams();
   const { selectedUser } = usePostStore();
   const { user } = useAuthStore();
   const location = useLocation();
-
   const [loading, setLoading] = useState(true);
-
+  console.log(selectedUser);
   useEffect(() => {
     if (selectedUser !== null) {
       setLoading(false);
     }
   }, [selectedUser]);
 
-  const finalUser = selectedUser || singleUser;
-
-  const connected = finalUser?.following?.includes(user?.id);
-
   useEffect(() => {
-    // Assuming user ID is available somehow, e.g., from a route parameter
     getUserById(uid).then((data) => {
       setLoading(false);
       setSingleUser(data.user);
       setPosts(data.posts);
+      setIsConnected(data.user.followers.includes(user.id));
     });
-  }, [uid]);
+  }, [uid, user.id]);
+
+  const handleFollow = async () => {
+    setFollowLoading(true);
+    await userFollow(uid);
+    setIsConnected(!isConnected);
+    setFollowLoading(false);
+  };
+
+  const finalUser = selectedUser || singleUser;
 
   if (loading) {
     return (
@@ -244,8 +254,6 @@ const UserProfile = () => {
           <IconWrapper style={{ right: "15px" }}>
             <MoreIcon />
           </IconWrapper>
-
-          {/* Profile Avatar */}
           <ProfileAvi>
             <img src={finalUser?.profilePic} alt="Avatar" />
           </ProfileAvi>
@@ -255,7 +263,7 @@ const UserProfile = () => {
             <div>
               <Name className="flex align-center">
                 {finalUser?.name}
-                {finalUser.name === "admin" && (
+                {finalUser?.name === "admin" && (
                   <div className="center">
                     <HiCheckBadge color="#1b9d87" />
                   </div>
@@ -264,14 +272,16 @@ const UserProfile = () => {
               <UserName>@{finalUser?.username}</UserName>
             </div>
             <ActionContainer>
-              {user.id !== uid && (
+              {user.id !== uid && isConnected && (
                 <div className="icon center">
                   <BiEnvelope size={19} color="#28a69e" />
                 </div>
               )}
               {user.id !== uid && (
-                <FollowButton>
-                  {connected ? (
+                <FollowButton onClick={handleFollow} disabled={followLoading}>
+                  {followLoading ? (
+                    <Spinner size="small" />
+                  ) : isConnected ? (
                     <span className="center">
                       Following
                       <RiArrowDropDownLine size={20} />
@@ -279,23 +289,18 @@ const UserProfile = () => {
                   ) : (
                     "Follow"
                   )}
-
-                  <></>
-                  {/* <div></div>
-                <div></div> */}
                 </FollowButton>
               )}
             </ActionContainer>
           </div>
           <Bio>{finalUser?.bio}</Bio>
 
-          {/* Profile Link & Location */}
           <LinkContainer>
             {singleUser?.link && (
               <div className="flex align-center">
                 <AiOutlineLink size={18} color="#28a69e" />
                 <a
-                  href="https://adeajayiabolaji.com"
+                  href={finalUser?.link}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -303,28 +308,24 @@ const UserProfile = () => {
                 </a>
               </div>
             )}
-            {finalUser?.location && (
-              <div className="flex align-center test-sm">
+            {singleUser?.location && (
+              <div className="location">
                 <IoLocationSharp size={18} color="#28a69e" />
-                {finalUser?.location}
+                <span>{finalUser?.location}</span>
               </div>
             )}
           </LinkContainer>
 
-          {/* <BorderBottom /> */}
-
           <StatsContainer>
             <div>
-              <span>{finalUser?.followers?.length || "0"}</span>
-              Followers
+              <span>{finalUser?.following?.length}</span> Following
             </div>
             <div>
-              <span>{finalUser?.following?.length || "0"}</span>
-              Following
+              <span>{finalUser?.followers?.length}</span> Followers
             </div>
           </StatsContainer>
         </div>
-        <ProfileTab posts={posts} />
+        <ProfileTab posts={posts} user={finalUser} />
       </Inner>
     </MainContainer>
   );

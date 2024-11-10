@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 
 import Spinner from "../components/Spinner";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import usePostStore from "../store/usePostStore";
 
 const Container = styled.div`
   margin-top: 10px;
@@ -58,6 +60,10 @@ const ConnectButton = styled.button`
 const People = ({ user, setUsers }) => {
   const [loadingConnections, setLoadingConnections] = useState({});
 
+  const { setSelectedUser } = usePostStore();
+
+  const navigate = useNavigate();
+
   const connectWithUser = async (userId) => {
     setLoadingConnections((prev) => ({ ...prev, [userId]: true }));
     try {
@@ -71,7 +77,12 @@ const People = ({ user, setUsers }) => {
 
   return (
     <Container>
-      <UserContainer>
+      <UserContainer
+        onClick={() => {
+          navigate(`/profile/${user._id}`);
+          setSelectedUser(user);
+        }}
+      >
         {/* Div A: User's Profile Picture */}
         <ProfilePicture src={user.profilePic} alt={`${user.name}'s profile`} />
 
