@@ -93,7 +93,10 @@ const People = ({ user, setUsers }) => {
               <UserName>@{user.username}</UserName>
             </div>
             <ConnectButton
-              onClick={() => connectWithUser(user._id)}
+              onClick={(event) => {
+                event.stopPropagation();
+                connectWithUser(user._id);
+              }}
               disabled={loadingConnections[user._id]}
             >
               {loadingConnections[user._id] ? <Spinner /> : "Connect"}
