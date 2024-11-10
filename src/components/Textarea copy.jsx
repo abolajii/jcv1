@@ -91,6 +91,7 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
   const [mentionPosition, setMentionPosition] = useState({ top: 0, left: 0 });
   const [mentionText, setMentionText] = useState("");
   const mentionedUsers = useRef([]); // Keep track of mentioned users
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (postSent || hasComment) {
@@ -99,6 +100,19 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
       }
     }
   }, [postSent, hasComment]);
+
+  // useEffect(() => {
+  //   // Prevent automatic focus on page mount
+  //   if (loading) {
+  //     if (containerRef.current) {
+  //       containerRef.current.blur(); // Ensure it does not get focused automatically
+  //     }
+  //   } else {
+  //     if (containerRef.current) {
+  //       containerRef.current.focus(); // Ensure it does not get focused automatically
+  //     }
+  //   }
+  // }, [loading]);
 
   const formatTextWithMentions = (text) => {
     return text?.replace(/@(\w+)/g, (_, name) => {
@@ -190,6 +204,14 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
     }
   };
 
+  const handleFocusClick = () => {
+    // Focus the container only when clicked
+    if (containerRef.current) {
+      containerRef.current.focus();
+    }
+    setLoading(false);
+  };
+
   return (
     <>
       <Container
@@ -197,6 +219,7 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
         placeholder="Share your thought"
         ref={containerRef}
         onInput={handleInput}
+        onClick={handleFocusClick} // Focus only when clicked
         dangerouslySetInnerHTML={{ __html: formatTextWithMentions(content) }}
         suppressContentEditableWarning
         width={width}

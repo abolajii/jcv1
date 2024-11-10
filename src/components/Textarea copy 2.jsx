@@ -26,8 +26,7 @@ const Container = styled.div`
     select,
     textarea {
       font-size: 14px !important;
-    }import { useEffect } from 'react';
-
+    }
   }
 `;
 
@@ -115,8 +114,6 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
     }
   }, []);
 
-  useEffect(() => {});
-
   const handleInput = (e) => {
     const text = e.target.innerText;
     setContent(text);
@@ -201,19 +198,15 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
     }
   };
 
-  const handleClick = () => {
-    setContentEditable(true);
-  };
-
-  console.log(contentEditable);
-
   return (
     <>
       <Container
         contentEditable={contentEditable}
         placeholder="Share your thought"
         ref={containerRef}
-        onClick={handleClick}
+        onClick={() => {
+          setContentEditable(true);
+        }}
         onInput={handleInput}
         dangerouslySetInnerHTML={{ __html: formatTextWithMentions(content) }}
         suppressContentEditableWarning
