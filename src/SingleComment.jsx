@@ -192,8 +192,8 @@ const SingleComment = ({ c, authorId }) => {
                   <div className="mt-1">
                     <div>
                       <div className="name flex">
-                        {c?.user.name}
-                        {c?.user.isVerified && (
+                        {reply?.user.name}
+                        {reply?.user.isVerified && (
                           <div className="center">
                             <HiCheckBadge color="#1b9d87" />
                           </div>
