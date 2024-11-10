@@ -91,9 +91,10 @@ const Header = styled.div`
 
   .box {
     border: 1px solid #28a69e;
-    height: 20px;
-    width: 20px;
+    height: 28px;
+    width: 28px;
     border-radius: 3px;
+    background-color: #ccf3f0;
   }
 
   z-index: 10;
@@ -183,7 +184,7 @@ const Dashboard = () => {
       <Header>
         <div className="flex gap-md justify-between w-100">
           <div className="box center">
-            <GiHamburgerMenu size={14} color="#36bbba" />
+            <GiHamburgerMenu size={20} color="#36bbba" />
           </div>
 
           {/* <UserAvi>
