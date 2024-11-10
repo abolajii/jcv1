@@ -8,10 +8,17 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.contentEditable {
+  -webkit-user-modify: read-write-plaintext-only;
+  user-modify: read-write-plaintext-only;
+  font-size: 14px; /* or whatever you want */
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  touch-action: manipulation; /* Prevents zooming */
 }
 
 input {
