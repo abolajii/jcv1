@@ -268,7 +268,7 @@ const SingleComment = ({ c, authorId }) => {
             </div>
           </div>
         </div>
-        <Middle>{c?.content}</Middle>
+        <Middle>{formattedContent(c?.content)}</Middle>
 
         <BottomIcon
           noPadding
