@@ -64,15 +64,15 @@ const People = ({ user, setUsers }) => {
 
   const navigate = useNavigate();
 
-  const connectWithUser = async (userId) => {
-    setLoadingConnections((prev) => ({ ...prev, [userId]: true }));
+  const connectWithUser = async (username) => {
+    setLoadingConnections((prev) => ({ ...prev, [username]: true }));
     try {
-      await userFollow(userId);
-      setUsers((prev) => prev.filter((user) => user._id !== userId));
+      await userFollow(username);
+      setUsers((prev) => prev.filter((user) => user.username !== username));
     } catch (error) {
       console.error("Failed to connect:", error);
     }
-    setLoadingConnections((prev) => ({ ...prev, [userId]: false }));
+    setLoadingConnections((prev) => ({ ...prev, [username]: false }));
   };
 
   return (
@@ -95,11 +95,11 @@ const People = ({ user, setUsers }) => {
             <ConnectButton
               onClick={(event) => {
                 event.stopPropagation();
-                connectWithUser(user._id);
+                connectWithUser(user.username);
               }}
-              disabled={loadingConnections[user._id]}
+              disabled={loadingConnections[user.username]}
             >
-              {loadingConnections[user._id] ? <Spinner /> : "Connect"}
+              {loadingConnections[user.username] ? <Spinner /> : "Connect"}
             </ConnectButton>
           </div>
           <div>{user?.bio}</div>
