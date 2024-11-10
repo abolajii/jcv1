@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"; // useNavigate for na
 
 import Followers from "./Followers";
 import Following from "./Following";
+import { HiCheckBadge } from "react-icons/hi2";
 import MainContainer from "./MainContainer";
 import { MdArrowBack } from "react-icons/md";
 import { getUserConnections } from "./api/requests";
@@ -167,7 +168,14 @@ const Connections = () => {
           <div className="mt-3">
             {userConnections.name && (
               <>
-                <p className="name">{userConnections.name}</p>
+                <div className="flex">
+                  <p className="name">{userConnections.name}</p>
+                  {userConnections?.isVerified && (
+                    <div className="center">
+                      <HiCheckBadge color="#1b9d87" />
+                    </div>
+                  )}
+                </div>
                 <p className="time">@{userConnections.username}</p>
               </>
             )}

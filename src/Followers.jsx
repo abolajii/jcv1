@@ -1,3 +1,4 @@
+import { HiCheckBadge } from "react-icons/hi2";
 import Spinner from "./components/Spinner";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -71,6 +72,8 @@ const Followers = ({ user, setUsers, loggedInUser }) => {
   const [isFollowedByLoggedInUser, setIsFollowedByLoggedInUser] = useState(
     user.isFollowedByLoggedInUser
   );
+
+  console.log(user);
   const { setSelectedUser } = usePostStore();
   const navigate = useNavigate();
 
@@ -117,7 +120,14 @@ const Followers = ({ user, setUsers, loggedInUser }) => {
         <UserInfo>
           <div className="flex align-center justify-between">
             <div>
-              <Name>{user.name}</Name>
+              <div className="flex">
+                <Name>{user.name}</Name>
+                {user?.isVerified && (
+                  <div className="center">
+                    <HiCheckBadge color="#1b9d87" />
+                  </div>
+                )}
+              </div>
               <div className="flex align-center">
                 <UserName>@{user.username}</UserName>
                 {user.isFollowingLoggedInUser && (
