@@ -91,7 +91,6 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
   const [mentionPosition, setMentionPosition] = useState({ top: 0, left: 0 });
   const [mentionText, setMentionText] = useState("");
   const mentionedUsers = useRef([]); // Keep track of mentioned users
-  const [isContentEditable, setIsContentEditable] = useState(false);
 
   useEffect(() => {
     if (postSent || hasComment) {
@@ -100,11 +99,6 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
       }
     }
   }, [postSent, hasComment]);
-
-  // Enable contentEditable only after mount to prevent auto-focus
-  useEffect(() => {
-    setIsContentEditable(true);
-  }, []);
 
   const formatTextWithMentions = (text) => {
     return text?.replace(/@(\w+)/g, (_, name) => {
@@ -171,6 +165,17 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
     }
   }, [mentionText]);
 
+  useEffect(() => {
+    if (containerRef.current) {
+      const range = document.createRange();
+      const selection = window.getSelection();
+      range.selectNodeContents(containerRef.current);
+      range.collapse(false);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  }, [content]);
+
   const handleSuggestionClick = (user) => {
     const newContent = content.replace(/@(\w*)$/, `@${user.username}`);
     setContent(newContent);
@@ -188,7 +193,7 @@ const Textarea = ({ width, setMentionedUsers, setText }) => {
   return (
     <>
       <Container
-        contentEditable={isContentEditable}
+        contentEditable
         placeholder="Share your thought"
         ref={containerRef}
         onInput={handleInput}
