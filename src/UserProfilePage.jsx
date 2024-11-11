@@ -185,7 +185,12 @@ const UserProfilePage = () => {
           >
             <BackIcon />
           </IconWrapper>
-          <IconWrapper style={{ right: "15px" }}>
+          <IconWrapper
+            style={{ right: "15px" }}
+            onClick={() => {
+              navigate("/profile");
+            }}
+          >
             <MdSettings />
           </IconWrapper>
           <ProfileAvi>
