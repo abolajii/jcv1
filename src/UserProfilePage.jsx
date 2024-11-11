@@ -175,8 +175,6 @@ const UserProfilePage = () => {
 
   const finalUser = user || singleUser;
 
-  console.log(user);
-
   return (
     <MainContainer noSidebar>
       <Inner>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import Comments from "./Comment";
+import GoBack from "./GoBack";
 import { HiCheckBadge } from "react-icons/hi2";
 import MainContainer from "./MainContainer";
 import { MdMoreHoriz } from "react-icons/md";
@@ -118,12 +119,7 @@ const SinglePost = () => {
     <MainContainer>
       <div>
         <Top className="flex justify-between align-center">
-          <button
-            onClick={() => navigate(location.state?.from || -1)}
-            className="flex align-center cursor"
-          >
-            <FaArrowLeft /> Back
-          </button>
+          <GoBack title="Back" />
           <button
             onClick={() => {
               // setIsOpen(true);

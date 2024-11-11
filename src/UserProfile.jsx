@@ -5,6 +5,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { AiOutlineLink } from "react-icons/ai";
 import { BiEnvelope } from "react-icons/bi";
+import GoBack from "./GoBack";
 import { HiCheckBadge } from "react-icons/hi2";
 import { IoLocationSharp } from "react-icons/io5";
 import MainContainer from "./MainContainer";
@@ -262,9 +263,9 @@ const UserProfile = () => {
         <Header>
           <IconWrapper
             style={{ left: "15px" }}
-            onClick={() => navigate(location.state?.from || -1)}
+            onClick={() => navigate("/dashboard")}
           >
-            <BackIcon />
+            <GoBack color="rgba(255, 255, 255, 0.9)" />
           </IconWrapper>
           <IconWrapper style={{ right: "15px" }}>
             <MoreIcon />
