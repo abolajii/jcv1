@@ -92,9 +92,10 @@ const Header = styled.div`
 
   .box {
     border: 1px solid #28a69e;
-    height: 20px;
-    width: 20px;
+    height: 28px;
+    width: 28px;
     border-radius: 3px;
+    background-color: #ccf3f0;
   }
 
   z-index: 10;
