@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { AiOutlinePlus } from "react-icons/ai";
 import BottomTab from "./components/BottomTab";
+import Drawer from "./Drawer";
 import { FaHamburger } from "react-icons/fa";
 import Feeds from "./Feeds";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -118,6 +119,8 @@ const Dashboard = () => {
   const { setPosts, setPostSent, posts } = usePostStore();
   const [loading, setLoading] = useState(false);
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const submitPost = async () => {
     if (content.trim() || file) {
       const results = createUniqueUsers(mentionedUsers);
@@ -164,6 +167,10 @@ const Dashboard = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev);
+  };
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -183,13 +190,13 @@ const Dashboard = () => {
       <Header>
         <div className="flex gap-md justify-between w-100">
           <div className="box center">
-            <GiHamburgerMenu size={14} color="#36bbba" />
+            <GiHamburgerMenu
+              size={14}
+              color="#36bbba"
+              onClick={toggleSidebar}
+            />
           </div>
 
-          {/* <UserAvi>
-            <img src={user?.profilePic} alt="User avatar" />
-            <AddIcon size={13} color="#fff" />
-          </UserAvi> */}
           <OtherStory className="flex-1 flex">
             {/* Additional elements here */}
           </OtherStory>
@@ -199,6 +206,7 @@ const Dashboard = () => {
           </UserAvi>
         </div>
       </Header>
+      <Drawer isOpen={isSidebarOpen} />
       <Scrollable isLoading={isLoading}>
         <div className="width pl-2 pr-2 pt-2 pb-2">
           <div className="text" ref={contentRef}>

@@ -202,7 +202,7 @@ const UserProfile = () => {
   const [isConnected, setIsConnected] = useState(false);
   const navigate = useNavigate();
   const { uid } = useParams();
-  const { selectedUser } = usePostStore();
+  const { selectedUser, setSelectedUser } = usePostStore();
   const { user } = useAuthStore();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
@@ -289,7 +289,14 @@ const UserProfile = () => {
             <ActionContainer>
               {user.id !== uid && isConnected && (
                 <div className="icon center">
-                  <BiEnvelope size={19} color="#28a69e" />
+                  <BiEnvelope
+                    size={19}
+                    color="#28a69e"
+                    onClick={() => {
+                      navigate(`/convo/${finalUser?.username}`);
+                      setSelectedUser(finalUser);
+                    }}
+                  />
                 </div>
               )}
               {user.id !== uid && (

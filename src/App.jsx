@@ -15,6 +15,7 @@ import Profile from "./Profile";
 import ProtectedRoute from "./ProtectedRoute";
 import Register from "./pages/Register";
 import Search from "./Search";
+import SecondConversation from "./SecondConversation";
 import Settings from "./Settings";
 import SinglePost from "./SinglePost";
 import UserProfile from "./UserProfile";
@@ -112,6 +113,14 @@ const App = () => {
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <SinglePost />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/convo/:uid"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <SecondConversation />
                 </ProtectedRoute>
               }
             />

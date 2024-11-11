@@ -23,12 +23,11 @@ const Container = styled.div`
     margin-top: 10px;
     margin-left: 10px;
   }
-  /* padding-top: 80px; */
 `;
 
 const Item = styled.div`
   background-color: rgba(255, 255, 255, 0.4);
-  padding: 15px;
+  /* padding: 15px; */
   font-size: 14px;
   border-bottom: 1px solid rgba(210, 210, 210, 0.5);
 
@@ -108,6 +107,7 @@ const PostInfo = styled.div`
   border-radius: 4px;
   margin-top: 8px;
   font-size: 13px;
+  margin-right: 10px;
 
   .top {
     padding: 9px 4px;
@@ -205,7 +205,7 @@ const MentionDashboard = () => {
           // console.log(n);
           return (
             <Item
-              className="flex gap-sm pt-4 pb-4 pointer"
+              className="flex gap-sm pt-3 pb-3 pointer"
               key={n._id}
               onClick={() => {
                 navigate(`/post/${data.post._id}`);

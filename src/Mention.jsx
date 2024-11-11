@@ -29,7 +29,6 @@ const Container = styled.div`
 
 const Item = styled.div`
   background-color: rgba(255, 255, 255, 0.4);
-  padding: 15px;
   font-size: 14px;
   border-bottom: 1px solid rgba(210, 210, 210, 0.5);
 
@@ -109,6 +108,7 @@ const PostInfo = styled.div`
   border-radius: 4px;
   margin-top: 8px;
   font-size: 13px;
+  margin-right: 10px;
 
   .top_notify {
     padding: 9px 4px;
@@ -205,7 +205,7 @@ const MentionDashboard = () => {
         if (type === "follow") {
           return (
             <Item
-              className="flex gap-sm pt-4 pb-4 pointer"
+              className="flex gap-sm pt-3 pb-3 pointer"
               key={n._id}
               onClick={() => {
                 navigate(`/post/${data.post._id}`);
@@ -237,7 +237,7 @@ const MentionDashboard = () => {
           // console.log(n);
           return (
             <Item
-              className="flex gap-sm pt-4 pb-4 pointer"
+              className="flex gap-sm pt-3 pb-3 pointer"
               key={n._id}
               onClick={() => {
                 navigate(`/post/${data.post._id}`);
@@ -260,7 +260,9 @@ const MentionDashboard = () => {
                   <div>{!n.isRead && <div className="alert"></div>}</div>
                 </div>
                 <div className="time">{formatDate(createdAt)}</div>
-                <PostInfo>{formattedContent(post?.content || "")}</PostInfo>
+                <PostInfo className="mr-4">
+                  {formattedContent(post?.content || "")}
+                </PostInfo>
               </div>
             </Item>
           );
@@ -271,7 +273,7 @@ const MentionDashboard = () => {
 
           return (
             <Item
-              className="flex gap-sm pt-4 pb-4 pointer"
+              className="flex gap-sm pt-3 pb-3 pointer"
               key={n._id}
               onClick={() => {
                 navigate(`/post/${data.post._id}`);
