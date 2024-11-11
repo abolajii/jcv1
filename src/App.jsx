@@ -9,6 +9,7 @@ import Bookmark from "./Bookmark";
 import Connections from "./Connections";
 import Conversation from "./Conversation";
 import Dashboard from "./Dashboard";
+import EditProfile from "./EditProfile";
 import Login from "./pages/Login";
 import Notification from "./Notification";
 import Profile from "./Profile";
@@ -138,6 +139,14 @@ const App = () => {
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <UserProfilePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/edit/profile"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <EditProfile />
                 </ProtectedRoute>
               }
             />

@@ -175,6 +175,8 @@ const UserProfilePage = () => {
 
   const finalUser = user || singleUser;
 
+  console.log(user);
+
   return (
     <MainContainer noSidebar>
       <Inner>
@@ -188,7 +190,7 @@ const UserProfilePage = () => {
           <IconWrapper
             style={{ right: "15px" }}
             onClick={() => {
-              navigate("/profile");
+              navigate("/edit/profile");
             }}
           >
             <MdSettings />
@@ -236,14 +238,20 @@ const UserProfilePage = () => {
                 navigate(`/c/${finalUser.username}/fwn`);
               }}
             >
-              <span>{finalUser?.following?.length}</span> Following
+              <span>
+                {finalUser?.following || finalUser?.following?.length}
+              </span>{" "}
+              Following
             </div>
             <div
               onClick={() => {
                 navigate(`/c/${finalUser.username}/flr`);
               }}
             >
-              <span>{finalUser?.followers?.length}</span> Followers
+              <span>
+                {finalUser?.followers || finalUser?.followers?.length}
+              </span>
+              Followers
             </div>
           </StatsContainer>
         </div>
