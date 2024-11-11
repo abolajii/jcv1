@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineBell } from "react-icons/ai";
 import { BsChatDots } from "react-icons/bs";
 import { FaRegBookmark } from "react-icons/fa";
+import { HiCheckBadge } from "react-icons/hi2";
 import { IoIosHome } from "react-icons/io";
 import { IoSearchOutline } from "react-icons/io5";
 /* eslint-disable react/prop-types */
@@ -73,7 +74,6 @@ const UserAvi = styled.div`
 `;
 
 const ToggleButton = styled.div`
-  background-color: rgba(28, 28, 28, 0.5);
   height: 100%;
   width: 50%;
   position: absolute;
@@ -219,14 +219,26 @@ const Drawer = ({ isOpen }) => {
           ))}
         </div>
         <div className="bottom pl-2 pr-2">
-          <div className="flex gap">
+          <div
+            className="flex gap"
+            onClick={() => {
+              navigate("/profile");
+            }}
+          >
             <div>
               <UserAvi>
                 <img src={user?.profilePic} alt="User avatar" />
               </UserAvi>
             </div>
             <div className="ml-2">
-              <div className="name">{user.name}</div>
+              <div className="name flex">
+                {user.name}
+                {user?.isVerified && (
+                  <div className="center">
+                    <HiCheckBadge color="#1b9d87" />
+                  </div>
+                )}
+              </div>
               <div className="time flex">
                 <div>@{user.username}</div>
                 <div className="divider"></div>

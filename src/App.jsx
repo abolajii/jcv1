@@ -19,6 +19,7 @@ import SecondConversation from "./SecondConversation";
 import Settings from "./Settings";
 import SinglePost from "./SinglePost";
 import UserProfile from "./UserProfile";
+import UserProfilePage from "./UserProfilePage";
 import { createGlobalStyle } from "styled-components";
 import useAuthStore from "./store/useAuthStore";
 
@@ -76,14 +77,14 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            <Route
+            {/* <Route
               path="/profile"
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <Profile />
                 </ProtectedRoute>
               }
-            />
+            /> */}
             <Route
               path="/search"
               element={
@@ -129,6 +130,14 @@ const App = () => {
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <Settings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <UserProfilePage />
                 </ProtectedRoute>
               }
             />
