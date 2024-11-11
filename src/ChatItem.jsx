@@ -95,7 +95,7 @@ const ChatItem = ({
   time,
   alertCount,
   status,
-  avatar,
+  profilePic,
   isGroup,
   id,
   isSelected,
@@ -110,11 +110,11 @@ const ChatItem = ({
       className={isSelected && "active"}
       onClick={() => {
         navigate("/conversation/" + id);
-        setSelectedUser({ name, avatar, groupMembers });
+        setSelectedUser({ name, profilePic, groupMembers });
       }}
     >
       <Box>
-        {/* <img src={avatar} alt="User Avatar" /> */}
+        {profilePic && <img src={profilePic} alt="User Avatar" />}
         {status && <StatusIcon />}
       </Box>
 

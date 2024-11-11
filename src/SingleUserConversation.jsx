@@ -1,11 +1,11 @@
 import { FiSend, FiSmile } from "react-icons/fi";
 import { MdAdd, MdMoreHoriz } from "react-icons/md";
+import { getUserConversationMessages, sendTextMessage } from "./api/requests";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRef, useState } from "react";
 
 import GoBack from "./GoBack";
 import MainContainer from "./MainContainer";
-import { sendTextMessage } from "./api/requests";
 import styled from "styled-components";
 import usePostStore from "./store/usePostStore";
 
@@ -111,6 +111,25 @@ const SingleUserConversation = () => {
   const { id } = useParams();
   const textareaRef = useRef(null);
   const [message, setMessage] = useState("");
+  const [isOpen, setLoading] = useState(true);
+
+  const [allMessages, setAllMessages] = useState([]);
+
+  useEffect(() => {
+    const fetchMutualFollow = async () => {
+      try {
+        const response = await getUserConversationMessages(id);
+        setAllMessages(response);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
+    fetchMutualFollow();
+  }, [id]);
+
+  console.log(allMessages);
 
   const finalUser = selectedUser;
 
@@ -150,7 +169,9 @@ const SingleUserConversation = () => {
           </div>
           <div className="flex gap-sm">
             <Box>
-              {/* <img src={finalUser?.profilePic} alt="User Avatar" /> */}
+              {finalUser && (
+                <img src={finalUser?.profilePic} alt="User Avatar" />
+              )}
             </Box>
             <div>
               <div className="name">{finalUser?.name}</div>

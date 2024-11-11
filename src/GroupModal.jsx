@@ -79,12 +79,18 @@ const GroupModal = ({ isOpen, setIsClosing, isClosing, setIsOpen }) => {
 
   const createGroupChat = async () => {
     const userIds = selectedUsers.map((u) => u._id);
-    const data = {
-      participants: userIds,
-      groupName,
-    };
+
+    const formData = new FormData();
+
+    userIds.forEach((userId) => {
+      formData.append("participants", userId);
+    });
+
+    formData.append("groupName", groupName);
+    formData.append("file", file);
+
     try {
-      const response = await createGroupConversation(data);
+      const response = await createGroupConversation(formData);
       console.log(response);
       closeModal();
     } catch (error) {

@@ -74,7 +74,7 @@ const UserConversation = () => {
                 message={chat.message}
                 time={chat.time}
                 alertCount={chat.alertCount}
-                avatar={chat.avatar}
+                profilePic={chat.profilePic}
                 status={chat.status}
                 isGroup={chat.isGroup}
                 groupMembers={chat.groupMembers}
@@ -110,8 +110,8 @@ const UserConversation = () => {
         )} */}
 
         {/* All Messages Section */}
-        <div className="flex align-center small">
-          <BiSolidMessageSquareDetail color="#a9a9a9" />
+        <div className="flex align-center small pl-1 pt-1">
+          <BiSolidMessageSquareDetail color="#a9a9a9" size={20} />
           <p className="mute">All Messages</p>
         </div>
         {allMessages.length > 0 ? (
@@ -124,7 +124,7 @@ const UserConversation = () => {
               message={chat.message}
               time={chat.time}
               alertCount={chat.alertCount}
-              avatar={chat.avatar}
+              profilePic={chat.profilePic}
               groupMembers={chat.groupMembers}
               //   isSelected={conversation?.id === chat.id}
               status={chat.status}
@@ -132,7 +132,7 @@ const UserConversation = () => {
             />
           ))
         ) : (
-          <p className="mute">No messages</p>
+          <p className="mute text-sm mt-4">No messages</p>
         )}
       </ChatMenu>
     </Container>
