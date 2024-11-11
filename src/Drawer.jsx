@@ -107,12 +107,11 @@ const SidebarItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 20px;
+  padding: 18px 20px;
   cursor: pointer;
   font-size: 14px;
   /* max-width: 300px; */
   transition: background-color 0.2s ease, color 0.2s ease;
-  border-radius: 6px;
   background-color: ${(props) =>
     props.active
       ? "rgba(54, 187, 186,.1)"
@@ -126,6 +125,7 @@ const SidebarItem = styled.div`
 
   & > svg {
     margin-right: 10px;
+    margin-left: 10px;
   }
 `;
 
@@ -239,7 +239,7 @@ const Drawer = ({ isOpen }) => {
                   </div>
                 )}
               </div>
-              <div className="time flex">
+              <div className="time flex align-center">
                 <div>@{user.username}</div>
                 <div className="divider"></div>
                 <div>{user.postCount} posts</div>
