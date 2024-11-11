@@ -127,3 +127,23 @@ export const globalSearch = async (query) => {
   const response = await chatAppAuth.get(`/search?query=${query}`);
   return response.data; // Return
 };
+
+export const getMutualFollow = async () => {
+  const response = await chatAppAuth.get(`/mutual`);
+  return response.data; // Return
+};
+
+export const createGroupConversation = async (data) => {
+  const response = await chatAppAuth.post(`/group`, data);
+  return response.data; // Re
+};
+
+export const getUserConversation = async () => {
+  const response = await chatAppAuth.get(`/user/conversation`);
+  return response.data;
+};
+
+export const sendTextMessage = async (data) => {
+  const response = await chatAppAuth.post(`/send`, data);
+  return response.data; // Re
+};

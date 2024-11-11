@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 const Spinner = styled.div`
-  border: 2px solid rgba(191, 153, 251, 0.4);
-  border-top: 2px solid #abe4dd;
+  border: 2px solid #9ea9a7;
+  border-top: 2px solid #4b8f92;
   border-radius: 50%;
-  width: 13px;
-  height: 13px;
+  width: 17px;
+  height: 17px;
   animation: spin 1s linear infinite;
 
   @keyframes spin {

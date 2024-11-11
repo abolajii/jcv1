@@ -54,12 +54,17 @@ export const formatDate = (date) => {
 };
 
 export const truncateWords = (text, maxWords) => {
-  const wordsArray = text.split(" "); // Split the text by spaces to get words
-  if (wordsArray.length <= maxWords) {
-    return text; // If the number of words is less than or equal to maxWords, return the original text
+  // Split the text into words
+  const words = text.split(" ");
+
+  // Check if the word count exceeds the maxWords limit
+  if (words.length > maxWords) {
+    // Join the first maxWords words and add an ellipsis at the end
+    return words.slice(0, maxWords).join(" ") + "...";
   }
 
-  return wordsArray.slice(0, maxWords).join(" ") + "..."; // Join back the first maxWords and add ellipsis
+  // If the word count is within the limit, return the text as is
+  return text;
 };
 
 // export const formattedContent = (post) => {
