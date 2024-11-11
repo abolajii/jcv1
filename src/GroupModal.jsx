@@ -16,6 +16,7 @@ const GroupModal = ({ isOpen, setIsClosing, isClosing, setIsOpen }) => {
   const [file, setFile] = React.useState(null);
 
   const [loading, setLoading] = React.useState(true);
+  const [clicked, setClicked] = React.useState(false);
 
   React.useEffect(() => {
     const fetchMutualFollow = async () => {
@@ -78,6 +79,7 @@ const GroupModal = ({ isOpen, setIsClosing, isClosing, setIsOpen }) => {
   };
 
   const createGroupChat = async () => {
+    setClicked(true);
     const userIds = selectedUsers.map((u) => u._id);
 
     const formData = new FormData();
@@ -92,9 +94,11 @@ const GroupModal = ({ isOpen, setIsClosing, isClosing, setIsOpen }) => {
     try {
       const response = await createGroupConversation(formData);
       console.log(response);
+      setClicked(false);
       closeModal();
     } catch (error) {
       console.log(error);
+      setClicked(false);
     }
   };
 
@@ -154,7 +158,9 @@ const GroupModal = ({ isOpen, setIsClosing, isClosing, setIsOpen }) => {
                     <div className="member">New group</div>
                   </div>
                   <div className="btn">
-                    <button onClick={createGroupChat}>Create</button>
+                    <button onClick={createGroupChat}>
+                      {clicked ? <Spinner /> : "Create"}
+                    </button>
                   </div>
                 </Top>
                 <MenuItem>

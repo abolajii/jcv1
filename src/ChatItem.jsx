@@ -76,9 +76,9 @@ const TimeText = styled.p`
 `;
 
 const AlertBox = styled.div`
-  height: 20px;
-  width: 20px;
-  background: #c3efef;
+  background-color: rgb(27, 157, 135);
+  height: 8px;
+  width: 8px;
   border-radius: 50%;
   font-weight: bold;
   font-size: 12px;
@@ -135,7 +135,7 @@ const ChatItem = ({
               <span>{message}</span>
             )} */}
           </MessageText>
-          <div>{lastMessageSender === null && <AlertBox>1</AlertBox>}</div>
+          <div>{lastMessageSender === null && <AlertBox />}</div>
           {/* <div>{alertCount > 0 && <AlertBox>{alertCount}</AlertBox>}</div> */}
         </div>
       </div>

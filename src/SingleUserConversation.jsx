@@ -169,7 +169,7 @@ const SingleUserConversation = () => {
           </div>
           <div className="flex gap-sm">
             <Box>
-              {finalUser && (
+              {finalUser.profilePic !== null && (
                 <img src={finalUser?.profilePic} alt="User Avatar" />
               )}
             </Box>
