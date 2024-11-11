@@ -192,7 +192,7 @@ const Dashboard = () => {
         <div className="flex gap-md justify-between w-100">
           <div className="box center">
             <GiHamburgerMenu
-              size={14}
+              size={25}
               color="#36bbba"
               onClick={toggleSidebar}
             />
