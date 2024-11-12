@@ -6,22 +6,18 @@ import { Spinner } from "./components";
 import { getUserConversation } from "./api/requests";
 import styled from "styled-components";
 
-const Container = styled.div`
-  margin-top: 20px;
-`;
+const Container = styled.div``;
 
 const ChatMenu = styled.div`
-  margin-top: 30px;
-
   .mute {
     color: #444444;
     margin-left: 6px;
+    font-size: 16px;
   }
 
   .small {
     font-size: 13px;
-    margin-top: 20px;
-    margin-bottom: 4px;
+    margin-bottom: 9px;
   }
 `;
 
@@ -63,7 +59,7 @@ const UserConversation = () => {
         {pinnedMessages.length > 0 && (
           <>
             <div className="flex align-center small">
-              <RiPushpinFill color="#a9a9a9" />
+              <RiPushpinFill color="#a9a9a9" size={22} />
               <p className="mute">Pinned</p>
             </div>
             {pinnedMessages.map((chat) => (

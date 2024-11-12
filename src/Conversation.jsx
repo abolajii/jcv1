@@ -11,15 +11,21 @@ import styled from "styled-components";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+
+  .input {
+    width: 100%;
+  }
 `;
 
 const Top = styled.div`
   display: flex;
-  justify-content: end;
-
+  /* gap: 1px; */
+  /* justify-content: end; */
+  align-items: center;
+  margin-bottom: 10px;
   .box {
-    height: 40px;
-    width: 40px;
+    height: 24px;
+    width: 24px;
     border-radius: 50%;
     &:hover {
       background-color: #c0e2e2;
@@ -35,6 +41,11 @@ const Top = styled.div`
     gap: 7px;
     margin-top: 15px;
   }
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  /* gap: 10px; */
 `;
 
 const Conversation = () => {
@@ -55,18 +66,22 @@ const Conversation = () => {
           setIsOpen={setIsOpen}
           setIsClosing={setIsClosing}
         />
-        <Top>
-          <div className="flex">
-            <div className="pointer box center" onClick={openModal}>
-              <AiOutlineUsergroupAdd color="#36bbba" size={23} />
-            </div>
-            {/* <div className="pointer"> */}
-            <div className="pointer box center">
-              <IoFilterSharp color="#36bbba" size={21} />
-            </div>
+        <Top className="flex justify-between align-center">
+          <div className="input mr-1">
+            <SearchInput />
           </div>
+
+          <IconContainer>
+            <div className="flex">
+              <div className="pointer box center" onClick={openModal}>
+                <AiOutlineUsergroupAdd color="#36bbba" size={23} />
+              </div>
+              <div className="pointer box center">
+                <IoFilterSharp color="#36bbba" size={21} />
+              </div>
+            </div>
+          </IconContainer>
         </Top>
-        <SearchInput />
         <div>
           <UserConversation />
         </div>

@@ -1,9 +1,10 @@
 import { FaSearch } from "react-icons/fa";
 import React from "react";
 import styled from "styled-components";
-
+// Styles
 const SearchContainer = styled.div`
   margin-top: 10px;
+  flex: 1; /* Allow it to take up remaining space */
 `;
 
 const SearchBox = styled.div`
@@ -12,12 +13,11 @@ const SearchBox = styled.div`
   justify-content: ${(props) => (props.expanded ? "flex-start" : "center")};
   border: 1px solid #ccc;
   border-radius: ${(props) => (props.expanded ? "5px" : "50%")};
-  width: ${(props) => (props.expanded ? "100%" : "40px")};
-  height: 40px;
+  width: ${(props) => (props.expanded ? "100%" : "30px")};
+  height: 30px;
   transition: all 0.2s ease;
   background: #ddeded;
-  padding-left: ${(props) =>
-    props.expanded ? "10px" : "0"}; /* Add padding only when expanded */
+  padding-left: ${(props) => (props.expanded ? "10px" : "0")};
 `;
 
 const Input = styled.input`
@@ -38,6 +38,7 @@ const SearchIcon = styled(FaSearch)`
   cursor: pointer;
 `;
 
+// SearchInput component
 const SearchInput = () => {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -48,7 +49,7 @@ const SearchInput = () => {
   return (
     <SearchContainer>
       <SearchBox expanded={expanded}>
-        <SearchIcon onClick={toggleSearch} color="#36bbba" size={17} />
+        <SearchIcon onClick={toggleSearch} color="#36bbba" size={15} />
         <Input
           type="text"
           placeholder="Search for anything..."
@@ -58,5 +59,4 @@ const SearchInput = () => {
     </SearchContainer>
   );
 };
-
 export default SearchInput;
