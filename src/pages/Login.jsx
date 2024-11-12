@@ -26,6 +26,7 @@ const Login = () => {
   const { setUser } = useAuthStore(); // Access setUser function from auth store
   const navigate = useNavigate(); // Hook for navigation
 
+  const [error, setError] = useState("");
   const [errors, setErrors] = useState({}); // State for validation errors
 
   const validateForm = () => {
@@ -40,6 +41,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     if (!validateForm()) return; // Validate form and stop submission if errors exist
 
@@ -57,7 +59,8 @@ const Login = () => {
 
       setTimeout(() => navigate("/dashboard"), 2000); // Redirect after 2 seconds
     } catch (error) {
-      console.log(error);
+      setError(error.response.data.message);
+      // setErrors(error.data.response)
     } finally {
       setLoading(false);
     }
@@ -96,6 +99,7 @@ const Login = () => {
           />
         </InputContainer>
         {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+        <ErrorMessage>{error}</ErrorMessage>
 
         <LoginButton type="submit" className="center mb-2">
           {loading ? <Spinner /> : "Log in"}
