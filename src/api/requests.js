@@ -148,6 +148,11 @@ export const getUserConversationMessages = async (id) => {
   return response.data;
 };
 
+export const getConversation = async (id) => {
+  const response = await chatAppAuth.get(`/conversations/${id}`);
+  return response.data;
+};
+
 export const sendTextMessage = async (data) => {
   const response = await chatAppAuth.post(`/send`, data);
   return response.data; // Re

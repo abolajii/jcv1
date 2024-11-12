@@ -395,7 +395,8 @@ const Inner = styled.div`
   width: 350px;
   margin-top: 20px;
   border-radius: 10px;
-  background-color: #bedede;
+  background-color: #eaf5f2;
+
   position: relative;
   height: 630px;
   overflow: hidden;

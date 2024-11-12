@@ -1,10 +1,15 @@
 import { FiSend, FiSmile } from "react-icons/fi";
-import { MdAdd, MdMoreHoriz, MdMoreVert } from "react-icons/md";
-import { getUserConversationMessages, sendTextMessage } from "./api/requests";
+import { MdAdd, MdClose, MdMoreVert } from "react-icons/md";
+import {
+  getConversation,
+  getUserConversationMessages,
+  sendTextMessage,
+} from "./api/requests";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import GoBack from "./GoBack";
+import GroupInfo from "./GroupInfo";
 import MainContainer from "./MainContainer";
 import styled from "styled-components";
 import usePostStore from "./store/usePostStore";
@@ -111,8 +116,10 @@ const SingleUserConversation = () => {
   const { id } = useParams();
   const textareaRef = useRef(null);
   const [message, setMessage] = useState("");
-  const [isOpen, setLoading] = useState(true);
-
+  const [loading, setLoading] = useState(true);
+  const [singleChat, setSingleChat] = useState(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State to control drawer visibility
+  const [conversation, setConversation] = useState(null);
   const [allMessages, setAllMessages] = useState([]);
 
   useEffect(() => {
@@ -120,6 +127,7 @@ const SingleUserConversation = () => {
       try {
         const response = await getUserConversationMessages(id);
         setAllMessages(response);
+        // setSingleChat(response);
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -129,9 +137,22 @@ const SingleUserConversation = () => {
     fetchMutualFollow();
   }, [id]);
 
-  console.log(allMessages);
+  useEffect(() => {
+    const fetchConversation = async () => {
+      try {
+        const response = await getConversation(id);
+        setSingleChat(response);
+        // setSingleChat(response);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
+    fetchConversation();
+  }, [id]);
 
-  const finalUser = selectedUser;
+  const finalUser = selectedUser || singleChat;
 
   const handleTextareaChange = (e) => {
     setMessage(e.target.value);
@@ -160,22 +181,53 @@ const SingleUserConversation = () => {
     }
   };
 
+  const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
+
+  if (loading) {
+    return (
+      <div>
+        <Header className="flex align-center justify-between">
+          <div className="flex align-center gap-sm">
+            <div>
+              <GoBack onClick={() => navigate(`/conversation`)} />
+            </div>
+            <div className="flex gap-sm" onClick={toggleDrawer}>
+              <Box></Box>
+            </div>
+          </div>
+          <div>
+            <MdMoreVert size={22} />
+          </div>
+        </Header>
+      </div>
+    );
+  }
+
   return (
     <MainContainer noSidebar>
+      <GroupInfo
+        isOpen={isDrawerOpen}
+        toggleDrawer={toggleDrawer}
+        conversation={singleChat}
+      />
       <Header className="flex align-center justify-between">
         <div className="flex align-center gap-sm">
           <div>
             <GoBack onClick={() => navigate(`/conversation`)} />
           </div>
-          <div className="flex gap-sm">
+          <div className="flex gap-sm" onClick={toggleDrawer}>
             <Box>
-              {finalUser.profilePic !== null && (
-                <img src={finalUser?.profilePic} alt="User Avatar" />
+              {finalUser?.profilePic !== null && (
+                <img src={finalUser?.profilePic} alt="" />
               )}
             </Box>
             <div>
               <div className="name">{finalUser?.name}</div>
-              <p className="typing">{finalUser?.groupMembers.length} members</p>
+              {finalUser?.groupMembers?.length && (
+                <p className="typing">
+                  {finalUser?.groupMembers?.length} members
+                </p>
+              )}
             </div>
           </div>
         </div>

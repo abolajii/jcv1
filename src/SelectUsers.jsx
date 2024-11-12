@@ -159,8 +159,9 @@ const GroupTitle = styled.h3`
   position: sticky;
   top: 0;
   z-index: 1;
-
-  background-color: #c3ebeb;
+  padding-left: 2px;
+  padding-top: 2px;
+  background-color: #d8efef;
 `;
 
 const MenuItem = styled.div`
@@ -168,7 +169,8 @@ const MenuItem = styled.div`
   margin-bottom: 20px;
   border-radius: 5px;
   background-color: #a58ca933;
-  background-color: rgba(195, 235, 235, 0.7);
+  background-color: rgba(195, 235, 235, 0.3);
+  /* background-color: #eaf5f2; */
 
   padding: 10px;
 
