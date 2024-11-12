@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import GoBack from "./GoBack";
 import GroupInfo from "./GroupInfo";
 import MainContainer from "./MainContainer";
+import group from "./group.png";
 import styled from "styled-components";
 import usePostStore from "./store/usePostStore";
 
@@ -119,7 +120,7 @@ const SingleUserConversation = () => {
   const [loading, setLoading] = useState(true);
   const [singleChat, setSingleChat] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State to control drawer visibility
-  const [conversation, setConversation] = useState(null);
+  // const [conversation, setConversation] = useState(null);
   const [allMessages, setAllMessages] = useState([]);
 
   useEffect(() => {
@@ -217,8 +218,17 @@ const SingleUserConversation = () => {
           </div>
           <div className="flex gap-sm" onClick={toggleDrawer}>
             <Box>
+              {/* {finalUser?.profilePic !== null && (
+                <img src={finalUser?.profilePic} alt="" />
+              )} */}
               {finalUser?.profilePic !== null && (
                 <img src={finalUser?.profilePic} alt="" />
+              )}
+
+              {finalUser.profilePic && finalUser.isGroup ? (
+                <img src={finalUser.profilePic} alt="User Avatar" />
+              ) : (
+                <img src={group} />
               )}
             </Box>
             <div>
