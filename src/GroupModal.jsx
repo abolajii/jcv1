@@ -148,8 +148,8 @@ const GroupModal = ({ isOpen, setIsClosing, isClosing, setIsOpen }) => {
                 <Top>
                   <button onClick={handleBack} className="center">
                     <MdChevronLeft
-                      size={24}
-                      color={"#36bbba"}
+                      size={22}
+                      color={"#434141"}
                       className="pointer"
                     />
                   </button>
@@ -222,13 +222,12 @@ const GroupModal = ({ isOpen, setIsClosing, isClosing, setIsOpen }) => {
 
                 <div className="flex gap-sm mt-4">
                   {selectedUsers.map((user) => {
-                    // console.log(user);
                     return (
                       <div key={user._id}>
                         <Box>
                           <img src={user.profilePic} alt="image" />
                           <div className="name">
-                            {truncateWords(user.name, 200)}
+                            {truncateWords(user.name, 10)}
                           </div>
                         </Box>
                       </div>
@@ -421,7 +420,7 @@ const Top = styled.div`
 
   .member,
   .btn {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .total {

@@ -1,5 +1,5 @@
 import { FiSend, FiSmile } from "react-icons/fi";
-import { MdAdd, MdMoreHoriz } from "react-icons/md";
+import { MdAdd, MdMoreHoriz, MdMoreVert } from "react-icons/md";
 import { getUserConversationMessages, sendTextMessage } from "./api/requests";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -180,7 +180,7 @@ const SingleUserConversation = () => {
           </div>
         </div>
         <div>
-          <MdMoreHoriz size={22} />
+          <MdMoreVert size={22} />
         </div>
       </Header>
 
