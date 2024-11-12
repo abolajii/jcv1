@@ -122,7 +122,7 @@ const GroupInfo = ({ isOpen, toggleDrawer, conversation }) => {
           <div className="flex align-center text-xs member">
             <p>Group</p>
             <BsDot />
-            <p className="text-xs ">
+            <p className="text-xs">
               {conversation?.groupMembers.length} members
             </p>
           </div>
