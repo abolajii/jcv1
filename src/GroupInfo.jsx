@@ -112,7 +112,8 @@ const GroupInfo = ({ isOpen, toggleDrawer, conversation }) => {
               onClick={() => setActiveTab("media")}
             >
               <TabContent>
-                Media <div className="count center">20</div>
+                Media
+                {/* <div className="count center">20</div> */}
               </TabContent>
             </Tab>
             <Tab
@@ -121,23 +122,26 @@ const GroupInfo = ({ isOpen, toggleDrawer, conversation }) => {
               onClick={() => setActiveTab("files")}
             >
               <TabContent>
-                Files <div className="count center">24</div>
+                Files
+                {/* <div className="count center">24</div> */}
               </TabContent>
             </Tab>
           </div>
-          <div className="mt-4">
+          <div className="mt-1 mb-3 border-b-1">
             {activeTab === "media" && <Media />}
             {activeTab === "files" && <Files />}
           </div>
         </div>
 
-        <div className="mt-4 pl-2 pr-2">
+        <div className="mt-2 pl-2 pr-2">
           <div className="flex justify-between align-center">
             <div className="center">
               <FaUserFriends color="#5ababa" size={18} />
               <p className="ml-1 text-sm">Members</p>
             </div>
-            <button className="text-sm pointer">See All</button>
+            {conversation.groupMembers.length > 5 && (
+              <button className="text-sm pointer">See All</button>
+            )}
           </div>
           <MemberContainer>
             <Members members={conversation?.groupMembers} />
@@ -151,18 +155,12 @@ const GroupInfo = ({ isOpen, toggleDrawer, conversation }) => {
 export default GroupInfo;
 
 const MemberContainer = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
   .avi {
     height: 50px;
     width: 50px;
     border-radius: 50%;
     background-color: #a2a2a2;
-  }
-
-  .ml-1 {
-    .text-sm {
-      margin-top: -2px;
-    }
   }
 
   img {
