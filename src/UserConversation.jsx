@@ -46,7 +46,7 @@ const UserConversation = () => {
     return (
       <Container>
         <ChatMenu>
-          <div className="pl-2">
+          <div className="pl-2 pt-2">
             <Spinner />
           </div>
         </ChatMenu>

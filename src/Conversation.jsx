@@ -5,7 +5,6 @@ import MainContainer from "./MainContainer";
 import React from "react";
 import SearchInput from "./SearchInput";
 import UserConversation from "./UserConversation";
-import message from "./message.png";
 import styled from "styled-components";
 
 const Container = styled.div`

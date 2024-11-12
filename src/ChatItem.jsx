@@ -1,3 +1,4 @@
+import group from "./group.png";
 import styled from "styled-components";
 /* eslint-disable react/prop-types */
 import { useNavigate } from "react-router-dom";
@@ -115,6 +116,12 @@ const ChatItem = ({
     >
       <Box>
         {profilePic && <img src={profilePic} alt="User Avatar" />}
+        {profilePic && isGroup ? (
+          <img src={profilePic} alt="User Avatar" />
+        ) : (
+          <img src={group} />
+        )}
+
         {status && <StatusIcon />}
       </Box>
 
