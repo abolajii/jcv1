@@ -35,10 +35,15 @@ const Drawer = styled.div`
     margin-left: 4px;
   }
 
-  .description {
-    font-size: 14px;
+  .description,
+  .member {
+    font-size: 11px;
     color: #161616;
     line-height: 1.3;
+  }
+
+  .description {
+    margin-top: 10px;
   }
 
   .drawer-header {
@@ -64,11 +69,12 @@ const Drawer = styled.div`
 `;
 
 const BigImage = styled.div`
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
   background: #bcc3c3;
   border-radius: 50%;
   margin-top: 10px;
+  margin-bottom: 6px;
   img {
     height: 40px;
     width: 40px;
@@ -106,23 +112,25 @@ const GroupInfo = ({ isOpen, toggleDrawer, conversation }) => {
             <img src={group} alt="Group" />
           </BigImage>
           <div className="flex align-center">
-            <div className="text-sm">{conversation?.name}</div>
+            <p className="text-xs">{conversation?.name}</p>
             {user.name === conversation?.createdBy?.name && (
               <div className="center ml-1 cursor">
                 <FiEdit3 color="#36bbba" />
               </div>
             )}
           </div>
-          <div className="flex align-center text-sm">
+          <div className="flex align-center text-xs member">
             <p>Group</p>
             <BsDot />
-            <p>{conversation?.groupMembers.length} members</p>
+            <p className="text-xs ">
+              {conversation?.groupMembers.length} members
+            </p>
           </div>
         </div>
         <div className="pl-3 pt-3 pr-3">
-          <div className="flex align-center small mb-1">
+          <div className="flex align-center small mb-1 gap-sm">
             <BiSolidNotepad color="#5ababa" size={18} />
-            <p className="text-sm ml-1">Description</p>
+            <p className="text-xs">Description</p>
           </div>
           <div className="description border-b-1 pb-2">
             A dynamic community where creativity meets purpose. Join like-minded
@@ -153,17 +161,17 @@ const GroupInfo = ({ isOpen, toggleDrawer, conversation }) => {
               </TabContent>
             </Tab>
           </div>
-          <div className="mt-1 mb-3 border-b-1">
+          <div className="mt-1 mb-3 border-b-1 pb-2">
             {activeTab === "media" && <Media />}
             {activeTab === "files" && <Files />}
           </div>
         </div>
 
         <div className="mt-2 pl-2 pr-2">
-          <div className="flex justify-between align-center">
-            <div className="center">
+          <div className="flex justify-between align-center ">
+            <div className="center gap-sm">
               <FaUserFriends color="#5ababa" size={18} />
-              <p className="ml-1 text-sm">Members</p>
+              <p className="text-xs">Members</p>
             </div>
             {conversation?.groupMembers?.length > 5 && (
               <button className="text-sm pointer">See All</button>
@@ -172,7 +180,7 @@ const GroupInfo = ({ isOpen, toggleDrawer, conversation }) => {
           <MemberContainer>
             <Members
               members={conversation?.groupMembers}
-              createdBy={conversation.createdBy}
+              createdBy={conversation?.createdBy}
             />
           </MemberContainer>
         </div>
@@ -191,8 +199,8 @@ export default GroupInfo;
 const MemberContainer = styled.div`
   margin-top: 10px;
   .avi {
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
     border-radius: 50%;
     background-color: #a2a2a2;
   }
@@ -235,7 +243,7 @@ const TabContent = styled.div`
   display: flex;
   align-items: center;
   border-radius: 9px;
-  font-size: 14px;
+  font-size: 13px;
 
   .count {
     background-color: white;

@@ -13,7 +13,7 @@ const AdminBadge = styled.div`
 const Members = ({ members, createdBy }) => {
   return members?.map((m) => {
     return (
-      <div key={m._id} className="flex mb-3 justify-between">
+      <div key={m._id} className="flex mb-3 justify-between text-xs">
         <div className="flex">
           <div>
             <div className="avi">
@@ -21,13 +21,13 @@ const Members = ({ members, createdBy }) => {
             </div>
           </div>
           <div className="ml-2">
-            <p className="text-sm flex">
+            <p className="text-xs flex">
               {m.name}
               <div className="verify">
                 {m?.isVerified && <HiCheckBadge color="#1b9d87" />}
               </div>
             </p>
-            <p className="text-sm">@{m.username}</p>
+            <p className="text-xs">@{m.username}</p>
           </div>
         </div>
         <div>{m._id === createdBy?._id && <AdminBadge>Admin</AdminBadge>}</div>

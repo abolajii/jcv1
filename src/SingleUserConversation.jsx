@@ -186,7 +186,7 @@ const SingleUserConversation = () => {
 
   if (loading) {
     return (
-      <div>
+      <MainContainer noSidebar>
         <Header className="flex align-center justify-between">
           <div className="flex align-center gap-sm">
             <div>
@@ -200,7 +200,26 @@ const SingleUserConversation = () => {
             <MdMoreVert size={22} />
           </div>
         </Header>
-      </div>
+        <Body>{/* Message content here */}</Body>
+        <Footer>
+          <div className="icon-container">
+            <MdAdd size={24} />
+          </div>
+          <div className="textarea-container">
+            <textarea
+              ref={textareaRef}
+              value={message}
+              onChange={handleTextareaChange}
+              placeholder="Type a message..."
+              rows="1"
+            />
+            <FiSmile size={20} className="smiley-icon" />
+          </div>
+          <div className="icon-container" onClick={sendMessage}>
+            <FiSend size={24} />
+          </div>
+        </Footer>
+      </MainContainer>
     );
   }
 
