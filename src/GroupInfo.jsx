@@ -1,3 +1,5 @@
+import { useMemo, useState } from "react";
+
 /* eslint-disable react/prop-types */
 import { BiSolidNotepad } from "react-icons/bi";
 import { BsDot } from "react-icons/bs";
@@ -10,7 +12,7 @@ import Members from "./Members";
 import group from "./group.png";
 import styled from "styled-components";
 import useAuthStore from "./store/useAuthStore";
-import { useState } from "react";
+
 const Drawer = styled.div`
   position: fixed;
   top: 0;
@@ -44,6 +46,21 @@ const Drawer = styled.div`
     justify-content: space-between;
     align-items: center;
   }
+
+  .detail {
+    position: absolute;
+    bottom: 0;
+    color: #2e2e2e;
+  }
+
+  .line {
+    height: 15px;
+    width: 1px;
+    background-color: #736f6f;
+    margin-left: 4px;
+    margin-right: 4px;
+    border-radius: 3px;
+  }
 `;
 
 const BigImage = styled.div`
@@ -63,6 +80,15 @@ const BigImage = styled.div`
 const GroupInfo = ({ isOpen, toggleDrawer, conversation }) => {
   const { user } = useAuthStore();
   const [activeTab, setActiveTab] = useState("media");
+
+  const formattedDate = useMemo(() => {
+    if (!conversation?.createdAt) return "";
+    return new Date(conversation.createdAt).toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  }, [conversation?.createdAt]);
 
   return (
     <Drawer isOpen={isOpen}>
@@ -144,9 +170,17 @@ const GroupInfo = ({ isOpen, toggleDrawer, conversation }) => {
             )}
           </div>
           <MemberContainer>
-            <Members members={conversation?.groupMembers} />
+            <Members
+              members={conversation?.groupMembers}
+              createdBy={conversation.createdBy}
+            />
           </MemberContainer>
         </div>
+      </div>
+      <div className="flex detail p-3 text-xs bold align-center">
+        <p>Created by {conversation?.createdBy.name}</p>
+        <div className="line"></div>
+        <p>{formattedDate}</p>
       </div>
     </Drawer>
   );
