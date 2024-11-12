@@ -165,7 +165,7 @@ const GroupInfo = ({ isOpen, toggleDrawer, conversation }) => {
               <FaUserFriends color="#5ababa" size={18} />
               <p className="ml-1 text-sm">Members</p>
             </div>
-            {conversation.groupMembers.length > 5 && (
+            {conversation?.groupMembers?.length > 5 && (
               <button className="text-sm pointer">See All</button>
             )}
           </div>
@@ -195,6 +195,10 @@ const MemberContainer = styled.div`
     width: 50px;
     border-radius: 50%;
     background-color: #a2a2a2;
+  }
+
+  .verify {
+    margin-top: 3px;
   }
 
   img {

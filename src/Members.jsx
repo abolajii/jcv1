@@ -1,3 +1,4 @@
+import { HiCheckBadge } from "react-icons/hi2";
 import React from "react";
 import styled from "styled-components";
 
@@ -20,7 +21,12 @@ const Members = ({ members, createdBy }) => {
             </div>
           </div>
           <div className="ml-2">
-            <p className="text-sm">{m.name}</p>
+            <p className="text-sm flex">
+              {m.name}
+              <div className="verify">
+                {m?.isVerified && <HiCheckBadge color="#1b9d87" />}
+              </div>
+            </p>
             <p className="text-sm">@{m.username}</p>
           </div>
         </div>
