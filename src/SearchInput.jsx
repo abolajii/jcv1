@@ -13,8 +13,8 @@ const SearchBox = styled.div`
   justify-content: ${(props) => (props.expanded ? "flex-start" : "center")};
   border: 1px solid #ccc;
   border-radius: ${(props) => (props.expanded ? "5px" : "50%")};
-  width: ${(props) => (props.expanded ? "100%" : "30px")};
-  height: 30px;
+  width: ${(props) => (props.expanded ? "100%" : "35px")};
+  height: 35px;
   transition: all 0.2s ease;
   background: #ddeded;
   padding-left: ${(props) => (props.expanded ? "10px" : "0")};
