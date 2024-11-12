@@ -39,7 +39,6 @@ const Top = styled.div`
   .flex {
     display: flex;
     gap: 7px;
-    margin-top: 15px;
   }
 `;
 
