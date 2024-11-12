@@ -225,8 +225,8 @@ const SingleUserConversation = () => {
                 <img src={finalUser?.profilePic} alt="" />
               )}
 
-              {finalUser.profilePic && finalUser.isGroup ? (
-                <img src={finalUser.profilePic} alt="User Avatar" />
+              {finalUser?.profilePic && finalUser?.isGroup ? (
+                <img src={finalUser?.profilePic} alt="User Avatar" />
               ) : (
                 <img src={group} />
               )}
