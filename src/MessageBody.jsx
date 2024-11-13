@@ -38,7 +38,7 @@ const Message = styled.div`
 
   .bottom {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between;  */
     gap: 15px;
     /* color: #fff; */
 
@@ -158,10 +158,10 @@ const MessageBody = ({ messages, onRetry }) => {
                 <MessageInner>
                   <div className="bottom">
                     <div className="message">{m.content}</div>
-                    <div className="flex align-center">
+                    {/* <div className="flex align-center">
                       <div className="time">{formattedTime(m.createdAt)}</div>
                       <MessageStatusIcon status={m.status} />
-                    </div>
+                    </div> */}
                   </div>
                 </MessageInner>
               </div>
@@ -186,9 +186,9 @@ const MessageBody = ({ messages, onRetry }) => {
                 <div className="username">{m.sender.name}</div>
                 <div className="bottom">
                   <div className="message">{m.content}</div>
-                  <div className="flex align-center">
+                  {/* <div className="flex align-center">
                     <div className="time">{formattedTime(m.createdAt)}</div>
-                  </div>
+                  </div> */}
                 </div>
               </MessageInner>
             </div>
