@@ -116,6 +116,7 @@ const Model = ({ isVisible, onClose }) => {
                   });
                   console.log(response);
                   setLoading(false);
+                  onClose();
                 } catch (error) {
                   console.log(error);
                   setLoading(false);
