@@ -158,9 +158,9 @@ const MessageBody = ({ messages, onRetry }) => {
                 <MessageInner>
                   <div className="bottom">
                     <div className="message">{m.content}</div>
+                    <MessageStatusIcon status={m.status} />
                     {/* <div className="flex align-center">
                       <div className="time">{formattedTime(m.createdAt)}</div>
-                      <MessageStatusIcon status={m.status} />
                     </div> */}
                   </div>
                 </MessageInner>
