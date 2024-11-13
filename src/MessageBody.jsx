@@ -26,7 +26,7 @@ const Main = styled.div`
 `;
 
 const Message = styled.div`
-  max-width: 100%;
+  max-width: 90%;
   border-radius: 9px;
   font-size: 14px;
   position: relative;
@@ -35,6 +35,7 @@ const Message = styled.div`
   animation: slideIn 0.3s ease-out forwards;
   padding: 0 4px;
   padding-bottom: 4px;
+  /* margin-top: 2px; */
 
   .bottom {
     display: flex;
