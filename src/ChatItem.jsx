@@ -116,7 +116,7 @@ const ChatItem = ({
       }}
     >
       <Box>
-        {profilePic && <img src={profilePic} alt="User Avatar" />}
+        {profilePic && !isGroup && <img src={profilePic} alt="User Avatar" />}
         {profilePic && isGroup ? (
           <img src={profilePic} alt="User Avatar" />
         ) : (

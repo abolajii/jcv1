@@ -116,7 +116,7 @@ const Footer = styled.div`
 `;
 
 const SingleUserConversation = () => {
-  const { selectedUser } = usePostStore();
+  const { selectedUser, setSelectedUser } = usePostStore();
   const navigate = useNavigate();
   const { id } = useParams();
   const textareaRef = useRef(null);
@@ -148,6 +148,7 @@ const SingleUserConversation = () => {
       try {
         const response = await getConversation(id);
         setSingleChat(response);
+        setSelectedUser(response);
         // setSingleChat(response);
         setLoading(false);
       } catch (error) {
@@ -156,7 +157,7 @@ const SingleUserConversation = () => {
       }
     };
     fetchConversation();
-  }, [id]);
+  }, [id, setSelectedUser]);
 
   const finalUser = selectedUser || singleChat;
 
@@ -263,11 +264,15 @@ const SingleUserConversation = () => {
                 <img src={finalUser?.profilePic} alt="" />
               )}
 
-              {finalUser?.profilePic && finalUser?.isGroup ? (
+              {finalUser?.profilePic === null && finalUser?.isGroup && (
+                <img src={group} />
+              )}
+
+              {/* {finalUser?.profilePic !== null && finalUser?.isGroup ? (
                 <img src={finalUser?.profilePic} alt="User Avatar" />
               ) : (
                 <img src={group} />
-              )}
+              )} */}
             </Box>
             <div>
               <div className="text-sm">{finalUser?.name}</div>
