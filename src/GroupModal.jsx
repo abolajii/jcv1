@@ -22,7 +22,6 @@ const GroupModal = ({ isOpen, setIsClosing, isClosing, setIsOpen }) => {
     const fetchMutualFollow = async () => {
       try {
         const response = await getMutualFollow();
-        console.log(response);
         setUsers(response);
         setLoading(false);
       } catch (error) {

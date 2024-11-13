@@ -150,7 +150,7 @@ const SecondConversation = () => {
             </Box>
             <div>
               <div className="name">{finalUser?.name}</div>
-              <p className="typing">Recently seen</p>
+              {/* <p className="typing">Recently seen</p> */}
             </div>
           </div>
         </div>

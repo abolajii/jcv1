@@ -11,8 +11,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import GoBack from "./GoBack";
 import GroupInfo from "./GroupInfo";
 import MainContainer from "./MainContainer";
+import MessageBody from "./MessageBody";
 import group from "./group.png";
 import styled from "styled-components";
+import useAuthStore from "./store/useAuthStore";
 import usePostStore from "./store/usePostStore";
 
 const Header = styled.div`
@@ -56,8 +58,10 @@ const Box = styled.div`
 
 const Body = styled.div`
   flex: 1;
-  padding: 20px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow-y: scroll;
 `;
 
 const Footer = styled.div`
@@ -122,12 +126,13 @@ const SingleUserConversation = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State to control drawer visibility
   // const [conversation, setConversation] = useState(null);
   const [allMessages, setAllMessages] = useState([]);
+  const { user } = useAuthStore();
 
   useEffect(() => {
     const fetchMutualFollow = async () => {
       try {
         const response = await getUserConversationMessages(id);
-        setAllMessages(response);
+        setAllMessages(response.messages);
         // setSingleChat(response);
         setLoading(false);
       } catch (error) {
@@ -172,11 +177,24 @@ const SingleUserConversation = () => {
     const data = {
       conversationId: id,
       content: message,
+      status: "sending",
+    };
+
+    const newMessage = {
+      content: message,
+      sender: {
+        _id: user.id,
+      },
+      createdAt: Date.now(),
+      status: "sending",
     };
 
     try {
+      setAllMessages([newMessage, ...allMessages]);
+      setMessage("");
+
       const response = await sendTextMessage(data);
-      console.log(response);
+      setAllMessages([response.data, ...allMessages]);
     } catch (e) {
       console.log(e);
     }
@@ -251,9 +269,9 @@ const SingleUserConversation = () => {
               )}
             </Box>
             <div>
-              <div className="name">{finalUser?.name}</div>
+              <div className="text-sm">{finalUser?.name}</div>
               {finalUser?.groupMembers?.length && (
-                <p className="typing">
+                <p className="text-xs bold">
                   {finalUser?.groupMembers?.length} members
                 </p>
               )}
@@ -265,7 +283,9 @@ const SingleUserConversation = () => {
         </div>
       </Header>
 
-      <Body>{/* Message content here */}</Body>
+      <Body>
+        <MessageBody messages={allMessages} />
+      </Body>
 
       <Footer>
         <div className="icon-container">

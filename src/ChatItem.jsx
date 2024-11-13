@@ -1,3 +1,4 @@
+import { formatDate } from "./utils";
 import group from "./group.png";
 import styled from "styled-components";
 /* eslint-disable react/prop-types */
@@ -62,7 +63,7 @@ const MessageText = styled.p`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 180px;
+  max-width: 300px;
   margin: 0; /* Ensure no margin disrupts text */
 `;
 
@@ -128,19 +129,17 @@ const ChatItem = ({
       <div className="flex flex-col gap-1 flex-1">
         <div className="flex justify-between">
           <NameText>{name}</NameText>
-          <TimeText>{time}</TimeText>
+          <TimeText>{lastMessageSender !== null && formatDate(time)}</TimeText>
         </div>
         <div className="flex justify-between align-center">
           <MessageText>
             {lastMessageSender === null && message}
-            {/* {isGroup ? (
+            {lastMessageSender !== null && isGroup && (
               <>
                 <strong>{lastMessageSender}: </strong>
                 <span>{message}</span>
               </>
-            ) : (
-              <span>{message}</span>
-            )} */}
+            )}
           </MessageText>
           <div>{lastMessageSender === null && <AlertBox />}</div>
           {/* <div>{alertCount > 0 && <AlertBox>{alertCount}</AlertBox>}</div> */}

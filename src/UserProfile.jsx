@@ -288,7 +288,7 @@ const UserProfile = () => {
               <UserName>@{finalUser?.username}</UserName>
             </div>
             <ActionContainer>
-              {user.id !== uid && isConnected && (
+              {user.username !== uid && isConnected && (
                 <div className="icon center">
                   <BiEnvelope
                     size={19}
@@ -300,7 +300,7 @@ const UserProfile = () => {
                   />
                 </div>
               )}
-              {user.id !== uid && (
+              {user.username !== uid && (
                 <FollowButton onClick={handleFollow} disabled={followLoading}>
                   {followLoading ? (
                     <Spinner size="small" />
