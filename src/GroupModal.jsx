@@ -9,7 +9,13 @@ import SelectUsers from "./SelectUsers";
 import Spinner from "./components/Spinner";
 import { truncateWords } from "./utils";
 
-const GroupModal = ({ isOpen, setIsClosing, isClosing, setIsOpen }) => {
+const GroupModal = ({
+  isOpen,
+  setIsClosing,
+  isClosing,
+  setIsOpen,
+  children,
+}) => {
   const [selectedUsers, setSelectedUsers] = React.useState([]);
   const [users, setUsers] = React.useState([]);
   const [groupName, setGroupName] = React.useState("");
@@ -100,6 +106,21 @@ const GroupModal = ({ isOpen, setIsClosing, isClosing, setIsOpen }) => {
       setClicked(false);
     }
   };
+
+  if (isOpen) {
+    if (children) {
+      return (
+        <ModalBackground onClick={closeModal}>
+          <Inner
+            // className={isClosing ? "slide-out" : "slide-in"}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {children}
+          </Inner>
+        </ModalBackground>
+      );
+    }
+  }
 
   return (
     isOpen && (

@@ -318,7 +318,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers, users }) => {
               >
                 <Box>
                   <img src={user.profilePic} alt="image" />
-                  <StatusIcon className="center">x</StatusIcon>
+                  {/* <StatusIcon className="center">x</StatusIcon> */}
                 </Box>
               </ScaleUp>
             );

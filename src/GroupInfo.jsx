@@ -1,11 +1,13 @@
 import { useMemo, useState } from "react";
 
+import AnimatedModal from "./AddMember";
 /* eslint-disable react/prop-types */
 import { BiSolidNotepad } from "react-icons/bi";
 import { BsDot } from "react-icons/bs";
 import { FaUserFriends } from "react-icons/fa";
 import { FiEdit3 } from "react-icons/fi";
 import Files from "./Files";
+import { HiUserAdd } from "react-icons/hi";
 import { MdClose } from "react-icons/md";
 import Media from "./Media";
 import Members from "./Members";
@@ -86,6 +88,10 @@ const BigImage = styled.div`
 const GroupInfo = ({ isOpen, toggleDrawer, conversation }) => {
   const { user } = useAuthStore();
   const [activeTab, setActiveTab] = useState("media");
+  const [isModelVisible, setIsModelVisible] = useState(false);
+
+  const openModel = () => setIsModelVisible(true);
+  const closeModel = () => setIsModelVisible(false);
 
   const formattedDate = useMemo(() => {
     if (!conversation?.createdAt) return "";
@@ -98,6 +104,7 @@ const GroupInfo = ({ isOpen, toggleDrawer, conversation }) => {
 
   return (
     <Drawer isOpen={isOpen}>
+      <AnimatedModal closeModel={closeModel} isModelVisible={isModelVisible} />
       <div className="drawer-header border-b-1 pb-2 pt-2 pl-3 pr-3">
         <p>Group Info</p>
         <MdClose
@@ -168,14 +175,22 @@ const GroupInfo = ({ isOpen, toggleDrawer, conversation }) => {
         </div>
 
         <div className="mt-2 pl-2 pr-2">
-          <div className="flex justify-between align-center ">
+          <div className="flex justify-between align-center">
             <div className="center gap-sm">
               <FaUserFriends color="#5ababa" size={18} />
               <p className="text-xs">Members</p>
             </div>
-            {conversation?.groupMembers?.length > 5 && (
-              <button className="text-sm pointer">See All</button>
-            )}
+            <div>
+              {user.name === conversation?.createdBy?.name && (
+                <div className="flex" title="Add member" onClick={openModel}>
+                  <HiUserAdd color="#5ababa" />
+                </div>
+              )}
+
+              {conversation?.groupMembers?.length > 5 && (
+                <button className="text-sm pointer">See All</button>
+              )}
+            </div>
           </div>
           <MemberContainer>
             <Members
@@ -198,6 +213,7 @@ export default GroupInfo;
 
 const MemberContainer = styled.div`
   margin-top: 10px;
+  overflow-y: scroll;
   .avi {
     height: 40px;
     width: 40px;

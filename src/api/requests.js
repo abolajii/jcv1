@@ -157,3 +157,13 @@ export const sendTextMessage = async (data) => {
   const response = await chatAppAuth.post(`/send`, data);
   return response.data; // Re
 };
+
+export const getNonparticipants = async (id) => {
+  const response = await chatAppAuth.get(`/participants?conversationId=${id}`);
+  return response.data; // Re
+};
+
+export const addToGroup = async (data) => {
+  const response = await chatAppAuth.put(`/add`, data);
+  return response.data; // Re
+};

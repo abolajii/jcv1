@@ -8,12 +8,12 @@ import Seen from "./Seen";
 import useAuthStore from "./store/useAuthStore";
 
 const Main = styled.div`
-  /* padding: 10px; */
+  padding: 10px;
   height: 100%;
   display: flex;
   flex-direction: column-reverse;
   overflow-y: scroll;
-  height: calc(100svh - 120px);
+  height: calc(100svh - 130px);
 
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
@@ -40,6 +40,7 @@ const Message = styled.div`
     display: flex;
     justify-content: space-between;
     gap: 15px;
+    /* color: #fff; */
 
     align-items: end;
     /* padding-top: 5px; */
@@ -51,7 +52,9 @@ const Message = styled.div`
 
   .time {
     font-size: 9.5px;
-    color: #424141;
+    color: #000;
+    /* color: #fff; */
+
     margin-right: 3px;
     /* color: rgba(255, 255, 255, 0.8); */
   }
@@ -69,9 +72,15 @@ const Message = styled.div`
 `;
 
 const MessageInner = styled.div`
+  /* background-color: rgb(196, 203, 203); */
   background-color: #c4cbcb;
+  background-color: #1d6363;
+
   border-radius: 5px;
-  padding: 4px 7px;
+  padding: 9px;
+  /* color: #fff; */
+
+  background-color: ${({ left }) => (left ? `#bdc3c3` : "#4aa0a0")};
 
   .username {
     font-size: 12px;
@@ -81,6 +90,7 @@ const MessageInner = styled.div`
 
 const Left = styled(Message)`
   align-self: flex-start;
+  /*  */
   display: flex;
   align-items: flex-start;
 
@@ -161,7 +171,7 @@ const MessageBody = ({ messages, onRetry }) => {
               </Avi>
             )}
             <div ref={isFirstRender}>
-              <MessageInner>
+              <MessageInner left>
                 <div className="username">{m.sender.name}</div>
                 <div className="bottom">
                   <div className="message">{m.content}</div>
@@ -213,9 +223,9 @@ const SpinnerIcon = styled(FaSpinner)`
 const MessageStatusIcon = ({ status }) => {
   switch (status) {
     case "sending":
-      return <SpinnerIcon />;
+      return <SpinnerIcon color="#000" />;
     case "sent":
-      return <Seen fill="#676666" />;
+      return <Seen fill="#000" />;
     case "delivered":
       return <Seen fill="#676666" delivered />;
 
