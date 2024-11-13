@@ -195,6 +195,7 @@ const SingleUserConversation = () => {
 
       const response = await sendTextMessage(data);
       setAllMessages([response.data, ...allMessages]);
+      console.log("fire");
     } catch (e) {
       console.log(e);
     }
