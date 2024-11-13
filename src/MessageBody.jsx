@@ -26,7 +26,7 @@ const Main = styled.div`
 `;
 
 const Message = styled.div`
-  max-width: 90%;
+  max-width: 100%;
   border-radius: 9px;
   font-size: 14px;
   position: relative;
