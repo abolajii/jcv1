@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
 import { BsCheckAll } from "react-icons/bs";
-import Seen from "./seen";
+import Seen from "./Seen";
 import useAuthStore from "./store/useAuthStore";
 
 const Main = styled.div`
