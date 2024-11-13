@@ -8,7 +8,7 @@ import Seen from "./Seen";
 import useAuthStore from "./store/useAuthStore";
 
 const Main = styled.div`
-  padding: 10px;
+  /* padding: 10px; */
   height: 100%;
   display: flex;
   flex-direction: column-reverse;
@@ -27,22 +27,21 @@ const Main = styled.div`
 
 const Message = styled.div`
   max-width: 100%;
-  padding: 7px;
   border-radius: 9px;
-  margin-top: 3px;
   font-size: 14px;
   position: relative;
   opacity: 1;
   transform: translateY(20px);
   animation: slideIn 0.3s ease-out forwards;
+  padding: 0 4px;
+  padding-bottom: 4px;
 
   .bottom {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
+    gap: 15px;
     align-items: end;
-    padding: 2px 4px;
-    padding-top: 5px;
+    /* padding-top: 5px; */
   }
 
   .message {
@@ -68,13 +67,30 @@ const Message = styled.div`
   }
 `;
 
+const MessageInner = styled.div`
+  background-color: #c4cbcb;
+  border-radius: 5px;
+  padding: 4px 7px;
+
+  .username {
+    font-size: 12px;
+    font-weight: 500;
+  }
+`;
+
 const Left = styled(Message)`
   align-self: flex-start;
-  background-color: #c5c4c4;
+  display: flex;
+  align-items: flex-start;
+
+  ${({ hasAvatar }) =>
+    !hasAvatar &&
+    `
+    margin-left: 30px; /* Adjust to align with messages that have an avatar */
+  `}
 `;
 
 export const Right = styled(Message)`
-  background-color: #c5c4c4;
   align-self: flex-end;
 `;
 
@@ -109,33 +125,73 @@ const MessageBody = ({ messages, onRetry }) => {
 
   return (
     <Main>
-      {sortedMessages.map((m) => {
+      {sortedMessages.map((m, index) => {
         const sender = m.sender._id === user.id;
+
+        // Determine if avatar should be shown for the first message in a sequence
+        const showAvi =
+          !sender &&
+          (index === sortedMessages.length - 1 ||
+            sortedMessages[index + 1].sender._id !== m.sender._id);
+
         if (sender) {
           return (
-            <>
-              <Right key={m._id} ref={isFirstRender}>
+            <Right key={m._id}>
+              <div ref={isFirstRender}>
+                <MessageInner>
+                  <div className="bottom">
+                    <div className="message">{m.content}</div>
+                    <div className="flex align-center">
+                      <div className="time">{formattedTime(m.createdAt)}</div>
+                      <MessageStatusIcon status={m.status} />
+                    </div>
+                  </div>
+                </MessageInner>
+              </div>
+            </Right>
+          );
+        }
+
+        return (
+          <Left key={m._id} className="flex" hasAvatar={showAvi}>
+            {showAvi && (
+              <Avi>
+                <img src={m.sender.profilePic} />
+              </Avi>
+            )}
+            <div ref={isFirstRender}>
+              <MessageInner>
+                <div className="username">{m.sender.name}</div>
                 <div className="bottom">
                   <div className="message">{m.content}</div>
                   <div className="flex align-center">
                     <div className="time">{formattedTime(m.createdAt)}</div>
-                    <MessageStatusIcon status={m.status} />
                   </div>
                 </div>
-              </Right>
-              {/* {m.status === "sending" && (
-                <RetryButton onClick={onRetry}>Retry</RetryButton>
-              )} */}
-            </>
-          );
-        }
-        return <Left key={m._id}>{m.content}</Left>;
+              </MessageInner>
+            </div>
+          </Left>
+        );
       })}
     </Main>
   );
 };
 
 export default MessageBody;
+
+const Avi = styled.div`
+  margin-right: 5px;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+`;
 
 const RetryButton = styled.button`
   margin-left: 8px;
