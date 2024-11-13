@@ -40,6 +40,7 @@ const Message = styled.div`
     display: flex;
     justify-content: space-between;
     gap: 15px;
+
     align-items: end;
     /* padding-top: 5px; */
   }
