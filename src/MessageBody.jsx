@@ -35,7 +35,6 @@ const Message = styled.div`
   animation: slideIn 0.3s ease-out forwards;
   padding: 0 4px;
   padding-bottom: 4px;
-  /* margin-top: 2px; */
 
   .bottom {
     display: flex;
@@ -91,6 +90,8 @@ const MessageInner = styled.div`
 
 const Left = styled(Message)`
   align-self: flex-start;
+  margin-top: ${({ isFirstMessage }) => (isFirstMessage ? "8px" : "2px")};
+
   /*  */
   display: flex;
   align-items: flex-start;
@@ -104,6 +105,7 @@ const Left = styled(Message)`
 
 export const Right = styled(Message)`
   align-self: flex-end;
+  /* margin-top: ${({ isFirstMessage }) => (isFirstMessage ? "8px" : "2px")}; */
 `;
 
 const Notification = styled.div`
@@ -146,9 +148,12 @@ const MessageBody = ({ messages, onRetry }) => {
           (index === sortedMessages.length - 1 ||
             sortedMessages[index + 1].sender._id !== m.sender._id);
 
+        const isFirstMessageOfSender =
+          index === sortedMessages.length - 1 ||
+          sortedMessages[index + 1].sender._id !== m.sender._id;
         if (sender) {
           return (
-            <Right key={m._id}>
+            <Right key={m._id} isFirstMessageOfSender={isFirstMessageOfSender}>
               <div ref={isFirstRender}>
                 <MessageInner>
                   <div className="bottom">
@@ -165,7 +170,12 @@ const MessageBody = ({ messages, onRetry }) => {
         }
 
         return (
-          <Left key={m._id} className="flex" hasAvatar={showAvi}>
+          <Left
+            key={m._id}
+            className="flex"
+            hasAvatar={showAvi}
+            isFirstMessageOfSender={isFirstMessageOfSender}
+          >
             {showAvi && (
               <Avi>
                 <img src={m.sender.profilePic} />
