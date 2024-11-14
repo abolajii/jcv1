@@ -151,7 +151,7 @@ const SingleUserConversation = () => {
         const response = await getUserConversationMessages(id);
         setAllMessages(response.messages);
         // setSingleChat(response);
-        setLoading(false);
+        // setLoading(false);
       } catch (error) {
         console.log(error);
         setLoading(false);
