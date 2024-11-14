@@ -278,6 +278,7 @@ const SingleUserConversation = () => {
             </Box>
             <div>
               <div className="text-sm">{finalUser?.name}</div>
+              <p className="text-xs">Last Seen {user?.lastLogin}</p>
               {finalUser?.groupMembers?.length && (
                 <p className="text-xs bold">
                   {finalUser?.groupMembers?.length} members

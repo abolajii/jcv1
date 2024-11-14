@@ -130,14 +130,7 @@ const ChatItem = ({
         </div>
         <div className="flex justify-between align-center">
           <MessageText>
-            {isGroup && lastMessageSender ? (
-              <>
-                <strong>{lastMessageSender}: </strong>
-                <span>{message}</span>
-              </>
-            ) : (
-              message
-            )}
+            <span>{message}</span>
           </MessageText>
           {/* {alertCount > 0 && <AlertBox>{alertCount}</AlertBox>} */}
         </div>
