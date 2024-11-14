@@ -245,11 +245,13 @@ const SingleUserConversation = () => {
 
   return (
     <MainContainer noSidebar>
-      <GroupInfo
-        isOpen={isDrawerOpen}
-        toggleDrawer={toggleDrawer}
-        conversation={singleChat}
-      />
+      {singleChat?.isGroup && (
+        <GroupInfo
+          isOpen={isDrawerOpen}
+          toggleDrawer={toggleDrawer}
+          conversation={singleChat}
+        />
+      )}
       <Header className="flex align-center justify-between">
         <div className="flex align-center gap-sm">
           <div>

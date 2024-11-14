@@ -118,6 +118,11 @@ export const getUserById = async (id) => {
   return response.data; // Return created reply data
 };
 
+export const conversationExists = async (id) => {
+  const response = await chatAppAuth.get(`/c/${id}`);
+  return response.data; // Return created reply data
+};
+
 export const getUserConnections = async (id) => {
   const response = await chatAppAuth.get(`/u/${id}/c`);
   return response.data; // Return

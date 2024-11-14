@@ -80,7 +80,7 @@ const MessageInner = styled.div`
   padding: 9px;
   /* color: #fff; */
 
-  background-color: ${({ left }) => (left ? `#bdc3c3` : "#4aa0a0")};
+  background-color: ${({ left }) => (left ? `#bdc3c3` : "#92c6c6")};
 
   .username {
     font-size: 12px;

@@ -1,7 +1,11 @@
 import { FiSend, FiSmile } from "react-icons/fi";
 import { MdAdd, MdMoreHoriz, MdMoreVert } from "react-icons/md";
 import React, { useEffect, useRef, useState } from "react";
-import { getUserById, sendTextMessage } from "./api/requests";
+import {
+  conversationExists,
+  getUserById,
+  sendTextMessage,
+} from "./api/requests";
 import { useNavigate, useParams } from "react-router-dom";
 
 import GoBack from "./GoBack";
@@ -119,11 +123,20 @@ const SecondConversation = () => {
   const finalUser = selectedUser || singleUser;
 
   useEffect(() => {
-    getUserById(uid).then((data) => {
-      setLoading(false);
-      setSingleUser(data.user);
+    conversationExists(uid).then((data) => {
+      console.log(data);
+      navigate(`/conversation/${data?.conversationId}`);
+      // setLoading(false);
+      // setSingleUser(data.user);
     });
-  }, [uid]);
+  }, [uid, navigate]);
+
+  // useEffect(() => {
+  //   getUserById(uid).then((data) => {
+  //     setLoading(false);
+  //     setSingleUser(data.user);
+  //   });
+  // }, [uid]);
 
   const handleTextareaChange = (e) => {
     setMessage(e.target.value);
@@ -142,7 +155,7 @@ const SecondConversation = () => {
     const data = {
       content: message,
       status: "sending",
-      participantId: uid,
+      participantId: selectedUser._id || singleUser._id,
     };
 
     const newMessage = {

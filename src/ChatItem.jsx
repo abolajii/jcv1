@@ -103,46 +103,43 @@ const ChatItem = ({
   isSelected,
   groupMembers,
 }) => {
-  //
   const navigate = useNavigate();
-
   const { setSelectedUser } = usePostStore();
+
   return (
     <Container
-      className={isSelected && "active"}
+      className={isSelected ? "active" : ""}
       onClick={() => {
         navigate("/conversation/" + id);
         setSelectedUser({ name, profilePic, groupMembers });
       }}
     >
       <Box>
-        {profilePic && !isGroup && <img src={profilePic} alt="User Avatar" />}
-        {profilePic && isGroup ? (
+        {profilePic ? (
           <img src={profilePic} alt="User Avatar" />
         ) : (
-          <img src={group} />
+          <img src={group} alt="Group Icon" />
         )}
-
         {status && <StatusIcon />}
       </Box>
 
       <div className="flex flex-col gap-1 flex-1">
         <div className="flex justify-between">
           <NameText>{name}</NameText>
-          <TimeText>{lastMessageSender !== null && formatDate(time)}</TimeText>
+          <TimeText>{time ? formatDate(time) : ""}</TimeText>
         </div>
         <div className="flex justify-between align-center">
           <MessageText>
-            {lastMessageSender === null && message}
-            {lastMessageSender !== null && isGroup && (
+            {isGroup && lastMessageSender ? (
               <>
                 <strong>{lastMessageSender}: </strong>
                 <span>{message}</span>
               </>
+            ) : (
+              message
             )}
           </MessageText>
-          <div>{lastMessageSender === null && <AlertBox />}</div>
-          {/* <div>{alertCount > 0 && <AlertBox>{alertCount}</AlertBox>}</div> */}
+          {/* {alertCount > 0 && <AlertBox>{alertCount}</AlertBox>} */}
         </div>
       </div>
     </Container>

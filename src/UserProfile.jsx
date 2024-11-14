@@ -1,12 +1,12 @@
-import { IoArrowBackOutline, IoEllipsisHorizontal } from "react-icons/io5";
-import { getUserById, userFollow } from "./api/requests";
+import { conversationExists, getUserById, userFollow } from "./api/requests";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { AiOutlineLink } from "react-icons/ai";
 import { BiEnvelope } from "react-icons/bi";
 import GoBack from "./GoBack";
 import { HiCheckBadge } from "react-icons/hi2";
+import { IoEllipsisHorizontal } from "react-icons/io5";
 import { IoLocationSharp } from "react-icons/io5";
 import MainContainer from "./MainContainer";
 import ProfileTab from "./ProfileTab";
@@ -45,11 +45,6 @@ const IconWrapper = styled.div`
   padding: 0 10px;
   gap: 15px;
   z-index: 10;
-`;
-
-const BackIcon = styled(IoArrowBackOutline)`
-  left: 0;
-  cursor: pointer;
 `;
 
 const MoreIcon = styled(IoEllipsisHorizontal)`
@@ -203,10 +198,10 @@ const UserProfile = () => {
   const [isConnected, setIsConnected] = useState(false);
   const navigate = useNavigate();
   const { uid } = useParams();
-  const { selectedUser, setSelectedUser } = usePostStore();
+  const { selectedUser } = usePostStore();
   const { user } = useAuthStore();
-  const location = useLocation();
   const [loading, setLoading] = useState(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const [followerCount, setFollowerCount] = useState(0);
 
@@ -246,6 +241,14 @@ const UserProfile = () => {
       setFollowerCount(finalUser.followers?.length || 0);
     }
   }, [finalUser]);
+
+  const handleButtonClick = () => {
+    setIsButtonDisabled(true); // Disable the button on click
+    conversationExists(uid).then((data) => {
+      navigate(`/conversation/${data?.conversationId}`);
+      setIsButtonDisabled(false); // Optional: reset button if needed
+    });
+  };
 
   if (loading) {
     return (
@@ -293,9 +296,9 @@ const UserProfile = () => {
                   <BiEnvelope
                     size={19}
                     color="#28a69e"
-                    onClick={() => {
-                      navigate(`/convo/${finalUser?.username}`);
-                      setSelectedUser(finalUser);
+                    onClick={!isButtonDisabled ? handleButtonClick : null} // Disable click when isButtonDisabled is true
+                    style={{
+                      cursor: isButtonDisabled ? "not-allowed" : "pointer",
                     }}
                   />
                 </div>
