@@ -37,6 +37,11 @@ const Header = styled.div`
     font-size: 14px;
     color: #949494;
   }
+
+  .time {
+    font-size: 11px;
+    color: #7e7e7e;
+  }
 `;
 
 const Box = styled.div`
@@ -114,6 +119,18 @@ const Footer = styled.div`
     }
   }
 `;
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+
+  const optionsDate = { month: "short", day: "numeric", year: "numeric" };
+  const formattedDate = date.toLocaleDateString("en-US", optionsDate);
+
+  const optionsTime = { hour: "numeric", minute: "numeric", hour12: true };
+  const formattedTime = date.toLocaleTimeString("en-US", optionsTime);
+
+  return `${formattedDate} | ${formattedTime}`;
+}
 
 const SingleUserConversation = () => {
   const { selectedUser, setSelectedUser } = usePostStore();
@@ -278,7 +295,9 @@ const SingleUserConversation = () => {
             </Box>
             <div>
               <div className="text-sm">{finalUser?.name}</div>
-              <p className="text-xs">Last Seen {user?.lastLogin}</p>
+              <p className="text-xs time">
+                Last Seen {formatDate(finalUser?.lastLogin)}
+              </p>
               {finalUser?.groupMembers?.length && (
                 <p className="text-xs bold">
                   {finalUser?.groupMembers?.length} members
