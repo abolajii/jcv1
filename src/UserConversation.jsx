@@ -21,6 +21,11 @@ const ChatMenu = styled.div`
   }
 `;
 
+const Scrollable = styled.div`
+  height: calc(100svh - 170px);
+  overflow-y: scroll;
+`;
+
 const UserConversation = () => {
   const [loading, setLoading] = React.useState(true);
   const [conversations, setConversations] = React.useState([]);
@@ -110,26 +115,29 @@ const UserConversation = () => {
           <BiSolidMessageSquareDetail color="#a9a9a9" size={20} />
           <p className="mute">All Messages</p>
         </div>
-        {allMessages.length > 0 ? (
-          allMessages.map((chat) => (
-            <ChatItem
-              key={chat.id}
-              id={chat.id}
-              name={chat.name}
-              isGroup={chat.isGroup}
-              message={chat.message}
-              time={chat.time}
-              alertCount={chat.alertCount}
-              profilePic={chat.profilePic}
-              groupMembers={chat.groupMembers}
-              //   isSelected={conversation?.id === chat.id}
-              status={chat.status}
-              lastMessageSender={chat.lastMessageSender} // Send the lastMessageSender for group chats
-            />
-          ))
-        ) : (
-          <p className="mute text-sm mt-4">No messages</p>
-        )}
+
+        <Scrollable>
+          {allMessages.length > 0 ? (
+            allMessages.map((chat) => (
+              <ChatItem
+                key={chat.id}
+                id={chat.id}
+                name={chat.name}
+                isGroup={chat.isGroup}
+                message={chat.message}
+                time={chat.time}
+                alertCount={chat.alertCount}
+                profilePic={chat.profilePic}
+                groupMembers={chat.groupMembers}
+                //   isSelected={conversation?.id === chat.id}
+                status={chat.status}
+                lastMessageSender={chat.lastMessageSender} // Send the lastMessageSender for group chats
+              />
+            ))
+          ) : (
+            <p className="mute text-sm mt-4">No messages</p>
+          )}
+        </Scrollable>
       </ChatMenu>
     </Container>
   );
