@@ -1,5 +1,5 @@
 import axios from "axios";
-const prod = !true;
+const prod = true;
 export const baseURL = prod
   ? "https://apijustwritebe.vercel.app/api/v1"
   : "http://localhost:9004/api/v1"; // Replace with your API base URL
