@@ -1,12 +1,13 @@
 import { FiSend, FiSmile } from "react-icons/fi";
-import { MdAdd, MdMoreHoriz } from "react-icons/md";
+import { MdAdd, MdMoreHoriz, MdMoreVert } from "react-icons/md";
 import React, { useEffect, useRef, useState } from "react";
+import { getUserById, sendTextMessage } from "./api/requests";
 import { useNavigate, useParams } from "react-router-dom";
 
 import GoBack from "./GoBack";
 import MainContainer from "./MainContainer";
-import { getUserById } from "./api/requests";
 import styled from "styled-components";
+import useAuthStore from "./store/useAuthStore";
 import usePostStore from "./store/usePostStore";
 
 const Header = styled.div`
@@ -112,6 +113,8 @@ const SecondConversation = () => {
   const navigate = useNavigate();
   const textareaRef = useRef(null);
   const [message, setMessage] = useState("");
+  const [allMessages, setAllMessages] = useState([]);
+  const { user } = useAuthStore();
 
   const finalUser = selectedUser || singleUser;
 
@@ -134,6 +137,73 @@ const SecondConversation = () => {
       textarea.style.height = `${Math.min(textarea.scrollHeight, 80)}px`; // Set to scrollHeight or max height
     }
   };
+
+  const sendMessage = async () => {
+    const data = {
+      content: message,
+      status: "sending",
+      participantId: uid,
+    };
+
+    const newMessage = {
+      content: message,
+      sender: {
+        _id: user.id,
+      },
+      createdAt: Date.now(),
+      status: "sending",
+    };
+
+    try {
+      setAllMessages([newMessage, ...allMessages]);
+      setMessage("");
+
+      const response = await sendTextMessage(data);
+      setAllMessages([response.data, ...allMessages]);
+      // console.log("fire");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  if (loading) {
+    return (
+      <MainContainer noSidebar>
+        <Header className="flex align-center justify-between">
+          <div className="flex align-center gap-sm">
+            <div>
+              <GoBack onClick={() => navigate(`/conversation`)} />
+            </div>
+            <div className="flex gap-sm" onClick={() => {}}>
+              <Box></Box>
+            </div>
+          </div>
+          <div>
+            <MdMoreVert size={22} />
+          </div>
+        </Header>
+        <Body>{/* Message content here */}</Body>
+        <Footer>
+          <div className="icon-container">
+            <MdAdd size={24} />
+          </div>
+          <div className="textarea-container">
+            <textarea
+              ref={textareaRef}
+              value={message}
+              onChange={handleTextareaChange}
+              placeholder="Type a message..."
+              rows="1"
+            />
+            <FiSmile size={20} className="smiley-icon" />
+          </div>
+          <div className="icon-container" onClick={sendMessage}>
+            <FiSend size={24} />
+          </div>
+        </Footer>
+      </MainContainer>
+    );
+  }
 
   return (
     <MainContainer noSidebar>
@@ -175,7 +245,7 @@ const SecondConversation = () => {
           />
           <FiSmile size={20} className="smiley-icon" />
         </div>
-        <div className="icon-container">
+        <div className="icon-container" onClick={sendMessage}>
           <FiSend size={24} />
         </div>
       </Footer>

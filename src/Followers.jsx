@@ -82,10 +82,10 @@ const Followers = ({ user, setUsers, loggedInUser }) => {
     try {
       if (isFollowedByLoggedInUser) {
         // Unfollow the user if currently followed
-        await userFollow(user.id);
+        await userFollow(user.username);
       } else {
         // Follow the user if not currently followed
-        await userFollow(user.id);
+        await userFollow(user.username);
       }
 
       // Toggle the follow status in local state
