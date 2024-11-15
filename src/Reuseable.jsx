@@ -213,7 +213,7 @@ const Reuseable = ({ isOpen, setIsOpen }) => {
   return (
     <Overlay isVisible={isVisible}>
       <ModalContainer>
-        <CloseButton onClick={() => setIsOpen(false)}>&times;</CloseButton>
+        {/* <CloseButton onClick={() => setIsOpen(false)}>&times;</CloseButton> */}
         <ProgressBarContainer>
           {selectedStory?.stories?.map((_, index) => (
             <ProgressSegment
