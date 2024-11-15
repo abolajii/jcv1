@@ -22,7 +22,7 @@ const ChatMenu = styled.div`
 `;
 
 const Scrollable = styled.div`
-  height: calc(100svh - 170px);
+  height: calc(100svh - 163px);
   overflow-y: scroll;
 `;
 
