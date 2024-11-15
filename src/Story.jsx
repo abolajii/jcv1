@@ -205,12 +205,12 @@ const StoryContainer = ({ isOpen, closeModal }) => {
           >
             Image
           </TabButton>
-          <TabButton
+          {/* <TabButton
             active={selectedTab === "video"}
             onClick={() => setSelectedTab("video")}
           >
             Video
-          </TabButton>
+          </TabButton> */}
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -238,12 +238,12 @@ const StoryContainer = ({ isOpen, closeModal }) => {
                   }}
                 />
               )}
-              <TextInput
+              {/* <TextInput
                 type="text"
                 value={text}
                 onChange={handleTextChange}
                 placeholder="Add a caption or text"
-              />
+              /> */}
             </>
           )}
 

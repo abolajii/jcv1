@@ -406,3 +406,15 @@ button {
 .border-b-1 {
   border-bottom: 1px solid #ddd;
 }
+
+.h-10 {
+  height: 40px;
+}
+
+.w-10 {
+  width: 40px;
+}
+
+.rounded-full {
+  border-radius: 50%;
+}

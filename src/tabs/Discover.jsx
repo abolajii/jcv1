@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { AiOutlineRise } from "react-icons/ai";
 import People from "./People";
