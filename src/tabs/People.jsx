@@ -2,6 +2,7 @@
 import { getSuggestedUsers, userFollow } from "../api/requests";
 import { useEffect, useState } from "react";
 
+import { HiCheckBadge } from "react-icons/hi2";
 import Spinner from "../components/Spinner";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -89,7 +90,16 @@ const People = ({ user, setUsers }) => {
         <UserInfo>
           <div className="flex align-center justify-between">
             <div>
-              <Name>{user.name}</Name>
+              <Name>
+                <div className="flex">
+                  {user.name}
+                  {user?.isVerified && (
+                    <div className="center">
+                      <HiCheckBadge color="#1b9d87" />
+                    </div>
+                  )}
+                </div>
+              </Name>
               <UserName>@{user.username}</UserName>
             </div>
             <ConnectButton

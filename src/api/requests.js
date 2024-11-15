@@ -172,3 +172,12 @@ export const addToGroup = async (data) => {
   const response = await chatAppAuth.put(`/add`, data);
   return response.data; // Re
 };
+
+export const createStory = async (data) => {
+  const response = await chatAppAuth.post(`/story`, data);
+  return response.data; // Re
+};
+export const userStory = async () => {
+  const response = await chatAppAuth.get(`/stories`);
+  return response.data; // Re
+};
