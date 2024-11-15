@@ -8,6 +8,7 @@ import { FaHamburger } from "react-icons/fa";
 import Feeds from "./Feeds";
 import { GiHamburgerMenu } from "react-icons/gi";
 import MainContainer from "./MainContainer";
+import StoryContainer from "./Story";
 import Textarea from "./components/Textarea";
 import { createUniqueUsers } from "./utils";
 import styled from "styled-components";
@@ -89,6 +90,7 @@ const Header = styled.div`
   padding: 10px;
   background-color: rgba(232, 239, 239, 1);
   border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+  z-index: 5;
 
   .box {
     border: 1px solid #28a69e;
@@ -97,8 +99,6 @@ const Header = styled.div`
     border-radius: 3px;
     background-color: #ccf3f0;
   }
-
-  z-index: 10;
 
   img {
     height: 100%;
@@ -119,6 +119,7 @@ const Dashboard = () => {
   const [mentionedUsers, setMentionedUsers] = useState([]);
   const { setPosts, setPostSent, posts } = usePostStore();
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -188,6 +189,7 @@ const Dashboard = () => {
 
   return (
     <MainContainer>
+      <StoryContainer isOpen={isOpen} closeModal={() => setIsOpen(false)} />
       <Header>
         <div className="flex gap-md justify-between w-100">
           <div className="box center">
@@ -201,7 +203,7 @@ const Dashboard = () => {
           <OtherStory className="flex-1 flex">
             {/* Additional elements here */}
           </OtherStory>
-          <UserAvi>
+          <UserAvi onClick={() => setIsOpen(true)}>
             <img src={user?.profilePic} alt="User avatar" />
             <AddIcon size={13} color="#fff" />
           </UserAvi>
