@@ -1,4 +1,4 @@
-import { FiLogOut, FiMoon, FiSettings, FiSun, FiX } from "react-icons/fi";
+import { FiMoon, FiSettings, FiSun, FiX } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { AiOutlineBell } from "react-icons/ai";
@@ -7,10 +7,13 @@ import { FaRegBookmark } from "react-icons/fa";
 import { HiCheckBadge } from "react-icons/hi2";
 import { IoIosHome } from "react-icons/io";
 import { IoSearchOutline } from "react-icons/io5";
+import StoryAvi from "./StoryAvi";
+import UserStory from "./UserStory";
 /* eslint-disable react/prop-types */
 import styled from "styled-components";
 import useAuthStore from "./store/useAuthStore";
 import { useState } from "react";
+import useStoryStore from "./store/useStoryStore";
 
 // Sidebar styles with transition for sliding in
 const Sidebar = styled.div`
@@ -140,15 +143,20 @@ const SidebarItemContent = styled.div`
 
 const CloseButton = styled.div`
   position: absolute;
-  top: 15px;
+  top: 10px;
   right: 15px;
   cursor: pointer;
   font-size: 20px;
   color: #333;
 
   &:hover {
-    color: #ff5555;
+    color: #333;
   }
+`;
+
+const Logo = styled.div`
+  margin-top: 10px;
+  margin-left: 10px;
 `;
 
 const Drawer = ({ isOpen, setIsOpen }) => {
@@ -161,6 +169,8 @@ const Drawer = ({ isOpen, setIsOpen }) => {
 
   const navigate = useNavigate();
   const location = useLocation(); // Get the current path
+  const { selectStory } = useStoryStore();
+  const [openModal, setOpenModal] = useState(false);
 
   const { logout } = useAuthStore();
 
@@ -216,8 +226,24 @@ const Drawer = ({ isOpen, setIsOpen }) => {
 
   return (
     <Sidebar isOpen={isOpen}>
+      {openModal && <UserStory setIsOpen={setOpenModal} isOpen={openModal} />}
+
+      <Logo>
+        <StoryAvi
+          profile
+          color="#ccc"
+          segments={user?.stories[0]?.stories?.length || 0}
+          imageSrc={user.profilePic}
+          setOpenModal={setOpenModal}
+          onClick={() => {
+            // toggleSidebar();
+            setOpenModal(true);
+            selectStory(user.stories[0]);
+          }}
+        />
+      </Logo>
       <CloseButton onClick={() => setIsOpen(false)}>
-        <FiX />
+        <FiX size={19} />
       </CloseButton>
       <div className="flex justify-between flex-col flex-1 h-100">
         <div className="top">

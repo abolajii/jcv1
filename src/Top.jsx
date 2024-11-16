@@ -107,7 +107,7 @@ const Header = styled.div`
   }
 `;
 
-const Top = ({ toggleSidebar, setIsOpen }) => {
+const Top = ({ toggleSidebar }) => {
   const { user } = useAuthStore();
   const { allStories, setAllStories, selectStory } = useStoryStore();
   //   const [isOpen, setIsOpen] = useState(false);
@@ -136,24 +136,24 @@ const Top = ({ toggleSidebar, setIsOpen }) => {
           <img src={user?.profilePic} alt="User avatar" />
         </Sidebar> */}
 
-        {user?.stories.length > 0 ? (
-          <StoryAvi
-            profile
-            color="#ccc"
-            segments={user?.stories[0]?.stories?.length || 0}
-            imageSrc={user.profilePic}
-            setOpenModal={setOpenModal}
-            onClick={() => {
-              // toggleSidebar();
-              setOpenModal(true);
-              selectStory(user.stories[0]);
-            }}
-          />
-        ) : (
-          <UserAvi onClick={toggleSidebar}>
-            <img src={user?.profilePic} alt="User avatar" />
-          </UserAvi>
-        )}
+        {/* {user?.stories.length > 0 ? ( */}
+        {/* <StoryAvi
+          profile
+          color="#ccc"
+          segments={user?.stories[0]?.stories?.length || 0}
+          imageSrc={user.profilePic}
+          setOpenModal={setOpenModal}
+          onClick={() => {
+            // toggleSidebar();
+            setOpenModal(true);
+            selectStory(user.stories[0]);
+          }}
+        /> */}
+        {/* // ) : ( */}
+        <UserAvi onClick={toggleSidebar}>
+          <img src={user?.profilePic} alt="User avatar" />
+        </UserAvi>
+        {/* // )} */}
 
         <OtherStory className="flex-1 flex">
           {/* Additional elements here */}
@@ -176,10 +176,10 @@ const Top = ({ toggleSidebar, setIsOpen }) => {
             );
           })}
         </OtherStory>
-        <UserAvi onClick={() => setIsOpen(true)}>
+        {/* <UserAvi onClick={() => setIsOpen(true)}>
           <img src={user?.profilePic} alt="User avatar" />
           <AddIcon size={13} color="#fff" />
-        </UserAvi>
+        </UserAvi> */}
       </div>
     </Header>
   );
