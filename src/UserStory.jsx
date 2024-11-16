@@ -282,7 +282,8 @@ const UserStory = ({ setIsOpen, isOpen }) => {
               size={22}
               color="#fff"
               className="mr-1 pointer"
-              onClick={() => {
+              onClick={(event) => {
+                event.stopPropagation();
                 setIsOpen(false); // Close modal
               }}
             />

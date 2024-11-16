@@ -38,7 +38,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const App = () => {
-  const { isAuthenticated, setActiveUser } = useAuthStore();
+  const { isAuthenticated, setActiveUser, logout } = useAuthStore();
 
   // const navigate = useNavigate();
 
@@ -52,7 +52,12 @@ const App = () => {
     const fetchUserData = async () => {
       try {
         const response = await getMe();
-        setActiveUser(response.user);
+        console.log(response.user.isViewed);
+        if (!response.user.isViewed) {
+          logout();
+        } else {
+          setActiveUser(response.user);
+        }
       } catch (err) {
         console.error("Failed to fetch user data:", err);
         // setError("Failed to fetch user data. Redirecting to login.");
@@ -61,7 +66,7 @@ const App = () => {
     };
 
     fetchUserData();
-  }, [isAuthenticated, setActiveUser]);
+  }, [isAuthenticated, setActiveUser, logout]);
 
   return (
     <>
