@@ -123,6 +123,11 @@ const LoginForm = styled.form`
   background-color: #ffffff;
   width: 100%;
   max-width: 400px;
+
+  a {
+    text-decoration: none;
+    color: #4a90e2;
+  }
 `;
 
 const Title = styled.h2`

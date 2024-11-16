@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 
-import { FiSend } from "react-icons/fi";
+// import { FiSend } from "react-icons/fi";
 import useStoryStore from "./store/useStoryStore";
 
 const fillProgress = keyframes`
@@ -29,16 +29,6 @@ const ModalContainer = styled.div`
   margin: 2% auto;
   padding: 10px;
   border-radius: 10px;
-`;
-
-const CloseButton = styled.button`
-  border: none;
-  background: none;
-  font-size: 30px;
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  right: 10px;
 `;
 
 const ProgressSegment = styled.div`
