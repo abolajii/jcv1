@@ -213,8 +213,6 @@ const UserStory = ({ setIsOpen, isOpen }) => {
   const [justBlurred, setJustBlurred] = useState(false);
   const [isManualNavigation, setIsManualNavigation] = useState(false);
   const storyDuration = 5;
-
-  console.log(completedStories);
   const { user } = useAuthStore();
 
   useEffect(() => {
@@ -283,7 +281,12 @@ const UserStory = ({ setIsOpen, isOpen }) => {
   ]);
 
   useEffect(() => {
-    setJustBlurred(false);
+    if (justBlurred) {
+      const timer = setTimeout(() => {
+        setJustBlurred(false);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
   }, [justBlurred]);
 
   const handleNextStory = async () => {
@@ -414,7 +417,7 @@ const UserStory = ({ setIsOpen, isOpen }) => {
       <Bottom>{renderStoryContent(selectedStory.stories[activeStory])}</Bottom>
 
       <Footer>
-        {/* <ReplyInput
+        <ReplyInput
           placeholder="Reply to story..."
           value={replyText}
           onChange={(e) => setReplyText(e.target.value)}
@@ -423,7 +426,7 @@ const UserStory = ({ setIsOpen, isOpen }) => {
         />
         <SendButton onClick={handleSendReply}>
           <FiSend />
-        </SendButton> */}
+        </SendButton>
       </Footer>
     </Container>
   );

@@ -1,23 +1,15 @@
-/* eslint-disable react/prop-types */
-import styled, { css, keyframes } from "styled-components";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { FaChevronLeft } from "react-icons/fa";
 import { FiSend } from "react-icons/fi";
 import ProgressiveImage from "./Progressive";
 import { formatDate } from "./utils";
+/* eslint-disable react/prop-types */
+// import styled, { css, keyframes } from "styled-components";
+import styled from "styled-components";
 import useAuthStore from "./store/useAuthStore";
 import useStoryStore from "./store/useStoryStore";
 import { viewStory } from "./api/requests";
-
-const fillProgress = keyframes`
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-`;
 
 const Container = styled.div`
   position: fixed;
@@ -192,14 +184,8 @@ const ProgressSegment = styled.div`
     left: 0;
     height: 100%;
     background: #0bdb8b;
-    width: 0;
-    animation: ${({ isActive, duration }) =>
-      isActive &&
-      css`
-        ${fillProgress} ${duration}s linear forwards
-      `};
-    animation-play-state: ${({ isPaused }) =>
-      isPaused ? "paused" : "running"};
+    width: ${({ progress }) => `${progress}%`};
+    transition: width 0.1s linear;
   }
 `;
 
@@ -213,18 +199,93 @@ const UserStory = ({ setIsOpen, isOpen }) => {
   const [justBlurred, setJustBlurred] = useState(false);
   const [isManualNavigation, setIsManualNavigation] = useState(false);
   const storyDuration = 5;
-
-  console.log(completedStories);
   const { user } = useAuthStore();
 
-  useEffect(() => {
-    const currentStory = selectedStory?.stories[activeStory];
-    if (currentStory?.media?.type === "image") {
-      setCanProgress(false);
-    } else {
-      setCanProgress(true);
+  const [progress, setProgress] = useState(0);
+  const progressTimer = useRef(null);
+  const lastUpdateTime = useRef(Date.now());
+
+  const startProgress = useCallback(() => {
+    if (progressTimer.current) {
+      clearInterval(progressTimer.current);
     }
-  }, [activeStory, selectedStory?.stories]);
+
+    lastUpdateTime.current = Date.now();
+    progressTimer.current = setInterval(() => {
+      setProgress((prevProgress) => {
+        const newProgress =
+          prevProgress + (100 / (storyDuration * 1000)) * 16.67; // 16.67ms is roughly one frame at 60fps
+
+        if (newProgress >= 100) {
+          clearInterval(progressTimer.current);
+          setCompletedStories((prev) => [...prev, activeStory]);
+
+          if (activeStory >= selectedStory.stories.length - 1) {
+            setIsOpen(false);
+          } else {
+            setActiveStory((prev) => prev + 1);
+            return 0;
+          }
+        }
+        return newProgress;
+      });
+    }, 16.67); // Update roughly every frame
+  }, [activeStory, selectedStory.stories, setIsOpen]);
+
+  const pauseProgress = useCallback(() => {
+    if (progressTimer.current) {
+      clearInterval(progressTimer.current);
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   const currentStory = selectedStory?.stories[activeStory];
+  //   if (currentStory?.media?.type === "image") {
+  //     setCanProgress(false);
+  //   } else {
+  //     setCanProgress(true);
+  //   }
+  // }, [activeStory, selectedStory?.stories]);
+
+  useEffect(() => {
+    if (!isOpen || activeStory >= selectedStory?.stories?.length) {
+      return;
+    }
+
+    const currentStory = selectedStory.stories[activeStory];
+    if (!canProgress || isInputFocused) {
+      pauseProgress();
+      return;
+    }
+
+    // View story logic
+    const storyId = currentStory._id;
+    const hasViewed = currentStory?.views?.includes(user.id);
+    if (!hasViewed) {
+      viewStory(storyId);
+    }
+
+    if (isManualNavigation) {
+      setIsManualNavigation(false);
+      setProgress(0);
+    }
+
+    startProgress();
+
+    return () => {
+      pauseProgress();
+    };
+  }, [
+    isOpen,
+    activeStory,
+    selectedStory?.stories,
+    canProgress,
+    isInputFocused,
+    isManualNavigation,
+    startProgress,
+    pauseProgress,
+    user,
+  ]);
 
   useEffect(() => {
     if (
@@ -283,7 +344,12 @@ const UserStory = ({ setIsOpen, isOpen }) => {
   ]);
 
   useEffect(() => {
-    setJustBlurred(false);
+    if (justBlurred) {
+      const timer = setTimeout(() => {
+        setJustBlurred(false);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
   }, [justBlurred]);
 
   const handleNextStory = async () => {
@@ -377,6 +443,22 @@ const UserStory = ({ setIsOpen, isOpen }) => {
       <ProgressBarContainer>
         {selectedStory.stories.map((story, index) => (
           <ProgressSegment
+            key={`${index}-${activeStory}`}
+            isCompleted={completedStories.includes(index)}
+            progress={
+              index === activeStory
+                ? progress
+                : completedStories.includes(index)
+                ? 100
+                : 0
+            }
+          />
+        ))}
+      </ProgressBarContainer>
+
+      {/* <ProgressBarContainer>
+        {selectedStory.stories.map((story, index) => (
+          <ProgressSegment
             key={index}
             isActive={index === activeStory && canProgress}
             isCompleted={completedStories.includes(index)}
@@ -384,7 +466,7 @@ const UserStory = ({ setIsOpen, isOpen }) => {
             isPaused={isInputFocused}
           />
         ))}
-      </ProgressBarContainer>
+      </ProgressBarContainer> */}
 
       <Top className="flex align-center justify-between">
         <div className="flex">
@@ -414,7 +496,7 @@ const UserStory = ({ setIsOpen, isOpen }) => {
       <Bottom>{renderStoryContent(selectedStory.stories[activeStory])}</Bottom>
 
       <Footer>
-        {/* <ReplyInput
+        <ReplyInput
           placeholder="Reply to story..."
           value={replyText}
           onChange={(e) => setReplyText(e.target.value)}
@@ -423,7 +505,7 @@ const UserStory = ({ setIsOpen, isOpen }) => {
         />
         <SendButton onClick={handleSendReply}>
           <FiSend />
-        </SendButton> */}
+        </SendButton>
       </Footer>
     </Container>
   );
