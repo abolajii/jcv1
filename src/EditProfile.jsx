@@ -149,10 +149,25 @@ const EditProfile = () => {
       formData.append("file", file);
     }
 
-    formData.append("bio", bio);
-    formData.append("name", name);
-    formData.append("link", link);
-    formData.append("location", location);
+    if (bio !== user.bio) {
+      formData.append("bio", bio);
+    }
+
+    if (name !== user.name) {
+      formData.append("name", name);
+    }
+
+    if (location !== user.location) {
+      formData.append("location", location);
+    }
+
+    if (link !== user.link) {
+      formData.append("link", link);
+    }
+
+    // formData.append("name", name);
+    // formData.append("link", link);
+    // formData.append("location", location);
 
     try {
       const response = await updateProfile(formData);
