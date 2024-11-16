@@ -232,7 +232,10 @@ const Drawer = ({ isOpen, setIsOpen }) => {
         <StoryAvi
           profile
           color="#ccc"
-          segments={user?.stories[0]?.stories?.length || 0}
+          segments={
+            (user?.stories?.length > 0 && user?.stories[0]?.stories?.length) ||
+            0
+          }
           imageSrc={user.profilePic}
           setOpenModal={setOpenModal}
           onClick={() => {
