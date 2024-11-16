@@ -119,7 +119,12 @@ const SinglePost = () => {
     <MainContainer>
       <div>
         <Top className="flex justify-between align-center">
-          <GoBack title="Back" />
+          <GoBack
+            size={16}
+            title="Back"
+            onClick={() => navigate("/dashboard")}
+            color="#36bbba"
+          />
           <button
             onClick={() => {
               // setIsOpen(true);

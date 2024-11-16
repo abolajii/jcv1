@@ -171,9 +171,7 @@ const EditProfile = () => {
 
     try {
       const response = await updateProfile(formData);
-      console.log(response.user);
-      const stories = user.stories;
-      setActiveUser({ stories, ...response.user });
+      setActiveUser({ ...user, ...response.user });
     } catch (error) {
       console.log(error);
     } finally {
