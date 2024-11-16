@@ -192,3 +192,8 @@ export const getMe = async () => {
   const response = await chatAppAuth.get(`/me`);
   return response.data; // Re
 };
+
+export const updateProfile = async (data) => {
+  const response = await chatAppAuth.put(`/me`, data);
+  return response.data; // Re
+};

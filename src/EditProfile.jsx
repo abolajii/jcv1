@@ -1,7 +1,10 @@
-import React, { useState } from "react";
-
+import { FaChevronLeft } from "react-icons/fa";
+import Spinner from "./components/Spinner";
 import styled from "styled-components";
+import { updateProfile } from "./api/requests";
 import useAuthStore from "./store/useAuthStore";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const MainContainer = styled.div`
   max-width: 800px;
@@ -15,9 +18,6 @@ const MainContainer = styled.div`
 const ProfileHeader = styled.div`
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ddd;
 `;
 
 const ProfileSection = styled.div`
@@ -36,17 +36,21 @@ const UserAvi = styled.div`
     object-fit: cover;
   }
 
-  button {
-    background: #007bff;
-    color: white;
+  input[type="file"] {
+    display: none;
+  }
+
+  label {
+    color: #36bbba;
     border: none;
     padding: 8px 12px;
     border-radius: 4px;
     cursor: pointer;
+    border: 1px solid #36bbba;
     font-size: 14px;
 
     &:hover {
-      background: #0056b3;
+      background: #cbfafa;
     }
   }
 `;
@@ -65,11 +69,18 @@ const FormItem = styled.div`
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 14px;
     outline: none;
+    resize: none;
+    font-family: "Poppins";
+
+    &::placeholder {
+      color: #999;
+      font-family: "Poppins";
+    }
 
     &:focus {
-      border-color: #007bff;
+      border-color: #36bbba;
     }
 
     &:read-only {
@@ -85,91 +96,158 @@ const FormItem = styled.div`
 `;
 
 const SubmitButton = styled.button`
-  background: #28a745;
+  background-color: #36bbba;
   color: white;
   border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
   border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
   cursor: pointer;
-  margin-top: 20px;
 
   &:hover {
-    background: #218838;
+    background-color: #28a69e;
   }
 `;
 
-const EditProfile = () => {
-  const { user, setUser } = useAuthStore(); // Assume `setUser` updates the user state
-  const [profilePic, setProfilePic] = useState(user?.profilePic);
-  const [bio, setBio] = useState(user?.bio || "");
-  const [location, setLocation] = useState(user?.location || "");
-  const [isUpdated, setIsUpdated] = useState(false);
+const Scrollable = styled.div`
+  flex: 1; /* Allow it to take remaining space in MainContainer */
+  width: 100%;
+  overflow-y: auto; /* Enable vertical scrolling */
+  box-sizing: border-box;
+  height: 90svh;
+`;
 
-  const handleChangePicture = () => {
-    const newPic = prompt("Enter the URL for the new profile picture:");
-    if (newPic) {
-      setProfilePic(newPic);
-      setUser((prev) => ({ ...prev, profilePic: newPic })); // Update global store
-      setIsUpdated(true);
-      setTimeout(() => setIsUpdated(false), 3000); // Reset update message
+const EditProfile = () => {
+  const { user, setActiveUser } = useAuthStore();
+
+  const [bio, setBio] = useState(user?.bio);
+  const [name, setName] = useState(user?.name);
+  const [link, setLink] = useState(user?.link);
+  const [location, setLocation] = useState(user?.location);
+  const [preview, setPreview] = useState(null);
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [charCount, setCharCount] = useState(user?.bio?.length || 0); // For tracking character count
+
+  const navigate = useNavigate();
+
+  const handleChangePicture = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      setFile(file);
+      const previewURL = URL.createObjectURL(file);
+      setPreview(previewURL);
     }
   };
 
-  const handleSubmit = () => {
-    setUser((prev) => ({
-      ...prev,
-      bio,
-      location,
-    }));
-    alert("Profile updated successfully!");
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    const formData = new FormData();
+
+    if (file) {
+      formData.append("file", file);
+    }
+
+    formData.append("bio", bio);
+    formData.append("name", name);
+    formData.append("link", link);
+    formData.append("location", location);
+
+    try {
+      const response = await updateProfile(formData);
+      console.log(response.user);
+      const stories = user.stories;
+      setActiveUser({ stories, ...response.user });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBioChange = (e) => {
+    const newBio = e.target.value;
+    if (newBio.length <= 200) {
+      setBio(newBio);
+      setCharCount(newBio.length);
+    }
   };
 
   return (
     <MainContainer>
-      <ProfileHeader>Profile Page</ProfileHeader>
-      <ProfileSection>
-        <UserAvi>
-          <img src={profilePic || "default-avatar.png"} alt="User avatar" />
-          <div>
-            <button onClick={handleChangePicture}>Change Picture</button>
-          </div>
-        </UserAvi>
-        {isUpdated && (
-          <p style={{ color: "green", marginTop: "10px" }}>
-            Profile picture updated!
-          </p>
-        )}
-      </ProfileSection>
-      <ProfileSection>
-        <FormItem>
-          <p>Profile Name</p>
-          <input type="text" value={user?.name} />
-        </FormItem>
-        <FormItem>
-          <p>Username</p>
-          <input type="text" value={user?.username} readOnly />
-        </FormItem>
-        <FormItem>
-          <p>Location</p>
-          <input
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Enter your location"
-          />
-        </FormItem>
-        <FormItem>
-          <p>Bio</p>
-          <textarea
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            placeholder="Write something about yourself"
-          ></textarea>
-        </FormItem>
-        <SubmitButton onClick={handleSubmit}>Save Changes</SubmitButton>
-      </ProfileSection>
+      <div className="flex align-center border-b-1 pb-2">
+        <FaChevronLeft
+          size={18}
+          color="#000"
+          className="mr-1 pointer"
+          onClick={() => navigate(`/profile`)}
+        />
+        <ProfileHeader>Profile Page</ProfileHeader>
+      </div>
+      <Scrollable>
+        <ProfileSection>
+          <UserAvi>
+            <img src={preview || user?.profilePic} alt="User avatar" />
+            <div>
+              <label htmlFor="file-upload">Change Picture</label>
+              <input
+                type="file"
+                id="file-upload"
+                accept="image/*"
+                onChange={handleChangePicture}
+              />
+            </div>
+          </UserAvi>
+        </ProfileSection>
+        <ProfileSection>
+          <FormItem>
+            <p>Profile Name</p>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
+            />
+          </FormItem>
+          <FormItem>
+            <p>Username</p>
+            <input type="text" value={user?.username} readOnly />
+          </FormItem>
+          <FormItem>
+            <p>Link</p>
+            <input
+              type="text"
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
+              placeholder="Enter your location"
+            />
+          </FormItem>
+          <FormItem>
+            <p>Location</p>
+            <input
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Enter your location"
+            />
+          </FormItem>
+          <FormItem>
+            <p>About Me</p>
+            <textarea
+              value={bio}
+              rows={3}
+              onChange={handleBioChange}
+              placeholder="Write something about yourself"
+            ></textarea>
+            <p className="text-xs">{200 - charCount} characters remaining</p>
+            {/* Display remaining characters */}
+          </FormItem>
+          <SubmitButton onClick={handleSubmit}>
+            {loading ? <Spinner /> : "Save Changes"}
+          </SubmitButton>
+        </ProfileSection>
+      </Scrollable>
     </MainContainer>
   );
 };

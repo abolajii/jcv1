@@ -1,7 +1,10 @@
 import { create } from "zustand";
 
 // Check if user and token are stored in localStorage
-const initialUser = JSON.parse(localStorage.getItem("user"));
+const initialUser =
+  localStorage.getItem("user") === "undefined"
+    ? null
+    : JSON.parse(localStorage.getItem("user"));
 const initialToken = localStorage.getItem("token");
 
 // Update the useAuthStore setUser method to include setting token

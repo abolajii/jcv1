@@ -196,7 +196,6 @@ const UserStory = ({ setIsOpen, isOpen }) => {
   useEffect(() => {
     if (isOpen && activeStory < selectedStory.stories.length) {
       const storyId = selectedStory.stories[activeStory]._id;
-      console.log(selectedStory.stories[activeStory]);
       const hasViewed = selectedStory.stories[activeStory]?.views?.includes(
         user.id
       );

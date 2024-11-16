@@ -38,12 +38,18 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const App = () => {
-  const { isAuthenticated, setActiveUser, logout } = useAuthStore();
+  const { isAuthenticated, setActiveUser, logout, initialToken, initialUser } =
+    useAuthStore();
 
   // const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (
+      !isAuthenticated ||
+      !initialUser ||
+      !initialToken ||
+      initialToken === "undefined"
+    ) {
       window.href = "/login"; // If fetching fails, redirect to login
 
       return;
@@ -66,7 +72,7 @@ const App = () => {
     };
 
     fetchUserData();
-  }, [isAuthenticated, setActiveUser, logout]);
+  }, [isAuthenticated, setActiveUser, logout, initialUser, initialToken]);
 
   return (
     <>

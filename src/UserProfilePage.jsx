@@ -105,7 +105,7 @@ const UserName = styled.div`
 `;
 
 const Bio = styled.div`
-  margin-top: 10px;
+  margin-top: 3px;
   font-size: 0.8rem;
   color: #404040;
   line-height: 1.35;
@@ -137,7 +137,7 @@ const LinkContainer = styled.div`
   font-size: 0.8rem;
   color: #0a0909;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   gap: 5px;
 
   a {
@@ -164,7 +164,6 @@ const UserProfilePage = () => {
 
   const navigate = useNavigate();
   const { user, setUser } = useAuthStore();
-  const location = useLocation();
 
   useEffect(() => {
     getUserById(user.username).then((data) => {
@@ -181,7 +180,10 @@ const UserProfilePage = () => {
         <Header>
           <IconWrapper
             style={{ left: "15px" }}
-            onClick={() => navigate(location.state?.from || -1)}
+            onClick={() => {
+              navigate("/dashboard");
+            }}
+            // onClick={() => navigate(location.state?.from || -1)}
           >
             <BackIcon />
           </IconWrapper>
