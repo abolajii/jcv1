@@ -152,7 +152,6 @@ const Top = ({ toggleSidebar, setIsOpen }) => {
         ) : (
           <UserAvi onClick={toggleSidebar}>
             <img src={user?.profilePic} alt="User avatar" />
-            <AddIcon size={13} color="#fff" />
           </UserAvi>
         )}
 
