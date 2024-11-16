@@ -1,18 +1,36 @@
+/* eslint-disable react/prop-types */
+import styled, { css, keyframes } from "styled-components";
+import { useEffect, useState } from "react";
+
 import { FaChevronLeft } from "react-icons/fa";
 import { FiSend } from "react-icons/fi";
-import React from "react";
+import LazyStoryImage from "./LazyLoad";
+import { formatDate } from "./utils";
+// import React from "react";
 import progress from "./image.jpeg";
-import styled from "styled-components";
+import useStoryStore from "./store/useStoryStore";
+import { viewStory } from "./api/requests";
+
+const fillProgress = keyframes`
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+`;
 
 const Container = styled.div`
   position: fixed;
   height: 100vh;
   width: 100vw;
+  inset: 0;
+  z-index: 100;
 `;
 
 const Top = styled.div`
   position: fixed;
-  top: 10px;
+  top: 20px;
   left: 0px;
   z-index: 3;
   width: 100%;
@@ -33,16 +51,25 @@ const Bottom = styled.div`
   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
 `;
 
+const TextBg = styled.div`
+  height: 100%;
+  width: 100%;
+  background-color: #2f7377;
+  color: white;
+`;
+
 const BlurBackground = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
-  background-image: url(${progress}); /* Use the same background image */
+  background: rgba(93, 75, 75, 1);
+  /* background-image: ${({ src }) =>
+    src && `url(${src})`}; Use the same background image */
   background-size: cover;
   background-position: center;
-  filter: blur(10px); /* Apply blur */
+
   z-index: 1;
 `;
 
@@ -55,14 +82,6 @@ const Footer = styled.div`
   align-items: center;
   padding: 10px;
   border-top: 1px solid #bcbcbc;
-`;
-
-const StoryImage = styled.img`
-  width: 100%;
-  height: 100%;
-  border-radius: 2px;
-  object-fit: cover;
-  z-index: 2; /* Ensure it is above the blur background */
 `;
 
 const ReplyInput = styled.input`
@@ -129,10 +148,90 @@ const Time = styled.div`
   margin-top: -3px;
 `;
 
-const UserStory = () => {
+const ProgressBarContainer = styled.div`
+  display: flex;
+  gap: 2px;
+  position: fixed;
+  top: 5px;
+  left: 0px;
+  z-index: 3;
+  width: 100%;
+  padding: 5px;
+`;
+
+const ProgressSegment = styled.div`
+  flex: 1;
+  height: 4px;
+  background: ${({ isCompleted }) => (isCompleted ? "#0bdb8b" : "#ccc")};
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: #0bdb8b;
+    width: 0;
+    animation: ${({ isActive, duration }) =>
+      isActive &&
+      css`
+        ${fillProgress} ${duration}s linear forwards
+      `};
+  }
+`;
+
+const UserStory = ({ setIsOpen, isOpen }) => {
+  //
+
+  const { selectedStory } = useStoryStore();
+  const [activeStory, setActiveStory] = useState(0);
+  const [completedStories, setCompletedStories] = useState([]);
+  const storyDuration = 5; // Duration per story in seconds
+
+  useEffect(() => {
+    if (isOpen && activeStory < selectedStory.stories.length) {
+      const storyId = selectedStory.stories[activeStory]._id;
+      viewStory(storyId);
+      const timer = setTimeout(() => {
+        setCompletedStories((prev) => [...prev, activeStory]); // Mark as completed
+        setActiveStory((prev) => prev + 1);
+      }, storyDuration * 1000);
+
+      return () => clearTimeout(timer);
+    }
+
+    if (isOpen && activeStory >= selectedStory.stories.length) {
+      setIsOpen(false); // Close modal
+    }
+  }, [isOpen, activeStory, selectedStory?.stories, setIsOpen]);
+
+  const handleNextStory = async () => {
+    if (activeStory < selectedStory.stories.length - 1) {
+      // Update handleNextStory
+      const nextStoryId = selectedStory.stories[activeStory + 1]._id;
+
+      // Mark the next story as viewed
+      const response = await viewStory(nextStoryId);
+      console.log(response);
+      setCompletedStories((prev) => [...prev, activeStory]);
+      setActiveStory((prev) => prev + 1);
+    } else {
+      setIsOpen(false); // Close the modal when all stories are viewed
+    }
+  };
+
   const renderStoryContent = (story) => {
     if (story.media?.type === "image") {
-      return <StoryImage src={story.media.url} alt="Story" />;
+      return (
+        <BlurBackground className="h-100 w-100">
+          {/* <BlurBackground src={story.media.url} /> */}
+          <LazyStoryImage src={story.media.url} alt="Story" />;
+          {story?.text && <Caption>All we need is love 🤗</Caption>}
+        </BlurBackground>
+      );
     } else if (story.media?.type === "video") {
       return (
         <video controls style={{ maxWidth: "100%", borderRadius: "10px" }}>
@@ -141,39 +240,63 @@ const UserStory = () => {
         </video>
       );
     } else if (story.text) {
-      return <div>{story.text}</div>;
+      return <TextBg className="center">{story.text}</TextBg>;
     } else {
       return <div>Unsupported content</div>;
     }
   };
+
   return (
     <Container>
+      <ProgressBarContainer>
+        {selectedStory?.stories?.map((_, index) => (
+          <ProgressSegment
+            key={index}
+            isActive={index === activeStory}
+            isCompleted={completedStories.includes(index)}
+            duration={storyDuration}
+          />
+        ))}
+      </ProgressBarContainer>
       <Top className="flex align-center justify-between">
         <div className="flex">
           <div className="flex align-center">
-            <FaChevronLeft size={22} color="#fff" className="mr-1" />
+            <FaChevronLeft
+              size={22}
+              color="#fff"
+              className="mr-1 pointer"
+              onClick={() => {
+                setIsOpen(false); // Close modal
+              }}
+            />
             <Avi>
-              <img src={progress} alt="User avatar" />
+              <img src={selectedStory?.user?.profilePic} alt="User avatar" />
             </Avi>
           </div>
           <div>
-            <Username>Admin</Username>
-            <Time>2mins ago</Time>
+            <Username>{selectedStory?.user?.name}</Username>
+            <Time>
+              {formatDate(selectedStory.stories[activeStory].createdAt)}
+            </Time>
           </div>
         </div>
         {/* <div>B</div> */}
       </Top>
-      <Bottom>
+      <Bottom onClick={handleNextStory}>
+        {Object.keys(selectedStory).length > 0 &&
+          selectedStory?.stories[activeStory] &&
+          renderStoryContent(selectedStory.stories[activeStory])}
+
         {/* <p>Hello guys</p> */}
         {/* <BlurBackground /> */}
-        <StoryImage src={progress} />
-        <Caption>All we need is love 🤗</Caption>
+        {/* <StoryImage src={progress} />
+        <Caption>All we need is love 🤗</Caption> */}
       </Bottom>
       <Footer>
-        <ReplyInput placeholder="Reply to story..." />
+        {/* <ReplyInput placeholder="Reply to story..." />
         <SendButton>
           <FiSend />
-        </SendButton>
+        </SendButton> */}
       </Footer>
     </Container>
   );

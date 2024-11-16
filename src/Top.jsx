@@ -5,6 +5,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Reuseable from "./Reuseable";
 import StoryAvi from "./StoryAvi";
+import UserStory from "./UserStory";
 import styled from "styled-components";
 import useAuthStore from "./store/useAuthStore";
 import useStoryStore from "./store/useStoryStore";
@@ -14,7 +15,6 @@ const UserAvi = styled.div`
   height: 45px;
   width: 45px;
   border-radius: 4px;
-  background-color: #d5cccc;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,7 +22,14 @@ const UserAvi = styled.div`
   position: relative;
 
   img {
-    border-radius: 5px;
+    border-radius: 50%;
+  }
+`;
+
+const Sidebar = styled(UserAvi)`
+  background-color: transparent;
+  img {
+    border-radius: 50%;
   }
 `;
 
@@ -71,11 +78,18 @@ const Header = styled.div`
   height: 70px;
   display: flex;
   align-items: center;
-  gap: 30px;
   padding: 10px;
   background-color: #f3f8f8;
   border-bottom: 1px solid rgba(204, 204, 204, 0.5);
   z-index: 5;
+
+  .gap-md {
+    gap: 50px;
+
+    @media (max-width: 766px) {
+      gap: 10px;
+    }
+  }
 
   .box {
     border: 1px solid #28a69e;
@@ -114,18 +128,37 @@ const Top = ({ toggleSidebar, setIsOpen }) => {
 
   return (
     <Header>
-      <Reuseable isOpen={openModal} setIsOpen={setOpenModal} />
+      {openModal && <UserStory setIsOpen={setOpenModal} isOpen={openModal} />}
+      {/* <Reuseable isOpen={openModal} setIsOpen={setOpenModal} /> */}
       <div className="flex gap-md justify-between w-100 align-center">
-        <div className="box center">
-          <GiHamburgerMenu size={19} color="#36bbba" onClick={toggleSidebar} />
-        </div>
+        {/* <Sidebar onClick={toggleSidebar} className="rounded-full">
+          <img src={user?.profilePic} alt="User avatar" />
+        </Sidebar> */}
+
+        <StoryAvi
+          profile
+          color="#ccc"
+          segments={user?.stories[0]?.stories?.length || 0}
+          imageSrc={user.profilePic}
+          setOpenModal={setOpenModal}
+          onClick={() => {
+            // toggleSidebar();
+            setOpenModal(true);
+            selectStory(user.stories[0]);
+          }}
+        />
 
         <OtherStory className="flex-1 flex">
           {/* Additional elements here */}
           {allStories.map((s, i) => {
+            const stories = s.stories;
+            console.log(stories);
             return (
               <StoryAvi
+                // color=
+                loggedInUserId={user.id} // Pass the logged-in user's ID
                 key={i}
+                stories={stories}
                 segments={s.stories.length || 0}
                 imageSrc={s.user.profilePic}
                 setOpenModal={setOpenModal}

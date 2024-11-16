@@ -4,18 +4,61 @@ const StoryAvi = ({
   size = 50,
   strokeWidth = 2,
   imageSrc,
-  segments = 1,
+  stories = [], // Array of story objects
+  loggedInUserId, // Current user's ID to check views
   color = "#0bdb8b",
-  gapLength = 3, // Fixed gap between the segments
-  alt = "Story", // Alt text for the image
-  innerPadding = 0.5, // Spacing between the border and the image
+  gapLength = 3,
+  alt = "Story",
+  innerPadding = 0.5,
   onClick,
 }) => {
-  const radius = (size - strokeWidth) / 2; // Radius of the circle
-  const circumference = 2 * Math.PI * radius; // Full circumference of the circle
+  const radius = (size - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
 
-  const dashLength = (circumference - segments * gapLength) / segments; // Length of each segment
-  const dashArray = `${dashLength} ${gapLength}`; // Dash array for dynamic segments
+  // If there's only one segment or no stories, render a simple circle
+  if (!stories.length) {
+    return (
+      <svg
+        width={size}
+        height={size}
+        viewBox={`0 0 ${size} ${size}`}
+        className="pointer"
+        onClick={onClick}
+      >
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke={color}
+          strokeWidth={strokeWidth}
+          strokeDasharray={`${circumference} 0`}
+          transform={`rotate(-90 ${size / 2} ${size / 2})`}
+        />
+        <clipPath id="circle-clip">
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius - strokeWidth - innerPadding}
+          />
+        </clipPath>
+        <image
+          href={imageSrc}
+          x={strokeWidth + innerPadding}
+          y={strokeWidth + innerPadding}
+          width={size - 2 * (strokeWidth + innerPadding)}
+          height={size - 2 * (strokeWidth + innerPadding)}
+          clipPath="url(#circle-clip)"
+          preserveAspectRatio="xMidYMid slice"
+          alt={alt}
+        />
+      </svg>
+    );
+  }
+
+  // Calculate segment lengths
+  const segmentLength =
+    (circumference - stories.length * gapLength) / stories.length;
 
   return (
     <svg
@@ -25,34 +68,46 @@ const StoryAvi = ({
       className="pointer"
       onClick={onClick}
     >
-      {/* Circle with Segmented Border */}
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={radius}
-        fill="none"
-        stroke={color}
-        strokeDasharray={segments === 1 ? `${circumference} 0` : dashArray}
-        strokeWidth={strokeWidth}
-        transform={`rotate(-90 ${size / 2} ${size / 2})`} // Start at the top
-      />
+      {/* Render each story segment with appropriate color */}
+      {stories.map((story, index) => {
+        const isViewed = story.views.includes(loggedInUserId);
+        const segmentColor = isViewed ? "#ccc" : color;
+        const startAngle =
+          (index * (segmentLength + gapLength) * 360) / circumference - 90;
+
+        return (
+          <circle
+            key={story.id}
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="none"
+            stroke={segmentColor}
+            strokeWidth={strokeWidth}
+            strokeDasharray={`${segmentLength} ${circumference}`}
+            transform={`rotate(${startAngle} ${size / 2} ${size / 2})`}
+          />
+        );
+      })}
+
       {/* Clip Path for Circular Image */}
       <clipPath id="circle-clip">
         <circle
           cx={size / 2}
           cy={size / 2}
-          r={radius - strokeWidth - innerPadding} // Reduce radius to add spacing
+          r={radius - strokeWidth - innerPadding}
         />
       </clipPath>
+
       {/* Image Inside the Circle */}
       <image
         href={imageSrc}
         x={strokeWidth + innerPadding}
         y={strokeWidth + innerPadding}
-        width={size - 2 * (strokeWidth + innerPadding)} // Adjust for spacing
-        height={size - 2 * (strokeWidth + innerPadding)} // Adjust for spacing
-        clipPath="url(#circle-clip)" // Apply circular clipping to the image
-        preserveAspectRatio="xMidYMid slice" // Ensure the image fills the circle
+        width={size - 2 * (strokeWidth + innerPadding)}
+        height={size - 2 * (strokeWidth + innerPadding)}
+        clipPath="url(#circle-clip)"
+        preserveAspectRatio="xMidYMid slice"
         alt={alt}
       />
     </svg>

@@ -3,6 +3,7 @@ import {
   Route,
   BrowserRouter as Router,
   Routes,
+  useNavigate,
 } from "react-router-dom";
 
 import Bookmark from "./Bookmark";
@@ -23,7 +24,9 @@ import SingleUserConversation from "./SingleUserConversation";
 import UserProfile from "./UserProfile";
 import UserProfilePage from "./UserProfilePage";
 import { createGlobalStyle } from "styled-components";
+import { getMe } from "./api/requests";
 import useAuthStore from "./store/useAuthStore";
+import { useEffect } from "react";
 
 // Global style to hide overflow on the body for mobile screens
 const GlobalStyle = createGlobalStyle`
@@ -35,7 +38,30 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const App = () => {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, setUser } = useAuthStore();
+
+  // const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      window.href = "/login"; // If fetching fails, redirect to login
+
+      return;
+    }
+
+    const fetchUserData = async () => {
+      try {
+        const response = await getMe();
+        setUser(response.data.user);
+      } catch (err) {
+        console.error("Failed to fetch user data:", err);
+        // setError("Failed to fetch user data. Redirecting to login.");
+        window.href = "/login"; // If fetching fails, redirect to login
+      }
+    };
+
+    fetchUserData();
+  }, [isAuthenticated, setUser]);
 
   return (
     <>

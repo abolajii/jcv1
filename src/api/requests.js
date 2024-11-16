@@ -177,7 +177,18 @@ export const createStory = async (data) => {
   const response = await chatAppAuth.post(`/story`, data);
   return response.data; // Re
 };
+
 export const userStory = async () => {
   const response = await chatAppAuth.get(`/stories`);
+  return response.data; // Re
+};
+
+export const viewStory = async (id) => {
+  const response = await chatAppAuth.post(`/story/${id}/view`);
+  return response.data; // Re
+};
+
+export const getMe = async () => {
+  const response = await chatAppAuth.get(`/me`);
   return response.data; // Re
 };

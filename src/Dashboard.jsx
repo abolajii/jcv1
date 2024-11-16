@@ -109,7 +109,7 @@ const Dashboard = () => {
     <MainContainer>
       <StoryContainer isOpen={isOpen} closeModal={() => setIsOpen(false)} />
       <Top toggleSidebar={toggleSidebar} setIsOpen={setIsOpen} />
-      <Drawer isOpen={isSidebarOpen} />
+      <Drawer isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
       <Scrollable isLoading={isLoading}>
         <div className="width pl-2 pr-2 pt-2 pb-2">
           <div className="text" ref={contentRef}>

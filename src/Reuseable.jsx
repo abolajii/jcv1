@@ -1,6 +1,6 @@
-/* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 
 // import { FiSend } from "react-icons/fi";
 import useStoryStore from "./store/useStoryStore";
@@ -34,7 +34,7 @@ const ModalContainer = styled.div`
 const ProgressSegment = styled.div`
   flex: 1;
   height: 4px;
-  background: ${({ isCompleted }) => (isCompleted ? "#0bdb8b" : "#ccc")};
+  background: ${({ isCompleted }) => (isCompleted ? "#0bdb8b" : "#f7f7f7")};
   border-radius: 2px;
   position: relative;
   overflow: hidden;

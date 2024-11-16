@@ -1,4 +1,4 @@
-import { FiLogOut, FiMoon, FiSettings, FiSun } from "react-icons/fi";
+import { FiLogOut, FiMoon, FiSettings, FiSun, FiX } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { AiOutlineBell } from "react-icons/ai";
@@ -138,7 +138,20 @@ const SidebarItemContent = styled.div`
   }
 `;
 
-const Drawer = ({ isOpen }) => {
+const CloseButton = styled.div`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #333;
+
+  &:hover {
+    color: #ff5555;
+  }
+`;
+
+const Drawer = ({ isOpen, setIsOpen }) => {
   const { user } = useAuthStore();
   const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark mode
 
@@ -203,6 +216,9 @@ const Drawer = ({ isOpen }) => {
 
   return (
     <Sidebar isOpen={isOpen}>
+      <CloseButton onClick={() => setIsOpen(false)}>
+        <FiX />
+      </CloseButton>
       <div className="flex justify-between flex-col flex-1 h-100">
         <div className="top">
           {sidebarItems.map((item, index) => (
