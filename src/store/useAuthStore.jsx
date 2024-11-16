@@ -10,6 +10,12 @@ const useAuthStore = create((set) => ({
   user: initialUser || null,
 
   // Login action
+  setActiveUser: (user) => {
+    // Ensure token is passed in
+    set({ isAuthenticated: true, user });
+    localStorage.setItem("user", JSON.stringify(user));
+  },
+  // Login action
   setUser: (user, token = initialToken) => {
     // Ensure token is passed in
     set({ isAuthenticated: true, user });

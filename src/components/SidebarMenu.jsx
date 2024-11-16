@@ -83,11 +83,11 @@ export const sidebarItems = [
   // label: "Bookmark",
   // icon: <FaRegBookmark />,
   // },
-  // {
-  //   path: "/settings",
-  //   label: "Settings",
-  //   icon: <FiSettings />,
-  // },
+  {
+    path: "/settings",
+    label: "Settings",
+    icon: <FiSettings />,
+  },
 ];
 
 const Sidebar = () => {

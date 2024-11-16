@@ -8,6 +8,7 @@ import LazyStoryImage from "./LazyLoad";
 import { formatDate } from "./utils";
 // import React from "react";
 import progress from "./image.jpeg";
+import useAuthStore from "./store/useAuthStore";
 import useStoryStore from "./store/useStoryStore";
 import { viewStory } from "./api/requests";
 
@@ -190,11 +191,20 @@ const UserStory = ({ setIsOpen, isOpen }) => {
   const [activeStory, setActiveStory] = useState(0);
   const [completedStories, setCompletedStories] = useState([]);
   const storyDuration = 5; // Duration per story in seconds
+  const { user } = useAuthStore();
 
   useEffect(() => {
     if (isOpen && activeStory < selectedStory.stories.length) {
       const storyId = selectedStory.stories[activeStory]._id;
-      viewStory(storyId);
+      console.log(selectedStory.stories[activeStory]);
+      const hasViewed = selectedStory.stories[activeStory]?.views?.includes(
+        user.id
+      );
+
+      if (!hasViewed) {
+        viewStory(storyId);
+      }
+
       const timer = setTimeout(() => {
         setCompletedStories((prev) => [...prev, activeStory]); // Mark as completed
         setActiveStory((prev) => prev + 1);
@@ -206,16 +216,23 @@ const UserStory = ({ setIsOpen, isOpen }) => {
     if (isOpen && activeStory >= selectedStory.stories.length) {
       setIsOpen(false); // Close modal
     }
-  }, [isOpen, activeStory, selectedStory?.stories, setIsOpen]);
+  }, [isOpen, activeStory, selectedStory?.stories, setIsOpen, user]);
 
   const handleNextStory = async () => {
     if (activeStory < selectedStory.stories.length - 1) {
       // Update handleNextStory
       const nextStoryId = selectedStory.stories[activeStory + 1]._id;
 
-      // Mark the next story as viewed
-      const response = await viewStory(nextStoryId);
-      console.log(response);
+      const hasViewed = selectedStory.stories[activeStory + 1].views.includes(
+        user.id
+      );
+
+      if (!hasViewed) {
+        // Mark the next story as viewed
+        const response = await viewStory(nextStoryId);
+        console.log(response);
+      }
+
       setCompletedStories((prev) => [...prev, activeStory]);
       setActiveStory((prev) => prev + 1);
     } else {
@@ -247,7 +264,7 @@ const UserStory = ({ setIsOpen, isOpen }) => {
   };
 
   return (
-    <Container>
+    <Container onClick={handleNextStory}>
       <ProgressBarContainer>
         {selectedStory?.stories?.map((_, index) => (
           <ProgressSegment
@@ -276,13 +293,13 @@ const UserStory = ({ setIsOpen, isOpen }) => {
           <div>
             <Username>{selectedStory?.user?.name}</Username>
             <Time>
-              {formatDate(selectedStory.stories[activeStory].createdAt)}
+              {formatDate(selectedStory.stories[activeStory]?.createdAt)}
             </Time>
           </div>
         </div>
         {/* <div>B</div> */}
       </Top>
-      <Bottom onClick={handleNextStory}>
+      <Bottom>
         {Object.keys(selectedStory).length > 0 &&
           selectedStory?.stories[activeStory] &&
           renderStoryContent(selectedStory.stories[activeStory])}
