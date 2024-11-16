@@ -10,11 +10,14 @@ const useAuthStore = create((set) => ({
   user: initialUser || null,
 
   // Login action
-  setUser: (user, token) => {
+  setUser: (user, token = initialToken) => {
     // Ensure token is passed in
     set({ isAuthenticated: true, user });
+
     localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("token", token); // Store the token
+    if (token !== null) {
+      localStorage.setItem("token", token); // Store the token
+    }
   },
   notifications: [],
   setNotifications: (notifications) => set({ notifications }),

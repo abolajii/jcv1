@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 /* eslint-disable react/prop-types */
 import { GiHamburgerMenu } from "react-icons/gi";
+import OtherUserStoryAvi from "./OtherUserStory";
 import Reuseable from "./Reuseable";
 import StoryAvi from "./StoryAvi";
 import UserStory from "./UserStory";
@@ -152,9 +153,8 @@ const Top = ({ toggleSidebar, setIsOpen }) => {
           {/* Additional elements here */}
           {allStories.map((s, i) => {
             const stories = s.stories;
-            console.log(stories);
             return (
-              <StoryAvi
+              <OtherUserStoryAvi
                 // color=
                 loggedInUserId={user.id} // Pass the logged-in user's ID
                 key={i}

@@ -52,7 +52,8 @@ const App = () => {
     const fetchUserData = async () => {
       try {
         const response = await getMe();
-        setUser(response.data.user);
+        console.log(response.user);
+        setUser(response.user);
       } catch (err) {
         console.error("Failed to fetch user data:", err);
         // setError("Failed to fetch user data. Redirecting to login.");
