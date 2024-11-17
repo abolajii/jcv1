@@ -2,6 +2,7 @@
 import styled, { css, keyframes } from "styled-components";
 import { useEffect, useState } from "react";
 
+import EyeIconView from "./Views";
 import { FaChevronLeft } from "react-icons/fa";
 import { FiSend } from "react-icons/fi";
 import ProgressiveImage from "./Progressive";
@@ -49,7 +50,6 @@ const Top = styled.div`
   top: 20px;
   left: 0px;
   z-index: 10;
-
   width: 100%;
   padding: 5px;
 `;
@@ -93,7 +93,6 @@ const BlurBackground = styled.div`
 const Footer = styled.div`
   position: fixed;
   bottom: 10px;
-  z-index: 4;
   width: 100%;
   display: flex;
   align-items: center;
@@ -423,6 +422,8 @@ const UserStory = ({ setIsOpen, isOpen, loggedIn }) => {
       </Top>
 
       <Bottom>{renderStoryContent(selectedStory.stories[activeStory])}</Bottom>
+
+      <EyeIconView views={selectedStory.stories[activeStory]?.views.length} />
       {!loggedIn && (
         <Footer>
           <ReplyInput

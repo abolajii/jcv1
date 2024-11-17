@@ -48,7 +48,6 @@ const useStoryStore = create((set) => ({
         });
         return { ...storyGroup, stories: updatedGroupStories };
       });
-      console.log(updatedStories);
       return { allStories: updatedStories };
     });
   },
