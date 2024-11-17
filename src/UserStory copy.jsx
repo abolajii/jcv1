@@ -284,7 +284,7 @@ const UserStory = ({ setIsOpen, isOpen }) => {
     if (justBlurred) {
       const timer = setTimeout(() => {
         setJustBlurred(false);
-      }, 100);
+      }, 0);
       return () => clearTimeout(timer);
     }
   }, [justBlurred]);

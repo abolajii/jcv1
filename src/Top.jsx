@@ -43,14 +43,6 @@ const OtherStory = styled.div`
   padding: 10px 0;
   max-width: calc(100vw - 90px);
 
-  /* .avi {
-    flex: 0 0 auto;
-    height: 45px;
-    width: 45px;
-    border-radius: 50%;
-    background-color: #e0e0e0;
-  } */
-
   .text-xs {
     font-size: 9px;
     text-align: center;
@@ -130,40 +122,17 @@ const Top = ({ toggleSidebar }) => {
 
   return (
     <Header>
-      <StoryContainer isOpen={isOpen} closeModal={() => setIsOpen(false)} />
       {openModal && <UserStory setIsOpen={setOpenModal} isOpen={openModal} />}
-      {/* <Reuseable isOpen={openModal} setIsOpen={setOpenModal} /> */}
       <div className="flex gap-md justify-between w-100 align-center">
-        {/* <Sidebar onClick={toggleSidebar} className="rounded-full">
-          <img src={user?.profilePic} alt="User avatar" />
-        </Sidebar> */}
-
-        {/* {user?.stories.length > 0 ? ( */}
-        {/* <StoryAvi
-          profile
-          color="#ccc"
-          segments={user?.stories[0]?.stories?.length || 0}
-          imageSrc={user.profilePic}
-          setOpenModal={setOpenModal}
-          onClick={() => {
-            // toggleSidebar();
-            setOpenModal(true);
-            selectStory(user.stories[0]);
-          }}
-        /> */}
-        {/* // ) : ( */}
         <UserAvi onClick={toggleSidebar}>
           <img src={user?.profilePic} alt="User avatar" />
         </UserAvi>
-        {/* // )} */}
 
         <OtherStory className="flex-1 flex">
-          {/* Additional elements here */}
           {allStories.map((s, i) => {
             const stories = s.stories;
             return (
               <OtherUserStoryAvi
-                // color=
                 loggedInUserId={user.id} // Pass the logged-in user's ID
                 key={i}
                 stories={stories}
@@ -178,10 +147,10 @@ const Top = ({ toggleSidebar }) => {
             );
           })}
         </OtherStory>
-        <UserAvi onClick={() => setIsOpen(true)}>
+        {/* <UserAvi >
           <img src={user?.profilePic} alt="User avatar" />
           <AddIcon size={13} color="#fff" />
-        </UserAvi>
+        </UserAvi> */}
       </div>
     </Header>
   );

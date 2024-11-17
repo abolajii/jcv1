@@ -8,6 +8,7 @@ import { HiCheckBadge } from "react-icons/hi2";
 import { IoIosHome } from "react-icons/io";
 import { IoSearchOutline } from "react-icons/io5";
 import StoryAvi from "./StoryAvi";
+import StoryContainer from "./Story";
 import UserStory from "./UserStory";
 /* eslint-disable react/prop-types */
 import styled from "styled-components";
@@ -54,6 +55,20 @@ const Sidebar = styled.div`
 
   .top {
     margin-top: 50px;
+  }
+
+  .add {
+    color: #36bbba;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #36bbba;
+    font-size: 13px;
+
+    &:hover {
+      background: #cbfafa;
+    }
   }
 `;
 
@@ -144,20 +159,17 @@ const SidebarItemContent = styled.div`
 const CloseButton = styled.div`
   position: absolute;
   top: 10px;
-  right: 15px;
+  right: 10px;
   cursor: pointer;
   font-size: 20px;
-  color: #333;
+  color: #36bbba;
 
   &:hover {
-    color: #333;
+    color: #6ebaba;
   }
 `;
 
-const Logo = styled.div`
-  margin-top: 10px;
-  margin-left: 10px;
-`;
+const Logo = styled.div``;
 
 const Drawer = ({ isOpen, setIsOpen }) => {
   const { user } = useAuthStore();
@@ -171,8 +183,11 @@ const Drawer = ({ isOpen, setIsOpen }) => {
   const location = useLocation(); // Get the current path
   const { selectStory } = useStoryStore();
   const [openModal, setOpenModal] = useState(false);
+  const [openStory, setOpenStory] = useState(false);
 
   const { logout } = useAuthStore();
+
+  // const [openModal, setOpenModal] = useState(false);
 
   // Handle navigation
   const handleNavigation = (path) => {
@@ -226,25 +241,41 @@ const Drawer = ({ isOpen, setIsOpen }) => {
 
   return (
     <Sidebar isOpen={isOpen}>
-      {openModal && <UserStory setIsOpen={setOpenModal} isOpen={openModal} />}
+      {openModal && (
+        <UserStory setIsOpen={setOpenModal} isOpen={openModal} loggedIn />
+      )}
 
-      <Logo>
-        <StoryAvi
-          profile
-          color="#ccc"
-          segments={
-            (user?.stories?.length > 0 && user?.stories[0]?.stories?.length) ||
-            0
-          }
-          imageSrc={user.profilePic}
-          setOpenModal={setOpenModal}
-          onClick={() => {
-            // toggleSidebar();
-            setOpenModal(true);
-            selectStory(user.stories[0]);
-          }}
-        />
-      </Logo>
+      <StoryContainer
+        isOpen={openStory}
+        closeModal={() => setOpenStory(false)}
+      />
+
+      <div className="pt-4 center flex-col">
+        {user?.stories?.length > 0 && (
+          <Logo>
+            <StoryAvi
+              profile
+              color="#ccc"
+              segments={
+                (user?.stories?.length > 0 &&
+                  user?.stories[0]?.stories?.length) ||
+                0
+              }
+              imageSrc={user.profilePic}
+              setOpenModal={setOpenModal}
+              onClick={() => {
+                // toggleSidebar();
+                setOpenModal(true);
+                selectStory(user.stories[0]);
+              }}
+            />
+          </Logo>
+        )}
+        <button className="add pt-2" onClick={() => setOpenStory(true)}>
+          Add story
+        </button>
+      </div>
+
       <CloseButton onClick={() => setIsOpen(false)}>
         <FiX size={19} />
       </CloseButton>

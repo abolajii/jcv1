@@ -36,6 +36,23 @@ const useStoryStore = create((set) => ({
       selectedStory: story,
     })),
 
+  handleViewStory: (storyId, userId) => {
+    set((state) => {
+      const updatedStories = state.allStories.map((storyGroup) => {
+        const updatedGroupStories = storyGroup.stories.map((story) => {
+          if (story._id === storyId && !story.views.includes(userId)) {
+            // Add user to views if not already viewed
+            return { ...story, views: [...story.views, userId] };
+          }
+          return story;
+        });
+        return { ...storyGroup, stories: updatedGroupStories };
+      });
+      console.log(updatedStories);
+      return { allStories: updatedStories };
+    });
+  },
+
   // Action to clear the selected story
   clearSelectedStory: () =>
     set(() => ({

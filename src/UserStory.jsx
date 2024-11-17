@@ -203,8 +203,8 @@ const ProgressSegment = styled.div`
   }
 `;
 
-const UserStory = ({ setIsOpen, isOpen }) => {
-  const { selectedStory } = useStoryStore();
+const UserStory = ({ setIsOpen, isOpen, loggedIn }) => {
+  const { selectedStory, selectStory, handleViewStory } = useStoryStore();
   const [activeStory, setActiveStory] = useState(0);
   const [completedStories, setCompletedStories] = useState([]);
   const [canProgress, setCanProgress] = useState(false);
@@ -233,7 +233,8 @@ const UserStory = ({ setIsOpen, isOpen }) => {
       return;
     }
 
-    const currentStory = selectedStory.stories[activeStory];
+    const currentStory =
+      selectedStory?.stories.length > 0 && selectedStory.stories[activeStory];
 
     if (!canProgress) {
       return;
@@ -242,8 +243,11 @@ const UserStory = ({ setIsOpen, isOpen }) => {
     const storyId = currentStory._id;
     const hasViewed = currentStory?.views?.includes(user.id);
 
-    if (!hasViewed) {
+    if (!hasViewed && !loggedIn) {
       viewStory(storyId);
+      handleViewStory(storyId, user.id);
+
+      // add to user to views array
     }
 
     if (isManualNavigation) {
@@ -278,6 +282,10 @@ const UserStory = ({ setIsOpen, isOpen }) => {
     canProgress,
     isInputFocused,
     isManualNavigation,
+    loggedIn,
+    selectStory,
+    selectedStory,
+    handleViewStory,
   ]);
 
   useEffect(() => {
@@ -296,8 +304,9 @@ const UserStory = ({ setIsOpen, isOpen }) => {
         user.id
       );
 
-      if (!hasViewed) {
+      if (!hasViewed && !loggedIn) {
         await viewStory(nextStoryId);
+        handleViewStory(nextStoryId, user.id);
       }
 
       setCompletedStories((prev) => [...prev, activeStory]);
@@ -414,19 +423,20 @@ const UserStory = ({ setIsOpen, isOpen }) => {
       </Top>
 
       <Bottom>{renderStoryContent(selectedStory.stories[activeStory])}</Bottom>
-
-      <Footer>
-        <ReplyInput
-          placeholder="Reply to story..."
-          value={replyText}
-          onChange={(e) => setReplyText(e.target.value)}
-          onFocus={() => setIsInputFocused(true)}
-          onBlur={handleInputBlur}
-        />
-        <SendButton onClick={handleSendReply}>
-          <FiSend />
-        </SendButton>
-      </Footer>
+      {!loggedIn && (
+        <Footer>
+          <ReplyInput
+            placeholder="Reply to story..."
+            value={replyText}
+            onChange={(e) => setReplyText(e.target.value)}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={handleInputBlur}
+          />
+          <SendButton onClick={handleSendReply}>
+            <FiSend />
+          </SendButton>
+        </Footer>
+      )}
     </Container>
   );
 };
