@@ -44,12 +44,7 @@ const App = () => {
   // const navigate = useNavigate();
 
   useEffect(() => {
-    if (
-      !isAuthenticated ||
-      !initialUser ||
-      !initialToken ||
-      initialToken === "undefined"
-    ) {
+    if (!isAuthenticated) {
       window.href = "/login"; // If fetching fails, redirect to login
 
       return;
@@ -58,7 +53,6 @@ const App = () => {
     const fetchUserData = async () => {
       try {
         const response = await getMe();
-        console.log(response.user.isViewed);
         if (!response.user.isViewed) {
           logout();
         } else {
@@ -72,7 +66,7 @@ const App = () => {
     };
 
     fetchUserData();
-  }, [isAuthenticated, setActiveUser, logout, initialUser, initialToken]);
+  }, [isAuthenticated, setActiveUser, logout]);
 
   return (
     <>

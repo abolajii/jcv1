@@ -1,10 +1,11 @@
-/* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 
 import { FaUpload } from "react-icons/fa";
 import { Spinner } from "./components";
 import { createStory } from "./api/requests";
+import useAuthStore from "./store/useAuthStore";
 
 // Keyframe for animation
 const slideIn = keyframes`
@@ -129,7 +130,7 @@ const StoryContainer = ({ isOpen, closeModal }) => {
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState("text"); // 'text', 'image', or 'video'
-
+  const { user, setActiveUser } = useAuthStore();
   const [isVisible, setIsVisible] = useState(isOpen);
 
   useEffect(() => {
@@ -173,7 +174,12 @@ const StoryContainer = ({ isOpen, closeModal }) => {
 
     try {
       const response = await createStory(formData);
-      console.log(response);
+      // const stories = [response.story, ...user.stories];
+      // console.log(stories);
+
+      const allStories = [...user.stories[0].stories, response.story];
+      setActiveUser({ ...user, stories: [{ stories: allStories }] });
+
       setLoading(false);
       setText("");
       setImage(null);

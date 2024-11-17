@@ -305,8 +305,8 @@ const UserStory = ({ setIsOpen, isOpen, loggedIn }) => {
       );
 
       if (!hasViewed && !loggedIn) {
-        await viewStory(nextStoryId);
         handleViewStory(nextStoryId, user.id);
+        await viewStory(nextStoryId);
       }
 
       setCompletedStories((prev) => [...prev, activeStory]);
