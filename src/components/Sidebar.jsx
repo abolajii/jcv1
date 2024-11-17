@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import SidebarMenu from "./SidebarMenu";
 import styled from "styled-components";
 
@@ -25,10 +25,10 @@ const Top = styled.div`
   width: 100%;
 `;
 
-const Bottom = styled.div`
-  padding: 10px;
-  width: calc(100% - 20px);
-`;
+// const Bottom = styled.div`
+//   padding: 10px;
+//   width: calc(100% - 20px);
+// `;
 
 const Sidebar = () => {
   return (

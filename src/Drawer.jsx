@@ -54,7 +54,7 @@ const Sidebar = styled.div`
   }
 
   .top {
-    margin-top: 50px;
+    margin-top: 20px;
   }
 
   .add {
@@ -69,6 +69,16 @@ const Sidebar = styled.div`
     &:hover {
       background: #cbfafa;
     }
+  }
+
+  .absolute {
+    left: 40px;
+  }
+
+  .menu-container {
+    position: absolute;
+    top: 100px;
+    height: calc(100% - 100px);
   }
 `;
 
@@ -250,7 +260,7 @@ const Drawer = ({ isOpen, setIsOpen }) => {
         closeModal={() => setOpenStory(false)}
       />
 
-      <div className="pt-4 center flex-col">
+      <div className="pt-4 center flex-col absolute">
         {user?.stories?.length > 0 && (
           <Logo>
             <StoryAvi
@@ -279,7 +289,7 @@ const Drawer = ({ isOpen, setIsOpen }) => {
       <CloseButton onClick={() => setIsOpen(false)}>
         <FiX size={19} />
       </CloseButton>
-      <div className="flex justify-between flex-col flex-1 h-100">
+      <div className="flex justify-between flex-col menu-container">
         <div className="top">
           {sidebarItems.map((item, index) => (
             <SidebarItem

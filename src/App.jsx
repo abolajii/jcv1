@@ -3,7 +3,6 @@ import {
   Route,
   BrowserRouter as Router,
   Routes,
-  useNavigate,
 } from "react-router-dom";
 
 import Bookmark from "./Bookmark";
@@ -13,7 +12,7 @@ import Dashboard from "./Dashboard";
 import EditProfile from "./EditProfile";
 import Login from "./pages/Login";
 import Notification from "./Notification";
-import Profile from "./Profile";
+// import Profile from "./Profile";
 import ProtectedRoute from "./ProtectedRoute";
 import Register from "./pages/Register";
 import Search from "./Search";
@@ -38,8 +37,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const App = () => {
-  const { isAuthenticated, setActiveUser, logout, initialToken, initialUser } =
-    useAuthStore();
+  const { isAuthenticated, setActiveUser, logout } = useAuthStore();
 
   // const navigate = useNavigate();
 
@@ -118,14 +116,16 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            {/* <Route
+            {/*
+             <Route
               path="/profile"
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
                   <Profile />
                 </ProtectedRoute>
               }
-            /> */}
+            />
+             */}
             <Route
               path="/search"
               element={
