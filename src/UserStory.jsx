@@ -423,7 +423,9 @@ const UserStory = ({ setIsOpen, isOpen, loggedIn }) => {
 
       <Bottom>{renderStoryContent(selectedStory.stories[activeStory])}</Bottom>
 
-      <EyeIconView views={selectedStory.stories[activeStory]?.views.length} />
+      {!loggedIn && (
+        <EyeIconView views={selectedStory.stories[activeStory]?.views.length} />
+      )}
       {!loggedIn && (
         <Footer>
           <ReplyInput
