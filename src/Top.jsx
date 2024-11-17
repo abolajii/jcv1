@@ -6,6 +6,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import OtherUserStoryAvi from "./OtherUserStory";
 import Reuseable from "./Reuseable";
 import StoryAvi from "./StoryAvi";
+import StoryContainer from "./Story";
 import UserStory from "./UserStory";
 import styled from "styled-components";
 import useAuthStore from "./store/useAuthStore";
@@ -110,7 +111,7 @@ const Header = styled.div`
 const Top = ({ toggleSidebar }) => {
   const { user } = useAuthStore();
   const { allStories, setAllStories, selectStory } = useStoryStore();
-  //   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -129,6 +130,7 @@ const Top = ({ toggleSidebar }) => {
 
   return (
     <Header>
+      <StoryContainer isOpen={isOpen} closeModal={() => setIsOpen(false)} />
       {openModal && <UserStory setIsOpen={setOpenModal} isOpen={openModal} />}
       {/* <Reuseable isOpen={openModal} setIsOpen={setOpenModal} /> */}
       <div className="flex gap-md justify-between w-100 align-center">
@@ -176,10 +178,10 @@ const Top = ({ toggleSidebar }) => {
             );
           })}
         </OtherStory>
-        {/* <UserAvi onClick={() => setIsOpen(true)}>
+        <UserAvi onClick={() => setIsOpen(true)}>
           <img src={user?.profilePic} alt="User avatar" />
           <AddIcon size={13} color="#fff" />
-        </UserAvi> */}
+        </UserAvi>
       </div>
     </Header>
   );
