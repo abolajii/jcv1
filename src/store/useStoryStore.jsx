@@ -47,7 +47,6 @@ const useStoryStore = create((set) => ({
             );
 
             if (!alreadyViewed) {
-              console.log("Not viewed yet");
               // Add a new view object with userId and viewedAt
               return {
                 ...story,
@@ -62,8 +61,6 @@ const useStoryStore = create((set) => ({
         });
         return { ...storyGroup, stories: updatedGroupStories };
       });
-
-      console.log(updatedStories);
 
       return { allStories: updatedStories };
     });

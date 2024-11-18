@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { FaEye } from "react-icons/fa"; // Importing the eye icon from React Icons
+import { HiCheckBadge } from "react-icons/hi2";
 import { formatDate } from "./utils";
 import styled from "styled-components";
 import { useState } from "react";
@@ -125,7 +126,11 @@ const EyeIconView = ({ views, toggleCurrent }) => {
                   <img src={v?.user.profilePic} alt="User avatar" />
                 </Avi>
                 <div>
-                  <p className="name">{v.user.name}</p>
+                  <p className="name center">
+                    {v.user.name}
+
+                    {v?.user.isVerified && <HiCheckBadge color="#1b9d87" />}
+                  </p>
                   <p className="time">{formatDate(v.viewedAt)}</p>
                 </div>
               </UserItem>
