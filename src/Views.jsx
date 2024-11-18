@@ -69,7 +69,7 @@ const CloseButton = styled.button`
 `;
 
 const UserGroup = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
 `;
 
 const UserItem = styled.div`
