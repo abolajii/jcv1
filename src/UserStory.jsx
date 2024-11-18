@@ -243,8 +243,8 @@ const UserStory = ({ setIsOpen, isOpen, loggedIn }) => {
     const hasViewed = currentStory?.views?.find((v) => v.user === user.id);
 
     if (!hasViewed && !loggedIn) {
-      viewStory(storyId);
       handleViewStory(storyId, user.id);
+      viewStory(storyId);
 
       // add to user to views array
     }

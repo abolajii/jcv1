@@ -40,14 +40,31 @@ const useStoryStore = create((set) => ({
     set((state) => {
       const updatedStories = state.allStories.map((storyGroup) => {
         const updatedGroupStories = storyGroup.stories.map((story) => {
-          if (story._id === storyId && !story.views.includes(userId)) {
-            // Add user to views if not already viewed
-            return { ...story, views: [...story.views, userId] };
+          if (story._id === storyId) {
+            // Check if the user has already viewed the story
+            const alreadyViewed = story.views.some(
+              (view) => view.user._id === userId
+            );
+
+            if (!alreadyViewed) {
+              console.log("Not viewed yet");
+              // Add a new view object with userId and viewedAt
+              return {
+                ...story,
+                views: [
+                  ...story.views,
+                  { user: userId, viewedAt: new Date().toISOString() },
+                ],
+              };
+            }
           }
           return story;
         });
         return { ...storyGroup, stories: updatedGroupStories };
       });
+
+      console.log(updatedStories);
+
       return { allStories: updatedStories };
     });
   },
