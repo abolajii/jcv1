@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { FaEye } from "react-icons/fa"; // Importing the eye icon from React Icons
+import { formatDate } from "./utils";
 import styled from "styled-components";
 import { useState } from "react";
 
@@ -45,12 +46,15 @@ const Modal = styled.div`
   left: 0;
   width: 100%;
   max-height: 70vh;
-  background: white;
+  /* background: white; */
+  /* background-color: rgba(255, 255, 255, 0.9); */
+  background-color: #eaf5f2;
+
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   transition: bottom 0.3s ease-in-out;
   padding: 16px;
-  z-index: 1000;
+  z-index: 10000;
 `;
 
 const CloseButton = styled.button`
@@ -63,10 +67,42 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-const EyeIconView = ({ views }) => {
+const UserGroup = styled.div`
+  margin-top: 20px;
+`;
+
+const UserItem = styled.div`
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+
+  .time {
+    margin-top: -4px;
+  }
+`;
+
+const Avi = styled.div`
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background-color: #313838;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+`;
+
+const EyeIconView = ({ views, toggleCurrent }) => {
+  //
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const toggleModal = () => setModalVisible(!isModalVisible);
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+    toggleCurrent();
+  };
 
   return (
     <>
@@ -74,14 +110,29 @@ const EyeIconView = ({ views }) => {
         <IconWrapper>
           <FaEye size={20} color="#fff" />
         </IconWrapper>
-        <NumberText>{views}</NumberText>
+        <NumberText>{views.length}</NumberText>
       </Container>
       {/* Modal */}
       <ModalOverlay isVisible={isModalVisible} onClick={toggleModal} />
       <Modal isVisible={isModalVisible}>
         <CloseButton onClick={toggleModal}>&times;</CloseButton>
-        <h2>Modal Content</h2>
-        <p>This is where you can add your content!</p>
+        <p>Views</p>
+        <UserGroup>
+          {views.map((v) => {
+            return (
+              <UserItem key={v._id}>
+                <Avi>
+                  <img src={v?.user.profilePic} alt="User avatar" />
+                </Avi>
+                <div>
+                  <p className="name">{v.user.name}</p>
+                  <p className="time">{formatDate(v.viewedAt)}</p>
+                </div>
+              </UserItem>
+            );
+          })}
+        </UserGroup>
+        {/* <p>This is where you can add your content!</p> */}
       </Modal>
     </>
   );

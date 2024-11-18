@@ -70,7 +70,9 @@ const OtherUserStoryAvi = ({
     >
       {/* Render each story segment with appropriate color */}
       {stories.map((story, index) => {
-        const isViewed = story.views.includes(loggedInUserId);
+        // const isViewed = story.views.includes(loggedInUserId);
+        const isViewed = story.views?.find((v) => v.user === loggedInUserId);
+
         const segmentColor = isViewed ? "#ccc" : color;
         const startAngle =
           (index * (segmentLength + gapLength) * 360) / circumference - 90;

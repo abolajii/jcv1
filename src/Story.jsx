@@ -174,11 +174,14 @@ const StoryContainer = ({ isOpen, closeModal }) => {
 
     try {
       const response = await createStory(formData);
-      // const stories = [response.story, ...user.stories];
-      // console.log(stories);
 
-      const allStories = [...user.stories[0].stories, response.story];
-      setActiveUser({ ...user, stories: [{ stories: allStories }] });
+      if (user.stories.length > 0) {
+        const allStories = [...user.stories[0].stories, response.story];
+        setActiveUser({ ...user, stories: [{ stories: allStories }] });
+      } else {
+        const allStories = [response.story];
+        setActiveUser({ ...user, stories: [{ stories: allStories }] });
+      }
 
       setLoading(false);
       setText("");

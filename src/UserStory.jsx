@@ -240,7 +240,7 @@ const UserStory = ({ setIsOpen, isOpen, loggedIn }) => {
     }
 
     const storyId = currentStory._id;
-    const hasViewed = currentStory?.views?.includes(user.id);
+    const hasViewed = currentStory?.views?.find((v) => v.user === user.id);
 
     if (!hasViewed && !loggedIn) {
       viewStory(storyId);
@@ -299,8 +299,9 @@ const UserStory = ({ setIsOpen, isOpen, loggedIn }) => {
     if (activeStory < selectedStory.stories.length - 1) {
       setIsManualNavigation(true);
       const nextStoryId = selectedStory.stories[activeStory + 1]._id;
-      const hasViewed = selectedStory.stories[activeStory + 1].views.includes(
-        user.id
+
+      const hasViewed = selectedStory.stories[activeStory + 1].views.find(
+        (v) => v.user === user.id
       );
 
       if (!hasViewed && !loggedIn) {
@@ -424,7 +425,10 @@ const UserStory = ({ setIsOpen, isOpen, loggedIn }) => {
       <Bottom>{renderStoryContent(selectedStory.stories[activeStory])}</Bottom>
 
       {loggedIn && (
-        <EyeIconView views={selectedStory.stories[activeStory]?.views.length} />
+        <EyeIconView
+          views={selectedStory.stories[activeStory]?.views}
+          toggleCurrent={() => setIsInputFocused(!isInputFocused)}
+        />
       )}
       {!loggedIn && (
         <Footer>

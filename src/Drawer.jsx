@@ -264,7 +264,6 @@ const Drawer = ({ isOpen, setIsOpen }) => {
         {user?.stories?.length > 0 && (
           <Logo>
             <StoryAvi
-              profile
               color="#ccc"
               segments={
                 (user?.stories?.length > 0 &&
